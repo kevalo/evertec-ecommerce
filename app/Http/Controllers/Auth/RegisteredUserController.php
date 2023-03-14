@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Definitions\Status;
+use App\Definitions\UserStatus;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
@@ -45,7 +45,7 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'last_name' => $request->last_name,
             'phone' => $request->phone,
-            'status' => Status::PENDING->value,
+            'status' => UserStatus::PENDING->value,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
