@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Definitions\Roles;
 use App\Definitions\UserStatus;
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -46,6 +47,7 @@ class RegisteredUserController extends Controller
             'last_name' => $request->last_name,
             'phone' => $request->phone,
             'status' => UserStatus::PENDING->value,
+            'role_id' => Roles::CUSTOMER->value,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
