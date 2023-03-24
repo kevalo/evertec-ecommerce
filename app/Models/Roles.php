@@ -4,18 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use  \App\Definitions\Roles as RolesDefinition;
 
-class roles extends Model
+class Roles extends Model
 {
     use HasFactory;
 
     public $timestamps = false;
 
-    public function value()
+    /**
+     * @throws \Exception
+     */
+    public function value(): RolesDefinition
     {
         return match ($this->id) {
-            \App\Definitions\Roles::CUSTOMER->value => \App\Definitions\Roles::CUSTOMER,
-            \App\Definitions\Roles::ADMIN->value => \App\Definitions\Roles::ADMIN,
+            RolesDefinition::CUSTOMER->value => RolesDefinition::CUSTOMER,
+            RolesDefinition::ADMIN->value => RolesDefinition::ADMIN,
             default => throw new \Exception('Rol incorrecto!'),
         };
     }
