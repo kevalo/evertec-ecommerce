@@ -31,6 +31,8 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified', isAdmin::class])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/customers', [CustomerController::class, 'index'])->name('customers');
+    Route::patch('/toggleCustomerStatus', [CustomerController::class, 'toggleStatus'])
+        ->name('toggleCustomerStatus');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
