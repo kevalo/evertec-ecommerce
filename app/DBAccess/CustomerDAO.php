@@ -6,6 +6,7 @@ use App\Definitions\Roles;
 use App\Definitions\UserStatus;
 use App\Models\User;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 class CustomerDAO
 {
@@ -20,7 +21,7 @@ class CustomerDAO
             })->get();
 
         } catch (\Exception $e) {
-            error_log($e->getMessage());
+            Log::error($e->getMessage(), ['context' => "Getting the users with role " . Roles::CUSTOMER->value]);
         }
 
         return $data;
@@ -46,7 +47,7 @@ class CustomerDAO
             $res = $user->save();
 
         } catch (\Exception $e) {
-            error_log($e->getMessage());
+            Log::error($e->getMessage(), ['context' => "Updating user status"]);
         }
 
         return $res;
