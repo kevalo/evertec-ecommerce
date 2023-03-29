@@ -4,7 +4,7 @@ import {Head} from '@inertiajs/vue3';
 
 const toggleStatus = (e) => {
     axios.patch(route('toggleCustomerStatus'), {id: e.target.dataset.customer}).catch((err) => {
-        console.log(err);
+        console.error(err);
     });
 }
 </script>
@@ -39,7 +39,8 @@ const toggleStatus = (e) => {
                                 <td>{{ customer.last_name }}</td>
                                 <td>{{ customer.phone }}</td>
                                 <td>
-                                    <input type="checkbox" class="toggle toggle-success"
+                                    <input type="checkbox"
+                                           class="toggle toggle-success"
                                            :data-customer="customer.id"
                                            :checked="customer.status === 'active'"
                                            @change="toggleStatus($event)"
