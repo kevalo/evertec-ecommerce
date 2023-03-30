@@ -16,17 +16,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('users')->insert([
-            'name' => 'Admin',
-            'last_name' => 'ecommerce',
-            'phone' => '123456789',
-            'email' => 'admin@ecommerce.test',
-            'status' => UserStatus::ACTIVE->value,
-            'password' => Hash::make('123456789'),
-            'role_id' => Roles::ADMIN->value,
-            'email_verified_at' => now()
-        ]);
-
+        // create 400 users for testing purposes
         User::factory()->count(400)->create();
     }
 }
