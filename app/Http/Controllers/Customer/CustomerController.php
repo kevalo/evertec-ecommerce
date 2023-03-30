@@ -15,7 +15,7 @@ class CustomerController extends Controller
     {
         return Inertia::render('Customer/List', [
             'title' => 'Clientes',
-            'customers' => $customerDao->getAll()
+            'customers' => $customerDao->getAllPaginated()
         ]);
     }
 
