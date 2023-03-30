@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Definitions\UserStatus;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -59,8 +60,8 @@ class User extends Authenticatable implements MustVerifyEmail
         );
     }
 
-    public function role(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function role(): BelongsTo
     {
-        return $this->belongsTo(roles::class, 'role_id', 'id');
+        return $this->belongsTo(Roles::class, 'role_id', 'id');
     }
 }
