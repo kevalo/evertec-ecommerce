@@ -67,4 +67,24 @@ class CustomerDAO
 
         return $res;
     }
+
+    /**
+     * @param User $user
+     * @param $data array array with the following keys: name, last_name, phone
+     * @return bool
+     */
+    public function updateBasicData(User $user, array $data): bool
+    {
+        $res = false;
+
+        try {
+
+            $res = $user->update($data);
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage(), ['context' => "Updating user information"]);
+        }
+
+        return $res;
+    }
 }

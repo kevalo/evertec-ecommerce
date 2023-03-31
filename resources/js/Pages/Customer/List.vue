@@ -2,14 +2,13 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Pagination from '@/Components/Pagination.vue'
 import {Head, usePage} from '@inertiajs/vue3';
-import {computed} from 'vue'
-
-const customers = computed(() => usePage().props.customers);
 
 defineProps({
     customers: Object,
     title: String
 })
+
+const customers = usePage().props.customers;
 
 const toggleStatus = (e) => {
     axios.patch(route('toggleCustomerStatus'), {id: e.target.dataset.customer}).catch((err) => {
@@ -30,6 +29,7 @@ const toggleStatus = (e) => {
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
+
                         <div v-if="customers.data.length > 0">
                             <table class="table w-full border-2 text-center">
                                 <caption>Listado de clientes</caption>
@@ -40,6 +40,7 @@ const toggleStatus = (e) => {
                                     <th>Apellidos</th>
                                     <th>Teléfono</th>
                                     <th>Estado</th>
+                                    <th>Acciones</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -55,6 +56,14 @@ const toggleStatus = (e) => {
                                                :checked="customer.status === 'active'"
                                                @change="toggleStatus($event)"
                                         />
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-outline btn-primary"
+                                           :href="route('customers.edit', customer.id)"
+                                           title="Editar usuario"
+                                        >
+                                            <i class="fa fa-edit"></i>
+                                        </a>
                                     </td>
                                 </tr>
                                 </tbody>
