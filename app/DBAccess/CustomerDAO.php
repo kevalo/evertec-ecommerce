@@ -5,6 +5,7 @@ namespace App\DBAccess;
 use App\Definitions\Roles;
 use App\Definitions\UserStatus;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
@@ -26,14 +27,21 @@ class CustomerDAO
         return $data;
     }
 
-    public function getAllPaginated(): array|\Illuminate\Pagination\LengthAwarePaginator
+    public function getAllPaginated(string $filter = null): array|\Illuminate\Pagination\LengthAwarePaginator
     {
         $data = [];
 
         try {
+
             $data = User::whereHas('role', static function ($roleQuery) {
                 $roleQuery->where('id', Roles::CUSTOMER->value);
-            })->paginate(5);
+            });
+
+            if ($filter) {
+                $data = $data->where('name', 'like', '%' . $filter . '%')->paginate(5);
+            }
+
+            $data = $data->paginate(5);
 
         } catch (\Exception $e) {
             Log::error($e->getMessage(), ['context' => "Getting the users with role " . Roles::CUSTOMER->value]);

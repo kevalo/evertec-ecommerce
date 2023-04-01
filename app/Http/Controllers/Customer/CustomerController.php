@@ -9,17 +9,28 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class CustomerController extends Controller
 {
-    public function index(CustomerDAO $customerDao): Response
+    public function index(Request $request, CustomerDAO $customerDao): Response|JsonResponse
     {
-        return Inertia::render('Customer/List', [
-            'title' => 'Clientes',
-            'customers' => $customerDao->getAllPaginated()
+        $filtered = $request->has('filter');
+        $filter = $request->get('filter');
+        $customers = $customerDao->getAllPaginated($filter);
+
+        $page = $request->get('page');
+        if ((!$filtered && !$page) || $page) {
+            return Inertia::render('Customer/List', [
+                'title' => 'Clientes',
+                'customers' => $customers,
+                'filter' => $filter
+            ]);
+        }
+
+        return response()->json([
+            'customers' => $customerDao->getAllPaginated($filter),
         ]);
     }
 
