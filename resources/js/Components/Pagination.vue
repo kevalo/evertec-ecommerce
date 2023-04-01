@@ -1,6 +1,6 @@
 <template>
     <div v-if="links.length > 3">
-        <div class="flex flex-wrap mt-8">
+        <div class="flex flex-wrap mt-8 justify-center">
             <template v-for="(link, key) in links" :key="key">
                 <div
                     v-if="link.url === null"
@@ -9,26 +9,35 @@
                 />
 
                 <Link
+                    v-else-if="searchTerm"
+                    class="mr-1 mb-1 px-4 py-3 text-sm leading-4 border rounded hover:bg-white focus:border-primary focus:text-primary"
+                    :class="{ 'bg-primary text-white': link.active }"
+                    :href="link.url + '&filter=' + searchTerm"
+                    v-html="link.label"
+                />
+                <Link
                     v-else
                     class="mr-1 mb-1 px-4 py-3 text-sm leading-4 border rounded hover:bg-white focus:border-primary focus:text-primary"
-                    :class="{ 'bg-blue-700 text-white': link.active }"
+                    :class="{ 'bg-primary text-white': link.active }"
                     :href="link.url"
                     v-html="link.label"
                 />
+
             </template>
         </div>
     </div>
 </template>
 
-<script>
-import { defineComponent } from "vue";
-import { Link } from "@inertiajs/vue3";
-export default defineComponent({
-    components: {
-        Link,
-    },
-    props: {
-        links: Array,
-    },
+<script setup>
+import {Link} from "@inertiajs/vue3";
+
+const props = defineProps({
+    links: Array,
+    searchTerm: String
 });
+
+const components = {
+    Link,
+};
+
 </script>

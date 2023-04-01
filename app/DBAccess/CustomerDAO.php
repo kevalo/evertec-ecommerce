@@ -26,14 +26,22 @@ class CustomerDAO
         return $data;
     }
 
-    public function getAllPaginated(): array|\Illuminate\Pagination\LengthAwarePaginator
+    public function getAllPaginated(string $filter = null): array|\Illuminate\Pagination\LengthAwarePaginator
     {
         $data = [];
 
         try {
+
             $data = User::whereHas('role', static function ($roleQuery) {
                 $roleQuery->where('id', Roles::CUSTOMER->value);
-            })->paginate(5);
+            });
+
+            if ($filter) {
+                $data = $data->where('name', 'like', '%' . $filter . '%')
+                    ->orWhere('email', 'like', '%' . $filter . '%')->paginate(5);
+            }
+
+            $data = $data->paginate(5);
 
         } catch (\Exception $e) {
             Log::error($e->getMessage(), ['context' => "Getting the users with role " . Roles::CUSTOMER->value]);
@@ -63,6 +71,26 @@ class CustomerDAO
 
         } catch (\Exception $e) {
             Log::error($e->getMessage(), ['context' => "Updating user status"]);
+        }
+
+        return $res;
+    }
+
+    /**
+     * @param User $user
+     * @param $data array array with the following keys: name, last_name, phone
+     * @return bool
+     */
+    public function updateBasicData(User $user, array $data): bool
+    {
+        $res = false;
+
+        try {
+
+            $res = $user->update($data);
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage(), ['context' => "Updating user information"]);
         }
 
         return $res;

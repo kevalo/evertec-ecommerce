@@ -1,21 +1,34 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Pagination from '@/Components/Pagination.vue'
-import {Head, usePage} from '@inertiajs/vue3';
-import {computed} from 'vue'
+import {Head} from '@inertiajs/vue3';
+import {ref} from 'vue'
 
-const customers = computed(() => usePage().props.customers);
-
-defineProps({
+const props = defineProps({
     customers: Object,
-    title: String
-})
+    title: String,
+    filter: String
+});
+
+const searchTerm = ref(props.filter ? props.filter : '');
+const customers = ref(props.customers);
 
 const toggleStatus = (e) => {
     axios.patch(route('toggleCustomerStatus'), {id: e.target.dataset.customer}).catch((err) => {
         console.error(err);
     });
 }
+
+const searchCustomers = async () => {
+    try {
+        const response = await fetch(`${route('customers')}/?filter=${searchTerm.value}`);
+        const data = await response.json();
+        customers.value = data.customers;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 </script>
 
 <template>
@@ -30,6 +43,16 @@ const toggleStatus = (e) => {
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
+
+                        <form @submit.prevent="searchCustomers" class="flex">
+                            <input type="text" id="searchTerm" v-model="searchTerm"
+                                   class="input  w-1/4 input-bordered input-primary "
+                                   placeholder="ingresa un correo o un nombre">
+                            <button type="submit" class="btn btn-primary ml-3 my-0">
+                                Buscar
+                            </button>
+                        </form>
+
                         <div v-if="customers.data.length > 0">
                             <table class="table w-full border-2 text-center">
                                 <caption>Listado de clientes</caption>
@@ -40,6 +63,7 @@ const toggleStatus = (e) => {
                                     <th>Apellidos</th>
                                     <th>Teléfono</th>
                                     <th>Estado</th>
+                                    <th>Acciones</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -56,13 +80,21 @@ const toggleStatus = (e) => {
                                                @change="toggleStatus($event)"
                                         />
                                     </td>
+                                    <td>
+                                        <a class="btn btn-outline btn-primary"
+                                           :href="route('customers.edit', customer.id)"
+                                           title="Editar usuario"
+                                        >
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
-                            <Pagination class="mt-6" :links="customers.links"/>
+                            <Pagination class="mt-6" :links="customers.links" :searchTerm="searchTerm"/>
                         </div>
-                        <div v-else>
-                            No hay clientes registrados
+                        <div v-else class="text-center">
+                            No se encontraron clientes
                         </div>
                     </div>
                 </div>
