@@ -5,7 +5,6 @@ namespace App\DBAccess;
 use App\Definitions\Roles;
 use App\Definitions\UserStatus;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
@@ -38,7 +37,8 @@ class CustomerDAO
             });
 
             if ($filter) {
-                $data = $data->where('name', 'like', '%' . $filter . '%')->paginate(5);
+                $data = $data->where('name', 'like', '%' . $filter . '%')
+                    ->orWhere('email', 'like', '%' . $filter . '%')->paginate(5);
             }
 
             $data = $data->paginate(5);

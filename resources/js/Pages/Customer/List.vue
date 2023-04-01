@@ -47,7 +47,7 @@ const searchCustomers = async () => {
                         <form @submit.prevent="searchCustomers" class="flex">
                             <input type="text" id="searchTerm" v-model="searchTerm"
                                    class="input  w-1/4 input-bordered input-primary "
-                                   placeholder="Busca por algún dato de la tabla">
+                                   placeholder="ingresa un correo o un nombre">
                             <button type="submit" class="btn btn-primary ml-3 my-0">
                                 Buscar
                             </button>
