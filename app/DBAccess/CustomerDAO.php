@@ -78,7 +78,7 @@ class CustomerDAO
 
     /**
      * @param User $user
-     * @param $data array array with the following keys: name, last_name, phone
+     * @param array $data array with the following keys: name, last_name, phone
      * @return bool
      */
     public function updateBasicData(User $user, array $data): bool
