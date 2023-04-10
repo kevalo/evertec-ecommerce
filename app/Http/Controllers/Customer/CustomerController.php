@@ -21,11 +21,11 @@ class CustomerController extends Controller
         $customers = $customerDao->getAllPaginated($filter);
 
         $page = $request->get('page');
-        if ((!$filtered && !$page) || $page) {
+        if ((! $filtered && ! $page) || $page) {
             return Inertia::render('Customer/List', [
                 'title' => 'Clientes',
                 'customers' => $customers,
-                'filter' => $filter
+                'filter' => $filter,
             ]);
         }
 
@@ -37,11 +37,11 @@ class CustomerController extends Controller
     public function toggleStatus(Request $request, CustomerDAO $customerDao): JsonResponse
     {
         $request->validate([
-            'id' => ['required', 'numeric', 'exists:users']
+            'id' => ['required', 'numeric', 'exists:users'],
         ]);
 
         return response()->json([
-            'status' => $customerDao->updateStatus($request->input('id'))
+            'status' => $customerDao->updateStatus($request->input('id')),
         ]);
     }
 
@@ -49,7 +49,7 @@ class CustomerController extends Controller
     {
         return Inertia::render('Customer/Edit', [
             'title' => 'Editar cliente',
-            'customer' => $user
+            'customer' => $user,
         ]);
     }
 

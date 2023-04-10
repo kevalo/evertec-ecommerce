@@ -18,9 +18,8 @@ class CustomerDAO
             $data = User::whereHas('role', static function ($roleQuery) {
                 $roleQuery->where('id', Roles::CUSTOMER->value);
             })->get();
-
         } catch (\Exception $e) {
-            Log::error($e->getMessage(), ['context' => "Getting the users with role " . Roles::CUSTOMER->value]);
+            Log::error($e->getMessage(), ['context' => 'Getting the users with role '.Roles::CUSTOMER->value]);
         }
 
         return $data;
@@ -31,20 +30,18 @@ class CustomerDAO
         $data = [];
 
         try {
-
             $data = User::whereHas('role', static function ($roleQuery) {
                 $roleQuery->where('id', Roles::CUSTOMER->value);
             });
 
             if ($filter) {
-                $data = $data->where('name', 'like', '%' . $filter . '%')
-                    ->orWhere('email', 'like', '%' . $filter . '%')->paginate(5);
+                $data = $data->where('name', 'like', '%'.$filter.'%')
+                    ->orWhere('email', 'like', '%'.$filter.'%')->paginate(5);
             }
 
             $data = $data->paginate(5);
-
         } catch (\Exception $e) {
-            Log::error($e->getMessage(), ['context' => "Getting the users with role " . Roles::CUSTOMER->value]);
+            Log::error($e->getMessage(), ['context' => 'Getting the users with role '.Roles::CUSTOMER->value]);
         }
 
         return $data;
@@ -55,9 +52,8 @@ class CustomerDAO
         $res = false;
 
         try {
-
             $user = User::find($id);
-            if (!$user) {
+            if (! $user) {
                 return $res;
             }
 
@@ -68,29 +64,24 @@ class CustomerDAO
 
             $user->status = $newStatus;
             $res = $user->save();
-
         } catch (\Exception $e) {
-            Log::error($e->getMessage(), ['context' => "Updating user status"]);
+            Log::error($e->getMessage(), ['context' => 'Updating user status']);
         }
 
         return $res;
     }
 
     /**
-     * @param User $user
-     * @param array $data array with the following keys: name, last_name, phone
-     * @return bool
+     * @param  array  $data array with the following keys: name, last_name, phone
      */
     public function updateBasicData(User $user, array $data): bool
     {
         $res = false;
 
         try {
-
             $res = $user->update($data);
-
         } catch (\Exception $e) {
-            Log::error($e->getMessage(), ['context' => "Updating user information"]);
+            Log::error($e->getMessage(), ['context' => 'Updating user information']);
         }
 
         return $res;

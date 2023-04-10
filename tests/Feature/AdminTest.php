@@ -102,7 +102,7 @@ class AdminTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->put('/customers/2', ["name" => $randomName, "last_name" => "New data", "phone" => "315389548"]);
+            ->put('/customers/2', ['name' => $randomName, 'last_name' => 'New data', 'phone' => '315389548']);
 
         $response->assertStatus(302);
         $response->assertRedirect('/customers');

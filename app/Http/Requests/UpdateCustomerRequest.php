@@ -25,7 +25,7 @@ class UpdateCustomerRequest extends FormRequest
         return [
             'name' => ['required'],
             'last_name' => ['required'],
-            'phone' => ['required']
+            'phone' => ['required'],
         ];
     }
 }
