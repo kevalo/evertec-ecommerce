@@ -13,7 +13,9 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -55,7 +57,8 @@ class User extends Authenticatable implements MustVerifyEmail
             get: fn (string $value) => match ($value) {
                 UserStatus::PENDING->value => UserStatus::PENDING,
                 UserStatus::ACTIVE->value => UserStatus::ACTIVE,
-                UserStatus::INACTIVE->value => UserStatus::INACTIVE
+                UserStatus::INACTIVE->value => UserStatus::INACTIVE,
+                default => null
             }
         );
     }

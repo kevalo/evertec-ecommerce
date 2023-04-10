@@ -37,7 +37,7 @@ class HandleInertiaRequests extends Middleware
                 'admin' => Roles::ADMIN->value,
             ],
             'ziggy' => function () use ($request) {
-                return array_merge((new Ziggy)->toArray(), [
+                return array_merge((new Ziggy())->toArray(), [
                     'location' => $request->url(),
                 ]);
             },

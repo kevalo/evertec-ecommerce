@@ -59,7 +59,8 @@ class CustomerDAO
 
             $newStatus = match ($user->status) {
                 UserStatus::ACTIVE => UserStatus::INACTIVE->value,
-                UserStatus::INACTIVE => UserStatus::ACTIVE->value
+                UserStatus::INACTIVE => UserStatus::ACTIVE->value,
+                default => throw new \Exception('Estado de usuario no soportado')
             };
 
             $user->status = $newStatus;
