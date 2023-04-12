@@ -14,7 +14,7 @@ const searchTerm = ref(props.filter ? props.filter : '');
 const customers = ref(props.customers);
 
 const toggleStatus = (e) => {
-    axios.patch(route('toggleCustomerStatus'), {id: e.target.dataset.customer}).catch((err) => {
+    axios.patch(route('customers.toggleStatus'), {id: e.target.dataset.customer}).catch((err) => {
         console.error(err);
     });
 }
@@ -26,6 +26,7 @@ const searchCustomers = async () => {
         customers.value = data.customers;
     } catch (error) {
         console.error(error);
+        window.location.reload();
     }
 }
 

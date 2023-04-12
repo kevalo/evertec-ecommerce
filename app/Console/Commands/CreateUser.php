@@ -32,9 +32,9 @@ class CreateUser extends Command
         $result = false;
         try {
             $result = DB::table('users')->insert([
-                'name' => $this->ask('Nombre?'),
-                'last_name' => $this->ask('Apellido?'),
-                'phone' => $this->ask('Teléfono?'),
+                'name' => fake()->name(),
+                'last_name' => fake()->lastName(),
+                'phone' => fake()->lastName(),
                 'email' => $this->ask('Correo electrónico?'),
                 'password' => Hash::make($this->secret('Contraseña?')),
                 'status' => UserStatus::ACTIVE->value,
