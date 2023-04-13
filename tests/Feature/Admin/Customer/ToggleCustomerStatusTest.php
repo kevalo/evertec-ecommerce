@@ -20,14 +20,14 @@ class ToggleCustomerStatusTest extends TestCase
 
     public function test_toggle_status(): void
     {
-        $response = $this->actingAs($this->adminUser)->patch('/toggleCustomerStatus', ['id' => 2]);
+        $response = $this->actingAs($this->adminUser)->patch(route('api.customers.toggleStatus'), ['id' => 2]);
 
         $response->assertOk()->assertJson(['status' => true]);
     }
 
     public function test_toggle_status_failed(): void
     {
-        $response = $this->actingAs($this->adminUser)->patch('/toggleCustomerStatus', ['id' => 9999]);
+        $response = $this->actingAs($this->adminUser)->patch(route('api.customers.toggleStatus'), ['id' => 9999]);
 
         $response->assertFound();
     }

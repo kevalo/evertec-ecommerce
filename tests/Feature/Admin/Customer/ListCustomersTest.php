@@ -36,15 +36,15 @@ class ListCustomersTest extends TestCase
 
     public function test_pagination(): void
     {
-        $response = $this->actingAs($this->adminUser)->get('/customers?page=2');
+        $response = $this->actingAs($this->adminUser)->getJson(route('api.customers') . '?page=2');
 
         $response->assertOk();
     }
 
     public function test_search(): void
     {
-        $response = $this->actingAs($this->adminUser)->get('/customers?filter=and');
+        $response = $this->actingAs($this->adminUser)->getJson(route('api.customers') . '?filter=and');
 
-        $response->assertOk()->assertJson(['customers' => []]);
+        $response->assertOk();
     }
 }

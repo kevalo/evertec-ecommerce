@@ -5,30 +5,35 @@ import {Head} from '@inertiajs/vue3';
 import {ref} from 'vue'
 
 const props = defineProps({
-    customers: Object,
-    title: String,
-    filter: String
+    title: String
 });
 
-const searchTerm = ref(props.filter ? props.filter : '');
-const customers = ref(props.customers);
+const searchTerm = ref('');
+const customers = ref([]);
 
 const toggleStatus = (e) => {
-    axios.patch(route('customers.toggleStatus'), {id: e.target.dataset.customer}).catch((err) => {
+    axios.patch(route('api.customers.toggleStatus'), {id: e.target.dataset.customer}).catch((err) => {
         console.error(err);
     });
 }
 
-const searchCustomers = async () => {
-    try {
-        const response = await fetch(`${route('customers')}/?filter=${searchTerm.value}`);
-        const data = await response.json();
-        customers.value = data.customers;
-    } catch (error) {
-        console.error(error);
-        window.location.reload();
-    }
+const searchCustomers = () => {
+    axios.get(`${route('api.customers')}/?filter=${searchTerm.value}`).then((response) => {
+        customers.value = response.data;
+    }).catch((error) => {
+        console.log(error);
+    });
 }
+
+const loadCustomers = (url = null) => {
+    axios.get(url || route('api.customers')).then((response) => {
+        customers.value = response.data;
+    }).catch((error) => {
+        console.log(error);
+    });
+}
+
+loadCustomers();
 
 </script>
 
@@ -54,7 +59,7 @@ const searchCustomers = async () => {
                             </button>
                         </form>
 
-                        <div v-if="customers.data.length > 0">
+                        <div v-if="customers && customers.data?.length > 0">
                             <table class="table w-full border-2 text-center">
                                 <caption>Listado de clientes</caption>
                                 <thead class="border-b-2">
@@ -92,7 +97,8 @@ const searchCustomers = async () => {
                                 </tr>
                                 </tbody>
                             </table>
-                            <Pagination class="mt-6" :links="customers.links" :searchTerm="searchTerm"/>
+                            <Pagination class="mt-6" :links="customers.links" :searchTerm="searchTerm"
+                                        :click="loadCustomers"/>
                         </div>
                         <div v-else class="text-center">
                             No se encontraron clientes
