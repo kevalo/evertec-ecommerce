@@ -32,14 +32,14 @@ class CreateUser extends Command
         $result = false;
         try {
             $result = DB::table('users')->insert([
-                'name' => $this->ask("Nombre?"),
-                'last_name' => $this->ask("Apellido?"),
-                'phone' => $this->ask("Teléfono?"),
-                'email' => $this->ask("Correo electrónico?"),
+                'name' => fake()->name(),
+                'last_name' => fake()->lastName(),
+                'phone' => fake()->lastName(),
+                'email' => $this->ask('Correo electrónico?'),
                 'password' => Hash::make($this->secret('Contraseña?')),
                 'status' => UserStatus::ACTIVE->value,
                 'role_id' => Roles::ADMIN->value,
-                'email_verified_at' => now()
+                'email_verified_at' => now(),
             ]);
         } catch (\Exception $e) {
             $this->error($e->getMessage());

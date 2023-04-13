@@ -32,6 +32,13 @@ class UserFactory extends Factory
         ];
     }
 
+    public function admin(): Factory
+    {
+        return $this->state(fn(array $attributes) => [
+            'role_id' => Roles::ADMIN->value,
+        ]);
+    }
+
     /**
      * Indicate that the model's email address should be unverified.
      */

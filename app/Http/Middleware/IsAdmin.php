@@ -13,9 +13,7 @@ class IsAdmin
     /**
      * Handle an incoming request.
      *
-     * @param Request $request
      * @param Closure(Request): (Response) $next
-     * @return Response
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -23,6 +21,7 @@ class IsAdmin
         if ($user->role->value() === Roles::CUSTOMER) {
             return redirect(route('home'));
         }
+
         return $next($request);
     }
 }

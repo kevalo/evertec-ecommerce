@@ -188,6 +188,6 @@ return [
         'name' => 'Nombres',
         'last_name' => 'Apellidos',
         'phone' => 'Teléfono',
-        'email' => 'Correo electrónico'
+        'email' => 'Correo electrónico',
     ],
 ];

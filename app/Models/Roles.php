@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Definitions\Roles as RolesDefinition;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use  \App\Definitions\Roles as RolesDefinition;
+use  Illuminate\Database\Eloquent\Model;
 
 class Roles extends Model
 {

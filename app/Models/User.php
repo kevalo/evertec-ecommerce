@@ -3,17 +3,27 @@
 namespace App\Models;
 
 use App\Definitions\UserStatus;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @property string $name
+ * @property string $last_name
+ * @property string $phone
+ * @property UserStatus $status
+ * @property string $email
+ * @property int $role_id
+ */
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -27,7 +37,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'status',
         'email',
         'password',
-        'role_id'
+        'role_id',
     ];
 
     /**
@@ -52,10 +62,11 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function status(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => match ($value) {
+            get: fn (string $value) => match ($value) {
                 UserStatus::PENDING->value => UserStatus::PENDING,
                 UserStatus::ACTIVE->value => UserStatus::ACTIVE,
-                UserStatus::INACTIVE->value => UserStatus::INACTIVE
+                UserStatus::INACTIVE->value => UserStatus::INACTIVE,
+                default => null
             }
         );
     }
