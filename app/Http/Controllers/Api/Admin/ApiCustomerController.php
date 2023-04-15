@@ -9,7 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class CustomerController extends Controller
+class ApiCustomerController extends Controller
 {
     /**
      * Display a listing of the resource.

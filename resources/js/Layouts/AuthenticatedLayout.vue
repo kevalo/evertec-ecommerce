@@ -50,6 +50,10 @@ const closeFlashErrorMessage = () => {
                                 <NavLink :href="route('customers')" :active="route().current('customers')" >
                                     Clientes
                                 </NavLink>
+
+                                <NavLink :href="route('categories')" :active="route().current('categories')" >
+                                    Categorías
+                                </NavLink>
                             </div>
                         </div>
 

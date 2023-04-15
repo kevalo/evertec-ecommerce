@@ -8,13 +8,13 @@
                     v-html="link.label"
                 />
 
-                <Button v-else-if="searchTerm"
+                <button v-else-if="searchTerm"
                         @click="click(link.url+ '&filter=' + searchTerm)"
                         class="mr-1 mb-1 px-4 py-3 text-sm leading-4 text-gray-400 border rounded"
                         :class="{ 'bg-primary text-white': link.active }"
                         v-html="link.label"
                 />
-                <Button v-else
+                <button v-else
                         class="mr-1 mb-1 px-4 py-3 text-sm leading-4 text-gray-400 border rounded"
                         :class="{ 'bg-primary text-white': link.active }"
                         @click="click(link.url)" v-html="link.label"/>
