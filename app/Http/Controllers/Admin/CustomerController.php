@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UpdateCustomerRequest;
+use App\Http\Requests\Customer\UpdateRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
@@ -25,7 +25,7 @@ class CustomerController extends Controller
         ]);
     }
 
-    public function update(User $user, UpdateCustomerRequest $request): RedirectResponse
+    public function update(User $user, UpdateRequest $request): RedirectResponse
     {
         $params = $request->validated();
 

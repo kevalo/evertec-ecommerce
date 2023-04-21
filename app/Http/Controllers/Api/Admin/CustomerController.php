@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Definitions\Roles;
 use App\Definitions\UserStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Customer\ToogleStatusRequest;
 use App\Http\Traits\ApiController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class ApiCustomerController extends Controller
+class CustomerController extends Controller
 {
     use ApiController;
 
@@ -33,9 +34,9 @@ class ApiCustomerController extends Controller
         return $this->response($customersList);
     }
 
-    public function toggleStatus(Request $request): array
+    public function toggleStatus(ToogleStatusRequest $request): array
     {
-        $params = $request->validate(['id' => ['required', 'numeric', 'exists:users']]);
+        $params = $request->validated();
 
         $responseStatus = false;
 
@@ -55,9 +56,7 @@ class ApiCustomerController extends Controller
             $user->status = $newStatus;
             $responseStatus = $user->save();
             $responseData = 'Usuario actualizado';
-
         } catch (\Exception $e) {
-
             $responseData = 'Error al actualizar el usuario';
             Log::error($e->getMessage(), ['context' => 'Updating user status']);
         }
@@ -68,9 +67,23 @@ class ApiCustomerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id): array
     {
-        //
+        $responseStatus = true;
+
+        try {
+            $user = User::find($id);
+            if (!$user) {
+                return $this->response('No se encontró el cliente', false);
+            }
+            $responseData = $user;
+        } catch (\Exception $e) {
+            Log::error($e->getMessage(), ['context' => 'Find user by id']);
+            $responseStatus = false;
+            $responseData = [];
+        }
+
+        return $this->response($responseData, $responseStatus);
     }
 
     /**
