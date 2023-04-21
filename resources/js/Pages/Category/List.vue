@@ -2,10 +2,31 @@
 
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {Head} from "@inertiajs/vue3";
+import {ref} from "vue";
+import Pagination from "@/Components/Pagination.vue";
 
 const props = defineProps({
     title: String
 })
+
+const searchTerm = ref('');
+const categories = ref([]);
+
+const toggleStatus = (e) => {
+    axios.patch(route('api.categories.toggleStatus'), {id: e.target.dataset.category}).catch((err) => {
+        console.error(err);
+    });
+}
+
+const loadCategories = (url = null) => {
+    axios.get(url || route('api.categories')).then((response) => {
+        categories.value = response.data;
+    }).catch((error) => {
+        console.log(error);
+    });
+}
+
+loadCategories();
 
 </script>
 
@@ -21,6 +42,45 @@ const props = defineProps({
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
+
+                        <div v-if="categories && categories.data?.length > 0">
+                            <table class="table w-full border-2 text-center">
+                                <caption>Listado de clientes</caption>
+                                <thead class="border-b-2">
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="category in categories.data" class="border-b-2">
+                                    <td>{{ category.name }}</td>
+                                    <td>
+                                        <input type="checkbox"
+                                               class="toggle toggle-success"
+                                               :data-category="category.id"
+                                               :checked="category.status === 'active'"
+                                               @change="toggleStatus($event)"
+                                        />
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-outline btn-primary"
+                                           :href="route('categories.edit', category.id)"
+                                           title="Editar categoría"
+                                        >
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <Pagination class="mt-6" :links="categories.links" :searchTerm="searchTerm"
+                                        :click="loadCategories"/>
+                        </div>
+                        <div v-else class="text-center">
+                            No se encontraron categorías
+                        </div>
 
                     </div>
                 </div>
