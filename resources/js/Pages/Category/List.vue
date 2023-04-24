@@ -1,13 +1,15 @@
 <script setup>
 
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {Head} from "@inertiajs/vue3";
-import {ref} from "vue";
 import Pagination from "@/Components/Pagination.vue";
+import { Head, Link, usePage } from "@inertiajs/vue3";
+import { ref } from "vue";
 
 const props = defineProps({
     title: String
 })
+
+const generalStatus = usePage().props.GeneralStatus;
 
 const searchTerm = ref('');
 const categories = ref([]);
@@ -20,14 +22,13 @@ const toggleStatus = (e) => {
 
 const loadCategories = (url = null) => {
     axios.get(url || route('api.categories')).then((response) => {
-        categories.value = response.data;
+        categories.value = response.data.data;
     }).catch((error) => {
         console.log(error);
     });
 }
 
 loadCategories();
-
 </script>
 
 <template>
@@ -41,11 +42,18 @@ loadCategories();
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">
+                    <div class="p-6 text-gray-900 flex flex-col">
+
+                        <Link
+                            :href="route('categories.create')"
+                            class="btn btn-primary w-20 self-end"
+                        >
+                            Crear
+                        </Link>
 
                         <div v-if="categories && categories.data?.length > 0">
                             <table class="table w-full border-2 text-center">
-                                <caption>Listado de clientes</caption>
+                                <caption>Listado de categorías</caption>
                                 <thead class="border-b-2">
                                 <tr>
                                     <th>Nombre</th>
@@ -60,7 +68,7 @@ loadCategories();
                                         <input type="checkbox"
                                                class="toggle toggle-success"
                                                :data-category="category.id"
-                                               :checked="category.status === 'active'"
+                                               :checked="category.status === generalStatus['active']"
                                                @change="toggleStatus($event)"
                                         />
                                     </td>
@@ -88,3 +96,4 @@ loadCategories();
         </div>
     </AuthenticatedLayout>
 </template>
+

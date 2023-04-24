@@ -11,6 +11,11 @@ class Category extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'status',
+    ];
+
     protected function status(): Attribute
     {
         return Attribute::make(
@@ -18,6 +23,9 @@ class Category extends Model
                 GeneralStatus::ACTIVE->value => GeneralStatus::ACTIVE,
                 GeneralStatus::INACTIVE->value => GeneralStatus::INACTIVE,
                 default => null
+            },
+            set: static function ($value) {
+                return $value ? GeneralStatus::ACTIVE->value : GeneralStatus::INACTIVE->value;
             }
         );
     }

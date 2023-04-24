@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Definitions\GeneralStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Category\ToggleStatusRequest;
 use App\Http\Traits\ApiController;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -23,9 +24,9 @@ class CategoryController extends Controller
         return $this->response($categories);
     }
 
-    public function toggleStatus(Request $request): array
+    public function toggleStatus(ToggleStatusRequest $request): array
     {
-        $params = $request->validate(['id' => ['required', 'numeric', 'exists:users']]);
+        $params = $request->validated();
 
         $responseStatus = false;
 

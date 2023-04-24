@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Definitions\GeneralStatus;
 use App\Definitions\Roles;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -45,6 +46,7 @@ class HandleInertiaRequests extends Middleware
                 'success' => session('success') ?: '',
                 'error' => session('error') ?: '',
             ],
+            'GeneralStatus' => GeneralStatus::toJson()
         ]);
     }
 }
