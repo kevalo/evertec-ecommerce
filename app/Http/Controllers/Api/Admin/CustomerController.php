@@ -9,7 +9,6 @@ use App\Http\Requests\Customer\ToogleStatusRequest;
 use App\Http\Traits\ApiController;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class CustomerController extends Controller
 {
@@ -18,7 +17,7 @@ class CustomerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): array
     {
         $filtered = $request->has('filter');
         $filter = $request->get('filter');
@@ -38,30 +37,22 @@ class CustomerController extends Controller
     {
         $params = $request->validated();
 
-        $responseStatus = false;
+        $user = User::find($params['id']);
 
-        try {
-            $user = User::find($params['id']);
-
-            if (!$user) {
-                return $this->response('No se encontró el cliente', false);
-            }
-
-            $newStatus = match ($user->status) {
-                UserStatus::ACTIVE => UserStatus::INACTIVE->value,
-                UserStatus::INACTIVE => UserStatus::ACTIVE->value,
-                default => throw new \Exception('Estado de usuario no soportado')
-            };
-
-            $user->status = $newStatus;
-            $responseStatus = $user->save();
-            $responseData = 'Usuario actualizado';
-        } catch (\Exception $e) {
-            $responseData = 'Error al actualizar el usuario';
-            Log::error($e->getMessage(), ['context' => 'Updating user status']);
+        if (!$user) {
+            return $this->response('No se encontró el cliente', false);
         }
 
-        return $this->response($responseData, $responseStatus);
+        $newStatus = match ($user->status) {
+            UserStatus::ACTIVE => UserStatus::INACTIVE->value,
+            UserStatus::INACTIVE => UserStatus::ACTIVE->value,
+            default => throw new \Exception('Estado de usuario no soportado')
+        };
+
+        $user->status = $newStatus;
+        $responseStatus = $user->save();
+
+        return $this->response('Usuario actualizado', $responseStatus);
     }
 
     /**
@@ -69,21 +60,12 @@ class CustomerController extends Controller
      */
     public function show(string $id): array
     {
-        $responseStatus = true;
-
-        try {
-            $user = User::find($id);
-            if (!$user) {
-                return $this->response('No se encontró el cliente', false);
-            }
-            $responseData = $user;
-        } catch (\Exception $e) {
-            Log::error($e->getMessage(), ['context' => 'Find user by id']);
-            $responseStatus = false;
-            $responseData = [];
+        $user = User::find($id);
+        if (!$user) {
+            return $this->response('No se encontró el cliente', false);
         }
 
-        return $this->response($responseData, $responseStatus);
+        return $this->response($user);
     }
 
     /**

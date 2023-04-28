@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\CreateRequest;
 use App\Http\Requests\Category\UpdateRequest;
 use App\Models\Category;
-use http\Client\Request;
+use App\ViewModels\Admin\Category\CreateViewModel;
+use App\ViewModels\Admin\Category\EditViewModel;
+use App\ViewModels\Admin\Category\ListViewModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -16,32 +18,23 @@ class CategoryController extends Controller
 {
     public function index(): Response
     {
-        return Inertia::render('Category/List', ['title' => 'Categorías']);
+        return Inertia::render('Category/List', new ListViewModel());
     }
 
     public function create(): Response
     {
-        return Inertia::render('Category/Create', [
-            'title' => 'Crear categoría'
-        ]);
+        return Inertia::render('Category/Create', new CreateViewModel());
     }
 
     public function store(CreateRequest $request): RedirectResponse
     {
         $params = $request->validated();
 
-        $res = false;
+        $category = new Category();
+        $category->name = $params['name'];
+        $category->status = $params['status'];
 
-        try {
-            $category = new Category();
-            $category->name = $params['name'];
-            $category->status = $params['status'];
-            $res = $category->save();
-        } catch (\Exception $e) {
-            Log::error($e->getMessage(), ['context' => 'Creating category']);
-        }
-
-        if ($res) {
+        if ($category->save()) {
             session()->flash('success', 'Categoría creada correctamente!');
         } else {
             session()->flash('error', 'Error al crear la categoría');
@@ -52,25 +45,14 @@ class CategoryController extends Controller
 
     public function edit(Category $category): Response
     {
-        return Inertia::render('Category/Edit', [
-            'title' => 'Editar categoría',
-            'category' => $category,
-        ]);
+        return Inertia::render('Category/Edit', new EditViewModel($category));
     }
 
     public function update(Category $category, UpdateRequest $request): RedirectResponse
     {
         $params = $request->validated();
 
-        $res = false;
-
-        try {
-            $res = $category->update($params);
-        } catch (\Exception $e) {
-            Log::error($e->getMessage(), ['context' => 'Updating category information']);
-        }
-
-        if ($res) {
+        if ($category->update($params)) {
             session()->flash('success', 'Categoría actualizada correctamente!');
         } else {
             session()->flash('error', 'Error al actualizar la categoría');
