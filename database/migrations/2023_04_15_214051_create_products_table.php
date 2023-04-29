@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique('index-product-slug');
             $table->string('image');
-            $table->double('precio');
+            $table->double('price');
             $table->integer('quantity');
             $table->boolean('status');
             $table->foreignId('category_id')->constrained();

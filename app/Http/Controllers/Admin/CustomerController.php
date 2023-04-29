@@ -15,12 +15,12 @@ class CustomerController extends Controller
 {
     public function index(): Response
     {
-        return Inertia::render('Customer/List', new ListViewModel());
+        return Inertia::render('Admin/Customer/List', new ListViewModel());
     }
 
     public function edit(User $user): Response
     {
-        return Inertia::render('Customer/Edit', new EditViewModel($user));
+        return Inertia::render('Admin/Customer/Edit', new EditViewModel($user));
     }
 
     public function update(User $user, UpdateRequest $request): RedirectResponse

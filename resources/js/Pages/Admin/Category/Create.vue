@@ -1,23 +1,21 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import {Head, usePage,  Link, useForm} from '@inertiajs/vue3';
+import {Head, Link, useForm} from '@inertiajs/vue3';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 
 defineProps({
-    title: String,
-    category: Object
+    title: String
 })
 
-const category = usePage().props.category;
-
 const form = useForm({
-    name: category.name
+    name: '',
+    status: false
 });
 
 const submit = () => {
-    form.put(route('categories.update', category.id));
+    form.post(route('categories.store'));
 };
 </script>
 
@@ -34,10 +32,6 @@ const submit = () => {
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
 
-                        <Transition enter-from-class="opacity-0" leave-to-class="opacity-0" class="transition ease-in-out">
-                            <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Actualizado correctamente.</p>
-                        </Transition>
-
                         <form @submit.prevent="submit">
                             <div>
                                 <InputLabel for="name" value="Nombre"/>
@@ -53,16 +47,24 @@ const submit = () => {
                                 <InputError class="mt-2" :message="form.errors.name"/>
                             </div>
 
+                            <div class="mt-3">
+                                <InputLabel for="status" value="Estado"/>
+                                <input type="checkbox"
+                                       name="status" id="status"
+                                       v-model="form.status"
+                                       class="toggle toggle-success" />
+                            </div>
+
                             <div class="flex items-center justify-end mt-4">
                                 <Link
-                                    :href="route('categories')"
+                                    :href="route('categories.index')"
                                     class="btn btn-secondary mr-5"
                                 >
                                     Regresar
                                 </Link>
 
                                 <button class="btn btn-primary" :disabled="form.processing">
-                                    Actualizar
+                                    Guardar
                                 </button>
                             </div>
                         </form>

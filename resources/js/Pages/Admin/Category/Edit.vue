@@ -6,16 +6,18 @@ import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 
 defineProps({
-    title: String
+    title: String,
+    category: Object
 })
 
+const category = usePage().props.category;
+
 const form = useForm({
-    name: '',
-    status: false
+    name: category.name
 });
 
 const submit = () => {
-    form.post(route('categories.store'));
+    form.put(route('categories.update', category.id));
 };
 </script>
 
@@ -51,24 +53,16 @@ const submit = () => {
                                 <InputError class="mt-2" :message="form.errors.name"/>
                             </div>
 
-                            <div class="mt-3">
-                                <InputLabel for="status" value="Estado"/>
-                                <input type="checkbox"
-                                       name="status" id="status"
-                                       v-model="form.status"
-                                       class="toggle toggle-success" />
-                            </div>
-
                             <div class="flex items-center justify-end mt-4">
                                 <Link
-                                    :href="route('categories')"
+                                    :href="route('categories.index')"
                                     class="btn btn-secondary mr-5"
                                 >
                                     Regresar
                                 </Link>
 
                                 <button class="btn btn-primary" :disabled="form.processing">
-                                    Guardar
+                                    Actualizar
                                 </button>
                             </div>
                         </form>

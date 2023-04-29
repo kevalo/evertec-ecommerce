@@ -10,7 +10,6 @@ use App\ViewModels\Admin\Category\CreateViewModel;
 use App\ViewModels\Admin\Category\EditViewModel;
 use App\ViewModels\Admin\Category\ListViewModel;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -18,12 +17,12 @@ class CategoryController extends Controller
 {
     public function index(): Response
     {
-        return Inertia::render('Category/List', new ListViewModel());
+        return Inertia::render('Admin/Category/List', new ListViewModel());
     }
 
     public function create(): Response
     {
-        return Inertia::render('Category/Create', new CreateViewModel());
+        return Inertia::render('Admin/Category/Create', new CreateViewModel());
     }
 
     public function store(CreateRequest $request): RedirectResponse
@@ -40,12 +39,12 @@ class CategoryController extends Controller
             session()->flash('error', 'Error al crear la categoría');
         }
 
-        return redirect()->route('categories');
+        return redirect()->route('categories.index');
     }
 
-    public function edit(Category $category): Response
+    public function show(Category $category): Response
     {
-        return Inertia::render('Category/Edit', new EditViewModel($category));
+        return Inertia::render('Admin/Category/Edit', new EditViewModel($category));
     }
 
     public function update(Category $category, UpdateRequest $request): RedirectResponse
@@ -58,6 +57,6 @@ class CategoryController extends Controller
             session()->flash('error', 'Error al actualizar la categoría');
         }
 
-        return redirect()->route('categories');
+        return redirect()->route('categories.index');
     }
 }

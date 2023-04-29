@@ -51,8 +51,12 @@ const closeFlashErrorMessage = () => {
                                     Clientes
                                 </NavLink>
 
-                                <NavLink :href="route('categories')" :active="route().current('categories')" >
+                                <NavLink :href="route('categories.index')" :active="route().current('categories.index')" >
                                     Categorías
+                                </NavLink>
+
+                                <NavLink :href="route('products.index')" :active="route().current('products.index')" >
+                                    Productos
                                 </NavLink>
                             </div>
                         </div>
@@ -136,6 +140,18 @@ const closeFlashErrorMessage = () => {
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink :href="route('customers')" :active="route().current('customers')" >
+                            Clientes
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink :href="route('categories.index')" :active="route().current('categories.index')" >
+                            Categorías
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink :href="route('products.index')" :active="route().current('products.index')" >
+                            Productos
                         </ResponsiveNavLink>
                     </div>
 

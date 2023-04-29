@@ -74,7 +74,7 @@ loadCategories();
                                     </td>
                                     <td>
                                         <a class="btn btn-outline btn-primary"
-                                           :href="route('categories.edit', category.id)"
+                                           :href="route('categories.show', category.id)"
                                            title="Editar categoría"
                                         >
                                             <i class="fa fa-edit"></i>
