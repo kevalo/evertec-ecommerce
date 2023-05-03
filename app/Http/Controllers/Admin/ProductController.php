@@ -58,12 +58,23 @@ class ProductController extends Controller
     {
         $params = $request->validated();
 
+        $params['image'] = $this->setImage($params, $product);
+
         if ($product->update($params)) {
             session()->flash('success', 'Producto actualizado correctamente!');
         } else {
             session()->flash('error', 'Error al actualizar el producto');
         }
 
-        return redirect()->route('products');
+        return redirect()->route('products.index');
+    }
+
+    private function setImage(array $requestParams, Product $product): string
+    {
+        if ($requestParams['image'] !== null) {
+            Storage::disk('public')->delete($product->image);
+            return Storage::disk('public')->putFile('products_images', $requestParams['image']);
+        }
+        return $product->image;
     }
 }

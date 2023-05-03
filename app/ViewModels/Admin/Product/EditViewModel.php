@@ -2,6 +2,8 @@
 
 namespace App\ViewModels\Admin\Product;
 
+use App\Definitions\GeneralStatus;
+use App\Models\Category;
 use App\ViewModels\ViewModel;
 
 class EditViewModel extends ViewModel
@@ -10,7 +12,8 @@ class EditViewModel extends ViewModel
     {
         return [
             'title' => 'Editar producto',
-            'category' => $this->model
+            'product' => $this->model,
+            'categories' => Category::where('status', GeneralStatus::ACTIVE->value)->get()
         ];
     }
 }
