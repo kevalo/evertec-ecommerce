@@ -7,6 +7,16 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
+/**
+ * @property string $name
+ * @property string $slug
+ * @property string $image
+ * @property float $price
+ * @property int $quantity
+ * @property GeneralStatus|null $status
+ * @property int $category_id
+ */
 class Product extends Model
 {
     use HasFactory;

@@ -24,6 +24,9 @@ class ProductController extends Controller
         return $this->response($customersList);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function toggleStatus(ToogleStatusRequest $request): array
     {
         $params = $request->validated();
