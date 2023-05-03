@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\Admin\Category\StoreCategory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\CreateRequest;
 use App\Http\Requests\Category\UpdateRequest;
@@ -29,11 +30,7 @@ class CategoryController extends Controller
     {
         $params = $request->validated();
 
-        $category = new Category();
-        $category->name = $params['name'];
-        $category->status = $params['status'];
-
-        if ($category->save()) {
+        if (Category::create($params)) {
             session()->flash('success', 'Categoría creada correctamente!');
         } else {
             session()->flash('error', 'Error al crear la categoría');

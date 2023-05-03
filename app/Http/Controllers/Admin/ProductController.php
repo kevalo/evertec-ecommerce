@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\Admin\Product\StoreProduct;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\AddQuantityRequest;
 use App\Http\Requests\Product\CreateRequest;
@@ -13,10 +14,8 @@ use App\ViewModels\Admin\Product\EditViewModel;
 use App\ViewModels\Admin\Product\ListViewModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -34,16 +33,7 @@ class ProductController extends Controller
     {
         $params = $request->validated();
 
-        $product = new Product();
-        $product->name = $params['name'];
-        $product->image = Storage::disk('public')->putFile('products_images', $request->file('image'));
-        $product->slug = Str::slug($params['name'], '-', 'es');
-        $product->price = $params['price'];
-        $product->quantity = $params['quantity'];
-        $product->category_id = $params['category_id'];
-        $product->status = $params['status'];
-
-        if ($product->save()) {
+        if (StoreProduct::run($params)) {
             session()->flash('success', 'Producto creado correctamente!');
         } else {
             session()->flash('error', 'Error al crear el producto');
