@@ -87,7 +87,7 @@ loadProducts();
                                 <tbody>
                                 <tr v-for="product in products.data" class="border-b-2">
                                     <td>{{ product.name }}</td>
-                                    <td>$ {{ product.price.toLocaleString() }}</td>
+                                    <td>$ {{ product.price }}</td>
                                     <td>{{ product.quantity }}</td>
                                     <td>
                                         <input type="checkbox"
@@ -103,6 +103,12 @@ loadProducts();
                                            title="Editar usuario"
                                         >
                                             <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a class="btn btn-outline ml-1"
+                                           :href="route('products.add', product.id)"
+                                           title="Agregar unidades"
+                                        >
+                                            <i class="fa fa-plus-minus"></i>
                                         </a>
                                     </td>
                                 </tr>

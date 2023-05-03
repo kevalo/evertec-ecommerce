@@ -49,6 +49,8 @@ Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {
     Route::resource('categories', CategoryController::class)->except(['destroy']);
 
     Route::resource('products', ProductController::class)->except(['destroy']);
+    Route::get('products/{product}/add', [ProductController::class, 'showAddQuantity'])->name('products.add');
+    Route::patch('products/{product}/add', [ProductController::class, 'addQuantity'])->name('products.add');
 });
 
 require __DIR__.'/auth.php';

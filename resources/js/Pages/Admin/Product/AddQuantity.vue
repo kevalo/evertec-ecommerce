@@ -18,16 +18,12 @@ const categories = usePage().props.categories;
 const product = usePage().props.product;
 
 const form = useForm({
-    name: product.name,
-    price: product.price,
-    image: '',
-    quantity: product.quantity,
-    category_id: product.category_id,
+    quantity: 1,
     _method: 'patch'// this allows to send the request as post, and handle it as patch, so files can be sent.
 });
 
 const submit = () => {
-    form.post(route('products.update', product.id),{
+    form.post(route('products.add', product.id),{
         forceFormData: true
     });
 };
@@ -53,64 +49,36 @@ const submit = () => {
                                     id="name"
                                     type="text"
                                     class="input mt-1 block w-full"
-                                    v-model="form.name"
-                                    required
-                                    autofocus
-                                    autocomplete="name"
+                                    :value="product.name"
+                                    disabled
                                 />
-                                <InputError class="mt-2" :message="form.errors.name"/>
                             </div>
 
                             <div class="mt-3">
-                                <InputLabel for="image" value="Imagen"/>
-                                <FileInput
-                                    id="image"
-                                    class="input mt-1 block w-full"
-                                    v-model="form.image"
-                                    autofocus
-                                    autocomplete="image"
-                                />
-                                <InputError class="mt-2" :message="form.errors.image"/>
-                            </div>
-
-                            <div class="mt-3">
-                                <InputLabel for="price" value="Precio"/>
+                                <InputLabel for="current_quantity" value="Cantidad actual"/>
                                 <TextInput
-                                    id="price"
+                                    id="current_quantity"
                                     type="number"
-                                    min="0"
                                     class="input mt-1 block w-full"
-                                    v-model="form.price"
-                                    required
-                                    autofocus
-                                    autocomplete="price"
+                                    :value="product.quantity"
+                                    disabled
                                 />
-                                <InputError class="mt-2" :message="form.errors.price"/>
+                                <small>Este valor puede variar al guardar los cambios</small>
                             </div>
 
                             <div class="mt-3">
-                                <InputLabel for="quantity" value="Cantidad"/>
+                                <InputLabel for="quantity" value="Agregar cantidad"/>
                                 <TextInput
                                     id="quantity"
                                     type="number"
                                     class="input mt-1 block w-full"
                                     v-model="form.quantity"
-                                    disabled
-                                />
-                                <InputError class="mt-2" :message="form.errors.quantity"/>
-                            </div>
-
-                            <div class="mt-3">
-                                <InputLabel for="category_id" value="Categoría"/>
-                                <Select
-                                    id="category_id"
-                                    class="input mt-1 block w-full select"
-                                    v-model="form.category_id"
-                                    :options="categories"
+                                    min="1"
                                     required
                                     autofocus
+                                    autocomplete="add_quantity"
                                 />
-                                <InputError class="mt-2" :message="form.errors.category_id"/>
+                                <InputError class="mt-2" :message="form.errors.quantity"/>
                             </div>
 
                             <div class="flex items-center justify-end mt-4">
