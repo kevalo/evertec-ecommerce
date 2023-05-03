@@ -33,7 +33,7 @@ class ProductController extends Controller
     {
         $params = $request->validated();
 
-        if (StoreProduct::run($params)) {
+        if (StoreProduct::execute($params)) {
             session()->flash('success', 'Producto creado correctamente!');
         } else {
             session()->flash('error', 'Error al crear el producto');

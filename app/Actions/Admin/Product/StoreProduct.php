@@ -2,16 +2,14 @@
 
 namespace App\Actions\Admin\Product;
 
+use App\Actions\Action;
 use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Lorisleiva\Actions\Concerns\AsAction;
 
-class StoreProduct
+class StoreProduct implements Action
 {
-    use AsAction;
-
-    public function handle(array $params): bool
+    public static function execute(array $params): bool
     {
         $product = new Product();
 
