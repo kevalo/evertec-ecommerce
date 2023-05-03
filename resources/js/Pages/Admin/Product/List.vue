@@ -72,9 +72,9 @@ loadProducts();
 
                         </div>
 
-                        <div v-if="products && products.data?.length > 0">
-                            <table class="table w-full border-2 text-center">
-                                <caption>Listado de clientes</caption>
+                        <div v-if="products && products.data?.length > 0" class="mt-5">
+                            <table class="table table-compact w-full border-2 text-center">
+                                <caption>Listado de productos</caption>
                                 <thead class="border-b-2">
                                 <tr>
                                     <th>Nombre</th>
@@ -87,7 +87,7 @@ loadProducts();
                                 <tbody>
                                 <tr v-for="product in products.data" class="border-b-2">
                                     <td>{{ product.name }}</td>
-                                    <td>{{ product.price }}</td>
+                                    <td>$ {{ product.price.toLocaleString() }}</td>
                                     <td>{{ product.quantity }}</td>
                                     <td>
                                         <input type="checkbox"
@@ -99,7 +99,7 @@ loadProducts();
                                     </td>
                                     <td>
                                         <a class="btn btn-outline btn-primary"
-                                           :href="route('products.edit', product.id)"
+                                           :href="route('products.show', product.id)"
                                            title="Editar usuario"
                                         >
                                             <i class="fa fa-edit"></i>

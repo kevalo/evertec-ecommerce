@@ -23,7 +23,11 @@ class CreateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'min:3', 'max:255'],
-            'status' => ['required', 'boolean']
+            'image' => ['required', 'image', 'mimes:jpeg,jpg,png,gif,webp', 'max:2048'],
+            'price' => ['required', 'numeric', 'min:0'],
+            'quantity' => ['required', 'numeric', 'min:0'],
+            'status' => ['required', 'boolean'],
+            'category_id' => ['required', 'exists:categories,id'],
         ];
     }
 }

@@ -10,6 +10,8 @@ use App\ViewModels\Admin\Product\CreateViewModel;
 use App\ViewModels\Admin\Product\EditViewModel;
 use App\ViewModels\Admin\Product\ListViewModel;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -31,6 +33,11 @@ class ProductController extends Controller
 
         $product = new Product();
         $product->name = $params['name'];
+        $product->image = Storage::disk('public')->putFile('products_images', $request->file('image'));
+        $product->slug = Str::slug($params['name'], '-', 'es');
+        $product->price = $params['price'];
+        $product->quantity = $params['quantity'];
+        $product->category_id = $params['category_id'];
         $product->status = $params['status'];
 
         if ($product->save()) {
@@ -39,7 +46,7 @@ class ProductController extends Controller
             session()->flash('error', 'Error al crear el producto');
         }
 
-        return redirect()->route('categories');
+        return redirect()->route('products.index');
     }
 
     public function show(Product $product): Response

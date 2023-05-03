@@ -2,6 +2,8 @@
 
 namespace App\ViewModels\Admin\Product;
 
+use App\Definitions\GeneralStatus;
+use App\Models\Category;
 use App\Models\Product;
 use App\ViewModels\ViewModel;
 
@@ -14,6 +16,9 @@ class CreateViewModel extends ViewModel
 
     public function toArray(): array
     {
-        return ['title' => 'Crear producto'];
+        return [
+            'title' => 'Crear producto',
+            'categories' => Category::where('status', GeneralStatus::ACTIVE->value)->get()
+        ];
     }
 }

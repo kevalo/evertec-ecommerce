@@ -51,8 +51,8 @@ loadCategories();
                             Crear
                         </Link>
 
-                        <div v-if="categories && categories.data?.length > 0">
-                            <table class="table w-full border-2 text-center">
+                        <div v-if="categories && categories.data?.length > 0" class="mt-5">
+                            <table class="table table-compact w-full border-2 text-center">
                                 <caption>Listado de categorías</caption>
                                 <thead class="border-b-2">
                                 <tr>
