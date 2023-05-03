@@ -5,63 +5,67 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Definitions\Roles;
 use App\Definitions\UserStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Customer\ToogleStatusRequest;
+use App\Http\Traits\ApiController;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class CustomerController extends Controller
 {
+    use ApiController;
+
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): array
     {
         $filtered = $request->has('filter');
         $filter = $request->get('filter');
 
-        return User::whereHas('role', static function ($roleQuery) {
+        $customersList = User::whereHas('role', static function ($roleQuery) {
             $roleQuery->where('id', Roles::CUSTOMER->value);
         })->when($filtered && $filter, static function ($q) use ($filter) {
             $q->where('name', 'like', '%' . $filter . '%')
                 ->orWhere('last_name', 'like', '%' . $filter . '%')
                 ->orWhere('email', 'like', '%' . $filter . '%');
         })->latest('id')->paginate(5);
+
+        return $this->response($customersList);
     }
 
-    public function toggleStatus(Request $request): array
+    public function toggleStatus(ToogleStatusRequest $request): array
     {
-        $params = $request->validate(['id' => ['required', 'numeric', 'exists:users']]);
+        $params = $request->validated();
 
-        $response = ['status' => false];
+        $user = User::find($params['id']);
 
-        try {
-            $user = User::find($params['id']);
-
-            if (!$user) {
-                return $response;
-            }
-
-            $newStatus = match ($user->status) {
-                UserStatus::ACTIVE => UserStatus::INACTIVE->value,
-                UserStatus::INACTIVE => UserStatus::ACTIVE->value,
-                default => throw new \Exception('Estado de usuario no soportado')
-            };
-
-            $user->status = $newStatus;
-            $response['status'] = $user->save();
-        } catch (\Exception $e) {
-            Log::error($e->getMessage(), ['context' => 'Updating user status']);
+        if (!$user) {
+            return $this->response('No se encontró el cliente', false);
         }
 
-        return $response;
+        $newStatus = match ($user->status) {
+            UserStatus::ACTIVE => UserStatus::INACTIVE->value,
+            UserStatus::INACTIVE => UserStatus::ACTIVE->value,
+            default => throw new \Exception('Estado de usuario no soportado')
+        };
+
+        $user->status = $newStatus;
+        $responseStatus = $user->save();
+
+        return $this->response('Usuario actualizado', $responseStatus);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id): array
     {
-        //
+        $user = User::find($id);
+        if (!$user) {
+            return $this->response('No se encontró el cliente', false);
+        }
+
+        return $this->response($user);
     }
 
     /**

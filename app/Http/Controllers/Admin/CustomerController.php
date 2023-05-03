@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UpdateCustomerRequest;
+use App\Http\Requests\Customer\UpdateRequest;
 use App\Models\User;
+use App\ViewModels\Admin\Customer\EditViewModel;
+use App\ViewModels\Admin\Customer\ListViewModel;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -14,30 +15,19 @@ class CustomerController extends Controller
 {
     public function index(): Response
     {
-        return Inertia::render('Customer/List', ['title' => 'Clientes']);
+        return Inertia::render('Admin/Customer/List', new ListViewModel());
     }
 
     public function edit(User $user): Response
     {
-        return Inertia::render('Customer/Edit', [
-            'title' => 'Editar cliente',
-            'customer' => $user,
-        ]);
+        return Inertia::render('Admin/Customer/Edit', new EditViewModel($user));
     }
 
-    public function update(User $user, UpdateCustomerRequest $request): RedirectResponse
+    public function update(User $user, UpdateRequest $request): RedirectResponse
     {
         $params = $request->validated();
 
-        $res = false;
-
-        try {
-            $res = $user->update($params);
-        } catch (\Exception $e) {
-            Log::error($e->getMessage(), ['context' => 'Updating user information']);
-        }
-
-        if ($res) {
+        if ($user->update($params)) {
             session()->flash('success', 'Cliente actualizado correctamente!');
         } else {
             session()->flash('error', 'Error al actualizar el cliente');

@@ -19,7 +19,7 @@ const toggleStatus = (e) => {
 
 const searchCustomers = () => {
     axios.get(`${route('api.customers')}/?filter=${searchTerm.value}`).then((response) => {
-        customers.value = response.data;
+        customers.value = response.data.data;
     }).catch((error) => {
         console.log(error);
     });
@@ -27,7 +27,7 @@ const searchCustomers = () => {
 
 const loadCustomers = (url = null) => {
     axios.get(url || route('api.customers')).then((response) => {
-        customers.value = response.data;
+        customers.value = response.data.data;
     }).catch((error) => {
         console.log(error);
     });
@@ -59,8 +59,8 @@ loadCustomers();
                             </button>
                         </form>
 
-                        <div v-if="customers && customers.data?.length > 0">
-                            <table class="table w-full border-2 text-center">
+                        <div v-if="customers && customers.data?.length > 0" class="mt-5">
+                            <table class="table table-compact w-full border-2 text-center">
                                 <caption>Listado de clientes</caption>
                                 <thead class="border-b-2">
                                 <tr>

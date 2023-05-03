@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Category;
 
-use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCustomerRequest extends FormRequest
+class ToggleStatusRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,14 +17,16 @@ class UpdateCustomerRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, Rule|array|string>
+     * @return array<string, array<string>>
      */
     public function rules(): array
     {
         return [
-            'name' => ['required'],
-            'last_name' => ['required'],
-            'phone' => ['required'],
+            'id' => [
+                'required',
+                'numeric',
+                'exists:categories'
+            ]
         ];
     }
 }
