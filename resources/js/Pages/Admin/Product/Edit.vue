@@ -63,6 +63,7 @@ const submit = () => {
 
                             <div class="mt-3">
                                 <InputLabel for="image" value="Imagen"/>
+                                <img :src="`/storage/${product.image}`" style="max-width: 100px;" alt="Imagen del producto">
                                 <FileInput
                                     id="image"
                                     class="input mt-1 block w-full"

@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\CreateRequest;
 use App\Http\Requests\Category\UpdateRequest;
 use App\Models\Category;
-use App\ViewModels\Admin\Category\CreateViewModel;
 use App\ViewModels\Admin\Category\EditViewModel;
 use App\ViewModels\Admin\Category\ListViewModel;
 use Illuminate\Http\RedirectResponse;
@@ -17,12 +16,12 @@ class CategoryController extends Controller
 {
     public function index(): Response
     {
-        return Inertia::render('Admin/Category/List', new ListViewModel());
+        return Inertia::render('Admin/Category/List', ['title' => 'Categorías']);
     }
 
     public function create(): Response
     {
-        return Inertia::render('Admin/Category/Create', new CreateViewModel());
+        return Inertia::render('Admin/Category/Create', ['title' => 'Crear categoría']);
     }
 
     public function store(CreateRequest $request): RedirectResponse

@@ -16,6 +16,7 @@ const categories = usePage().props.categories;
 
 const form = useForm({
     name: '',
+    description: '',
     price: 0,
     image: null,
     quantity: 0,
@@ -56,6 +57,20 @@ const submit = () => {
                                     autocomplete="name"
                                 />
                                 <InputError class="mt-2" :message="form.errors.name"/>
+                            </div>
+
+                            <div class="mt-3">
+                                <InputLabel for="description" value="Descripción"/>
+                                <textarea
+                                    id="description"
+                                    type="text"
+                                    class="textarea mt-1 block w-full border-gray-300 focus:border-primary focus:outline-none"
+                                    v-model="form.description"
+                                    required
+                                    autofocus
+                                    autocomplete="description"
+                                ></textarea>
+                                <InputError class="mt-2" :message="form.errors.description"/>
                             </div>
 
                             <div class="mt-3">

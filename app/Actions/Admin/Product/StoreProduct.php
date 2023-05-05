@@ -14,6 +14,7 @@ class StoreProduct implements Action
         $product = new Product();
 
         $product->name = $params['name'];
+        $product->description = $params['description'];
         $product->image = Storage::disk('public')->putFile('products_images', $params['image']);
         $product->slug = Str::slug($params['name'], '-', 'es');
         $product->price = $params['price'];

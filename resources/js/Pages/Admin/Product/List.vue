@@ -3,14 +3,18 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Pagination from '@/Components/Pagination.vue'
 import { Head, Link, usePage } from '@inertiajs/vue3';
 import {ref} from 'vue'
+import Select from "@/Components/Select.vue";
 
 const props = defineProps({
-    title: String
+    title: String,
+    categories: Array
 });
 
 const generalStatus = usePage().props.GeneralStatus;
 
 const searchTerm = ref('');
+const category = ref(null);
+
 const products = ref([]);
 
 const toggleStatus = (e) => {
@@ -20,7 +24,7 @@ const toggleStatus = (e) => {
 }
 
 const searchProducts = () => {
-    axios.get(`${route('api.admin.products')}/?filter=${searchTerm.value}`).then((response) => {
+    axios.get(`${route('api.admin.products')}/?filter=${searchTerm.value}&category=${category.value}`).then((response) => {
         products.value = response.data.data;
     }).catch((error) => {
         console.log(error);
@@ -58,6 +62,9 @@ loadProducts();
                                 <input type="text" id="searchTerm" v-model="searchTerm"
                                        class="input  input-bordered input-primary "
                                        placeholder="ingresa un nombre">
+
+                                <Select class="input ml-2 block w-2/4 select" v-model="category" :options="categories" :text="'categoría'" />
+
                                 <button type="submit" class="btn btn-primary ml-3 my-0">
                                     Buscar
                                 </button>
@@ -78,6 +85,7 @@ loadProducts();
                                 <thead class="border-b-2">
                                 <tr>
                                     <th>Nombre</th>
+                                    <th>Categoría</th>
                                     <th>Precio</th>
                                     <th>Cantidad</th>
                                     <th>Estado</th>
@@ -87,6 +95,7 @@ loadProducts();
                                 <tbody>
                                 <tr v-for="product in products.data" class="border-b-2">
                                     <td>{{ product.name }}</td>
+                                    <td>{{ product.category }}</td>
                                     <td>$ {{ product.price.toLocaleString('es-CO') }}</td>
                                     <td>{{ product.quantity }}</td>
                                     <td>
@@ -114,10 +123,10 @@ loadProducts();
                                 </tr>
                                 </tbody>
                             </table>
-                            <Pagination class="mt-6" :links="products.links" :searchTerm="searchTerm"
+                            <Pagination class="mt-6" :links="products.links" :filter="`&filter=${searchTerm}&category=${category}`"
                                         :click="loadProducts"/>
                         </div>
-                        <div v-else class="text-center">
+                        <div v-else class="text-center pt-5">
                             No se encontraron productos
                         </div>
                     </div>

@@ -1,20 +1,28 @@
 <script setup>
+import { ref } from "vue";
 import { Head, Link } from '@inertiajs/vue3';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import { ref } from "vue";
 import Pagination from "@/Components/Pagination.vue";
+import ProductCard from "@/Components/Products/ProductCard.vue";
+import SearchProducts from "@/Components/Products/SearchProducts.vue";
 
 defineProps({
     canLogin: Boolean,
     canRegister: Boolean,
-    products: Object
+    products: Object,
+    categories: Array
 });
 
 const searchTerm = ref('');
+const category = ref('');
+
 const products = ref([]);
 
-const searchProducts = () => {
-    axios.get(`${route('api.products')}/?filter=${searchTerm.value}`).then((response) => {
+const searchProducts = (text, cat) => {
+    searchTerm.value = text;
+    category.value = cat;
+
+    axios.get(`${route('api.products')}/?filter=${text}&category=${category.value}`).then((response) => {
         products.value = response.data.data;
     }).catch((error) => {
         console.log(error);
@@ -42,14 +50,7 @@ loadProducts();
                 <h1 class="ml-4">EVERTEC - ecommerce</h1>
             </div>
 
-            <form @submit.prevent="searchProducts" class="flex">
-                <input type="text" id="searchTerm" v-model="searchTerm"
-                       class="input  input-bordered input-primary "
-                       placeholder="ingresa un nombre">
-                <button type="submit" class="btn btn-outline ml-3 my-0">
-                    Buscar
-                </button>
-            </form>
+           <SearchProducts @search="searchProducts" :categories="categories" />
 
             <template v-if="$page.props.auth.user">
                 <div class="flex items-center">
@@ -90,18 +91,14 @@ loadProducts();
         <h2 class="w-full text-center p-5">PRODUCTOS</h2>
 
         <div class="container mx-auto grid grid-cols-4 gap-6" v-if="products && products.data?.length > 0">
-            <div v-for="product in products.data" class="card card-compact bg-base-100 shadow-lg ">
-                <figure style="object-fit: contain; height: 200px" >
-                    <img :src="`/storage/${product.image}`" :alt="product.name"  />
-                </figure>
-                <div class="card-body">
-                    <h2 class="card-title">{{ product.name }}</h2>
-                    <p>${{ product.price.toLocaleString('es-CO') }}</p>
-                    <div class="badge badge-outline">{{product.category}}</div>
-                </div>
+            <div v-for="product in products.data">
+               <ProductCard :product="product" />
             </div>
         </div>
-        <Pagination class="mt-6" :links="products.links" :searchTerm="searchTerm"
-                    :click="loadProducts"/>
+        <div v-else class="mx-auto ">
+            <p class="mx-auto text-white alert alert-info w-1/4">No se encontraron productos</p>
+        </div>
+        <Pagination v-if="products && products.data?.length > 0" class="mt-6" :links="products.links"
+                    :filter="`&filter=${searchTerm}&category=${category}`" :click="loadProducts"/>
     </div>
 </template>

@@ -12,14 +12,28 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
     use ApiController;
+
     public function index(Request $request)
     {
-        $filtered = $request->has('filter');
         $filter = $request->get('filter');
+        $category = $request->get('category');
 
-        $products = Product::when($filtered && $filter, static function ($q) use ($filter) {
-            $q->where('name', 'like', '%' . $filter . '%');
-        })->latest('id')->paginate(5);
+        $products = Product::select(
+            'products.id',
+            'products.name',
+            'products.status',
+            'price',
+            'quantity',
+            'categories.name as category'
+        )
+            ->when($filter, static function ($q) use ($filter) {
+                $q->where('products.name', 'like', '%' . $filter . '%');
+            })
+            ->when($category, static function ($q) use ($category) {
+                $q->where('category_id', $category);
+            })
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->latest('id')->paginate(5);
 
         return $this->response($products);
     }

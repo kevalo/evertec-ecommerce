@@ -1,8 +1,8 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Pagination from '@/Components/Pagination.vue'
-import {Head} from '@inertiajs/vue3';
-import {ref} from 'vue'
+import { Head } from '@inertiajs/vue3';
+import { ref } from 'vue'
 
 const props = defineProps({
     title: String
@@ -97,7 +97,7 @@ loadCustomers();
                                 </tr>
                                 </tbody>
                             </table>
-                            <Pagination class="mt-6" :links="customers.links" :searchTerm="searchTerm"
+                            <Pagination class="mt-6" :links="customers.links" :filter="`&filter=${searchTerm}`"
                                         :click="loadCustomers"/>
                         </div>
                         <div v-else class="text-center">

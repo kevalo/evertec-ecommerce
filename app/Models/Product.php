@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property string $name
+ * @property string $description
  * @property string $slug
  * @property string $image
  * @property float $price
@@ -24,6 +25,7 @@ class Product extends Model
 
     protected $fillable = [
         'name',
+        'description',
         'slug',
         'image',
         'price',
