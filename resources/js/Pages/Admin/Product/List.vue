@@ -14,13 +14,13 @@ const searchTerm = ref('');
 const products = ref([]);
 
 const toggleStatus = (e) => {
-    axios.patch(route('api.products.toggleStatus'), {id: e.target.dataset.product}).catch((err) => {
+    axios.patch(route('api.admin.products.toggleStatus'), {id: e.target.dataset.product}).catch((err) => {
         console.error(err);
     });
 }
 
 const searchProducts = () => {
-    axios.get(`${route('api.products')}/?filter=${searchTerm.value}`).then((response) => {
+    axios.get(`${route('api.admin.products')}/?filter=${searchTerm.value}`).then((response) => {
         products.value = response.data.data;
     }).catch((error) => {
         console.log(error);
@@ -28,7 +28,7 @@ const searchProducts = () => {
 }
 
 const loadProducts = (url = null) => {
-    axios.get(url || route('api.products')).then((response) => {
+    axios.get(url || route('api.admin.products')).then((response) => {
         products.value = response.data.data;
     }).catch((error) => {
         console.log(error);

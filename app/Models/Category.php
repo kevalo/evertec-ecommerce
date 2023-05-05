@@ -6,6 +6,7 @@ use App\Definitions\GeneralStatus;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property string $name
@@ -32,5 +33,10 @@ class Category extends Model
                 return $value ? GeneralStatus::ACTIVE->value : GeneralStatus::INACTIVE->value;
             }
         );
+    }
+
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class, 'category_id', 'id');
     }
 }

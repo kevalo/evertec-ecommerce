@@ -17,11 +17,11 @@ class ProductController extends Controller
         $filtered = $request->has('filter');
         $filter = $request->get('filter');
 
-        $customersList = Product::when($filtered && $filter, static function ($q) use ($filter) {
+        $products = Product::when($filtered && $filter, static function ($q) use ($filter) {
             $q->where('name', 'like', '%' . $filter . '%');
         })->latest('id')->paginate(5);
 
-        return $this->response($customersList);
+        return $this->response($products);
     }
 
     /**
