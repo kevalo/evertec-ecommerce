@@ -3,7 +3,7 @@
 use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Admin\CustomerController;
 use App\Http\Controllers\Api\Admin\ProductController;
-use App\Http\Controllers\Api\ProductController as UserProductController;
+use App\Http\Controllers\Api\ProductController as CustomerProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -42,5 +42,5 @@ Route::name('.admin.products')->group(function () {
 });
 
 Route::name('.products')->group(function () {
-    Route::get('/products', [UserProductController::class, 'index']);
+    Route::get('/products', [CustomerProductController::class, 'index']);
 });

@@ -6,8 +6,8 @@ use App\Definitions\Roles;
 use App\Definitions\UserStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Customer\ToogleStatusRequest;
-use App\Http\Traits\ApiController;
 use App\Models\User;
+use App\Traits\ApiController;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller

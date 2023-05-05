@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Definitions\GeneralStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\ToggleStatusRequest;
-use App\Http\Traits\ApiController;
 use App\Models\Product;
+use App\Traits\ApiController;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller

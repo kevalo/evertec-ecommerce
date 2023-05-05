@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Definitions\GeneralStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\ToggleStatusRequest;
-use App\Http\Traits\ApiController;
 use App\Models\Category;
+use App\Traits\ApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 

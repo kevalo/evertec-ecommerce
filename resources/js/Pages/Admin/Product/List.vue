@@ -87,7 +87,7 @@ loadProducts();
                                 <tbody>
                                 <tr v-for="product in products.data" class="border-b-2">
                                     <td>{{ product.name }}</td>
-                                    <td>$ {{ product.price }}</td>
+                                    <td>$ {{ product.price.toLocaleString('es-CO') }}</td>
                                     <td>{{ product.quantity }}</td>
                                     <td>
                                         <input type="checkbox"
