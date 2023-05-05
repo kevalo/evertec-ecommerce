@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Category;
+namespace App\Http\Requests\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -25,7 +25,7 @@ class ToggleStatusRequest extends FormRequest
             'id' => [
                 'required',
                 'numeric',
-                'exists:categories'
+                'exists:products'
             ]
         ];
     }

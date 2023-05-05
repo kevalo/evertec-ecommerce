@@ -33,10 +33,6 @@ class CategoryController extends Controller
         try {
             $category = Category::find($params['id']);
 
-            if (!$category) {
-                return $this->response('No se encontró la categoría', false);
-            }
-
             $newStatus = match ($category->status) {
                 GeneralStatus::ACTIVE => GeneralStatus::INACTIVE->value,
                 GeneralStatus::INACTIVE => GeneralStatus::ACTIVE->value,

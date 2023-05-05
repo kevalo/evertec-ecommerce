@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Definitions\GeneralStatus;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Customer\ToogleStatusRequest;
+use App\Http\Requests\Product\ToggleStatusRequest;
 use App\Http\Traits\ApiController;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -27,15 +27,11 @@ class ProductController extends Controller
     /**
      * @throws \Exception
      */
-    public function toggleStatus(ToogleStatusRequest $request): array
+    public function toggleStatus(ToggleStatusRequest $request): array
     {
         $params = $request->validated();
 
         $product = Product::find($params['id']);
-
-        if (!$product) {
-            return $this->response('No se encontró el producto', false);
-        }
 
         $newStatus = match ($product->status) {
             GeneralStatus::ACTIVE => GeneralStatus::INACTIVE->value,

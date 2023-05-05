@@ -39,10 +39,6 @@ class CustomerController extends Controller
 
         $user = User::find($params['id']);
 
-        if (!$user) {
-            return $this->response('No se encontró el cliente', false);
-        }
-
         $newStatus = match ($user->status) {
             UserStatus::ACTIVE => UserStatus::INACTIVE->value,
             UserStatus::INACTIVE => UserStatus::ACTIVE->value,
