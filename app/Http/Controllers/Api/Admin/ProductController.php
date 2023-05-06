@@ -4,38 +4,48 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Definitions\GeneralStatus;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Customer\ToogleStatusRequest;
-use App\Http\Traits\ApiController;
+use App\Http\Requests\Product\ToggleStatusRequest;
 use App\Models\Product;
+use App\Traits\ApiController;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     use ApiController;
+
     public function index(Request $request)
     {
-        $filtered = $request->has('filter');
         $filter = $request->get('filter');
+        $category = $request->get('category');
 
-        $customersList = Product::when($filtered && $filter, static function ($q) use ($filter) {
-            $q->where('name', 'like', '%' . $filter . '%');
-        })->latest('id')->paginate(5);
+        $products = Product::select(
+            'products.id',
+            'products.name',
+            'products.status',
+            'price',
+            'quantity',
+            'categories.name as category'
+        )
+            ->when($filter, static function ($q) use ($filter) {
+                $q->where('products.name', 'like', '%' . $filter . '%');
+            })
+            ->when($category, static function ($q) use ($category) {
+                $q->where('category_id', $category);
+            })
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->latest('products.id')->paginate(5);
 
-        return $this->response($customersList);
+        return $this->response($products);
     }
 
     /**
      * @throws \Exception
      */
-    public function toggleStatus(ToogleStatusRequest $request): array
+    public function toggleStatus(ToggleStatusRequest $request): array
     {
         $params = $request->validated();
 
         $product = Product::find($params['id']);
-
-        if (!$product) {
-            return $this->response('No se encontró el producto', false);
-        }
 
         $newStatus = match ($product->status) {
             GeneralStatus::ACTIVE => GeneralStatus::INACTIVE->value,

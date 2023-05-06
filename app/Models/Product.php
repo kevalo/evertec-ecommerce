@@ -6,10 +6,12 @@ use App\Definitions\GeneralStatus;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 
 /**
  * @property string $name
+ * @property string $description
  * @property string $slug
  * @property string $image
  * @property float $price
@@ -23,6 +25,7 @@ class Product extends Model
 
     protected $fillable = [
         'name',
+        'description',
         'slug',
         'image',
         'price',

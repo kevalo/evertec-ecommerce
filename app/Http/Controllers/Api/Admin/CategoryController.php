@@ -5,9 +5,8 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Definitions\GeneralStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\ToggleStatusRequest;
-use App\Http\Traits\ApiController;
 use App\Models\Category;
-use Illuminate\Http\Request;
+use App\Traits\ApiController;
 use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
@@ -20,8 +19,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::latest('id')->paginate(5);
-        return $this->response($categories);
+        return $this->response(Category::latest('id')->paginate(5));
     }
 
     public function toggleStatus(ToggleStatusRequest $request): array
@@ -32,10 +30,6 @@ class CategoryController extends Controller
 
         try {
             $category = Category::find($params['id']);
-
-            if (!$category) {
-                return $this->response('No se encontró la categoría', false);
-            }
 
             $newStatus = match ($category->status) {
                 GeneralStatus::ACTIVE => GeneralStatus::INACTIVE->value,
@@ -54,35 +48,4 @@ class CategoryController extends Controller
         return $this->response($responseData, $responseStatus);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

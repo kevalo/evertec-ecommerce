@@ -1,13 +1,13 @@
 <?php
 
-namespace App\ViewModels\Admin\Product;
+namespace App\ViewModels;
 
 use App\Definitions\GeneralStatus;
 use App\Models\Category;
 use App\Models\Product;
-use App\ViewModels\ViewModel;
+use Illuminate\Support\Facades\Route;
 
-class ListViewModel extends ViewModel
+class HomeViewModel extends ViewModel
 {
     public function __construct()
     {
@@ -17,7 +17,8 @@ class ListViewModel extends ViewModel
     public function toArray(): array
     {
         return [
-            'title' => 'Productos',
+            'canLogin' => Route::has('login'),
+            'canRegister' => Route::has('register'),
             'categories' => Category::where('status', GeneralStatus::ACTIVE->value)->get()
         ];
     }

@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 
-defineProps(['modelValue', 'options']);
+defineProps(['modelValue', 'options', 'text']);
 
 defineEmits(['update:modelValue']);
 
@@ -23,7 +23,7 @@ defineExpose({ focus: () => input.value.focus() });
         @change="$emit('update:modelValue', $event.target.value)"
         ref="input"
     >
-        <option value="">Seleccionar</option>
+        <option value="">Seleccionar {{ text }}</option>
         <option v-for="opt in options" :value="opt['id']">{{opt['name']}}</option>
     </select>
 </template>

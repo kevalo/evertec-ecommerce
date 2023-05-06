@@ -11,7 +11,6 @@ const props = defineProps({
 
 const generalStatus = usePage().props.GeneralStatus;
 
-const searchTerm = ref('');
 const categories = ref([]);
 
 const toggleStatus = (e) => {
@@ -83,8 +82,7 @@ loadCategories();
                                 </tr>
                                 </tbody>
                             </table>
-                            <Pagination class="mt-6" :links="categories.links" :searchTerm="searchTerm"
-                                        :click="loadCategories"/>
+                            <Pagination class="mt-6" :links="categories.links" :click="loadCategories"/>
                         </div>
                         <div v-else class="text-center">
                             No se encontraron categorías

@@ -6,8 +6,8 @@ use App\Definitions\Roles;
 use App\Definitions\UserStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Customer\ToogleStatusRequest;
-use App\Http\Traits\ApiController;
 use App\Models\User;
+use App\Traits\ApiController;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -39,10 +39,6 @@ class CustomerController extends Controller
 
         $user = User::find($params['id']);
 
-        if (!$user) {
-            return $this->response('No se encontró el cliente', false);
-        }
-
         $newStatus = match ($user->status) {
             UserStatus::ACTIVE => UserStatus::INACTIVE->value,
             UserStatus::INACTIVE => UserStatus::ACTIVE->value,
@@ -55,24 +51,4 @@ class CustomerController extends Controller
         return $this->response('Usuario actualizado', $responseStatus);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id): array
-    {
-        $user = User::find($id);
-        if (!$user) {
-            return $this->response('No se encontró el cliente', false);
-        }
-
-        return $this->response($user);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
 }
