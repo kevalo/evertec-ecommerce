@@ -12,6 +12,6 @@ class DisableProductsByCategory implements Action
     {
         return Product::where('category_id', $params['category_id'])->update(
             ['status' => GeneralStatus::INACTIVE->value]
-        );
+        ) > 0;
     }
 }
