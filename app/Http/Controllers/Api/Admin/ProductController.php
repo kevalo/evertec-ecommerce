@@ -33,7 +33,7 @@ class ProductController extends Controller
                 $q->where('category_id', $category);
             })
             ->join('categories', 'products.category_id', '=', 'categories.id')
-            ->latest('id')->paginate(5);
+            ->latest('products.id')->paginate(5);
 
         return $this->response($products);
     }
