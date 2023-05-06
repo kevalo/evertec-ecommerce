@@ -4,11 +4,13 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ProfileTest extends TestCase
 {
     use RefreshDatabase;
+    use WithFaker;
 
     public function test_profile_page_is_displayed(): void
     {
@@ -29,6 +31,8 @@ class ProfileTest extends TestCase
             ->actingAs($user)
             ->patch('/profile', [
                 'name' => 'Test User',
+                'last_name' => $this->faker()->lastName(),
+                'phone' => $this->faker()->phoneNumber(),
                 'email' => 'test@example.com',
             ]);
 
@@ -51,6 +55,8 @@ class ProfileTest extends TestCase
             ->actingAs($user)
             ->patch('/profile', [
                 'name' => 'Test User',
+                'last_name' => $this->faker()->lastName(),
+                'phone' => $this->faker()->phoneNumber(),
                 'email' => $user->email,
             ]);
 

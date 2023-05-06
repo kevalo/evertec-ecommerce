@@ -5,9 +5,23 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link } from '@inertiajs/vue3';
+import {Link, usePage} from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
+
+const isAdmin = () => {
+    const authProps = usePage().props.auth;
+    return authProps.admin === authProps.user.role_id;
+}
+
+const closeFlashSuccessMessage = () => {
+    document.getElementById("flashSuccessMessage").remove();
+}
+
+const closeFlashErrorMessage = () => {
+    document.getElementById("flashErrorMessage").remove();
+}
+
 </script>
 
 <template>
@@ -20,17 +34,28 @@ const showingNavigationDropdown = ref(false);
                         <div class="flex">
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
-                                <Link :href="route('dashboard')">
-                                    <ApplicationLogo
-                                        class="block h-9 w-auto fill-current text-gray-800"
+                                <Link :href="route('home')">
+                                    <ApplicationLogo class="block h-9 w-auto fill-current text-gray-800"
                                     />
                                 </Link>
                             </div>
 
                             <!-- Navigation Links -->
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex" v-if="isAdmin()" >
+                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')" >
                                     Dashboard
+                                </NavLink>
+
+                                <NavLink :href="route('customers')" :active="route().current('customers')" >
+                                    Clientes
+                                </NavLink>
+
+                                <NavLink :href="route('categories.index')" :active="route().current('categories.index')" >
+                                    Categorías
+                                </NavLink>
+
+                                <NavLink :href="route('products.index')" :active="route().current('products.index')" >
+                                    Productos
                                 </NavLink>
                             </div>
                         </div>
@@ -64,9 +89,9 @@ const showingNavigationDropdown = ref(false);
                                     </template>
 
                                     <template #content>
-                                        <DropdownLink :href="route('profile.edit')"> Profile </DropdownLink>
+                                        <DropdownLink :href="route('profile.edit')"> Perfil </DropdownLink>
                                         <DropdownLink :href="route('logout')" method="post" as="button">
-                                            Log Out
+                                            Cerrar sesión
                                         </DropdownLink>
                                     </template>
                                 </Dropdown>
@@ -115,6 +140,18 @@ const showingNavigationDropdown = ref(false);
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
                         </ResponsiveNavLink>
+
+                        <ResponsiveNavLink :href="route('customers')" :active="route().current('customers')" >
+                            Clientes
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink :href="route('categories.index')" :active="route().current('categories.index')" >
+                            Categorías
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink :href="route('products.index')" :active="route().current('products.index')" >
+                            Productos
+                        </ResponsiveNavLink>
                     </div>
 
                     <!-- Responsive Settings Options -->
@@ -129,7 +166,7 @@ const showingNavigationDropdown = ref(false);
                         <div class="mt-3 space-y-1">
                             <ResponsiveNavLink :href="route('profile.edit')"> Profile </ResponsiveNavLink>
                             <ResponsiveNavLink :href="route('logout')" method="post" as="button">
-                                Log Out
+                                Cerrar sesión
                             </ResponsiveNavLink>
                         </div>
                     </div>
@@ -145,6 +182,28 @@ const showingNavigationDropdown = ref(false);
 
             <!-- Page Content -->
             <main>
+                <div v-if="$page.props.flash.success">
+                    <div class="alert alert-success shadow-lg" id="flashSuccessMessage">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <span> {{ $page.props.flash.success }}</span>
+                        </div>
+                        <div class="flex-none">
+                            <button class="btn btn-sm btn-ghost" @click="closeFlashSuccessMessage()"><i class="fa fa-close"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="$page.props.flash.error">
+                    <div class="alert alert-error shadow-lg" id="flashErrorMessage">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <span> {{ $page.props.flash.error }}</span>
+                        </div>
+                        <div class="flex-none">
+                            <button class="btn btn-sm btn-ghost" @click="closeFlashErrorMessage()"><i class="fa fa-close"></i></button>
+                        </div>
+                    </div>
+                </div>
                 <slot />
             </main>
         </div>

@@ -29,11 +29,11 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="name" value="Name"/>
+                <InputLabel for="name" value="Nombres"/>
                 <TextInput
                     id="name"
                     type="text"
-                    class="mt-1 block w-full"
+                    class="input mt-1 block w-full"
                     v-model="form.name"
                     required
                     autofocus
@@ -43,11 +43,11 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="last_name" value="Last name"/>
+                <InputLabel for="last_name" value="Apellidos"/>
                 <TextInput
                     id="last_name"
                     type="text"
-                    class="mt-1 block w-full"
+                    class="input mt-1 block w-full"
                     v-model="form.last_name"
                     required
                     autofocus
@@ -57,11 +57,11 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="phone" value="Phone"/>
+                <InputLabel for="phone" value="Teléfono"/>
                 <TextInput
                     id="phone"
                     type="text"
-                    class="mt-1 block w-full"
+                    class="input mt-1 block w-full"
                     v-model="form.phone"
                     required
                     autofocus
@@ -71,11 +71,11 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="email" value="Email"/>
+                <InputLabel for="email" value="Correo electrónico"/>
                 <TextInput
                     id="email"
                     type="email"
-                    class="mt-1 block w-full"
+                    class="input mt-1 block w-full"
                     v-model="form.email"
                     required
                     autocomplete="username"
@@ -84,11 +84,11 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password"/>
+                <InputLabel for="password" value="Contraseña"/>
                 <TextInput
                     id="password"
                     type="password"
-                    class="mt-1 block w-full"
+                    class="input mt-1 block w-full"
                     v-model="form.password"
                     required
                     autocomplete="new-password"
@@ -97,11 +97,11 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Confirm Password"/>
+                <InputLabel for="password_confirmation" value="Confirmar contraseña"/>
                 <TextInput
                     id="password_confirmation"
                     type="password"
-                    class="mt-1 block w-full"
+                    class="input mt-1 block w-full"
                     v-model="form.password_confirmation"
                     required
                     autocomplete="new-password"
@@ -114,11 +114,11 @@ const submit = () => {
                     :href="route('login')"
                     class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                    Already registered?
+                    ¿Ya estas registrado?
                 </Link>
 
                 <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Register
+                    Registrarme
                 </PrimaryButton>
             </div>
         </form>

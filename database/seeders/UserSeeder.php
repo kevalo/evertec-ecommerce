@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Definitions\UserStatus;
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
@@ -14,15 +12,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('users')->insert([
-            'name' => 'Admin',
-            'last_name' => 'ecommerce',
-            'phone' => '123456789',
-            'email' => 'admin@ecommerce.test',
-            'status' => UserStatus::ACTIVE->value,
-            'password' => Hash::make('123456789'),
-            'role_id' => 1,
-            'email_verified_at' => now()
-        ]);
+        // create 400 users for testing purposes
+        User::factory()->count(400)->create();
     }
 }

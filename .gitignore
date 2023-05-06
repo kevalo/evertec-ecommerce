@@ -1,6 +1,5 @@
 /.phpunit.cache
 /bootstrap/ssr
-/bootstrap/ssr
 /node_modules
 /public/build
 /public/hot
@@ -8,6 +7,7 @@
 /storage/*.key
 /vendor
 .env
+.env.testing
 .env.backup
 .env.production
 .phpunit.result.cache
