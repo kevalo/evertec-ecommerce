@@ -26,13 +26,14 @@ class ProductController extends Controller
         )
             ->where('products.status', GeneralStatus::ACTIVE->value)
             ->when($filter, static function ($q) use ($filter) {
-                $q->where('products.name', 'like', '%' . $filter . '%');
+                $q->where('products.name', 'like', '%' . $filter . '%')
+                ->orWhere('products.description', 'like', '%' . $filter . '%');
             })
             ->when($category, static function ($q) use ($category) {
                 $q->where('category_id', $category);
             })
             ->join('categories', 'products.category_id', '=', 'categories.id')
-            ->latest('products.id')->paginate(5);
+            ->latest('products.id')->paginate(4);
 
         return $this->response($customersList);
     }

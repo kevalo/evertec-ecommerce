@@ -51,24 +51,4 @@ class CustomerController extends Controller
         return $this->response('Usuario actualizado', $responseStatus);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id): array
-    {
-        $user = User::find($id);
-        if (!$user) {
-            return $this->response('No se encontró el cliente', false);
-        }
-
-        return $this->response($user);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
 }

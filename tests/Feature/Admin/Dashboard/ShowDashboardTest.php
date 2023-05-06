@@ -10,11 +10,20 @@ class ShowDashboardTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_user_can_access_home(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('home'));
+
+        $response->assertOk();
+    }
+
     public function test_admin_can_access_dashboard(): void
     {
         $user = User::factory()->admin()->create();
 
-        $response = $this->actingAs($user)->get(route('home'));
+        $response = $this->actingAs($user)->get(route('dashboard'));
 
         $response->assertOk();
     }

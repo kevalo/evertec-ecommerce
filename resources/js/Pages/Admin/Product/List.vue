@@ -13,7 +13,7 @@ const props = defineProps({
 const generalStatus = usePage().props.GeneralStatus;
 
 const searchTerm = ref('');
-const category = ref(null);
+const category = ref('');
 
 const products = ref([]);
 

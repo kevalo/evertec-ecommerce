@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
         $this->call([RoleSeeder::class]);
 
         if (env('APP_ENV') !== 'production') {
-            $this->call([UserSeeder::class, CategorySeeder::class]);
+            $this->call([UserSeeder::class, CategorySeeder::class, ProductSeeder::class]);
         }
     }
 }

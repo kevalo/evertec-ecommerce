@@ -12,7 +12,6 @@ class StoreProduct implements Action
     public static function execute(array $params): bool
     {
         $product = new Product();
-
         $product->name = $params['name'];
         $product->description = $params['description'];
         $product->image = Storage::disk('public')->putFile('products_images', $params['image']);
