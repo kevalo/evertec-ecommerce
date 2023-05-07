@@ -36,7 +36,7 @@ class UpdateProductTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_update_category_without_image(): void
+    public function test_update_product_without_image(): void
     {
         $newData = [
             'name' => fake()->name(),
@@ -51,7 +51,7 @@ class UpdateProductTest extends TestCase
         $response->assertRedirect(route('products.index'));
     }
 
-    public function test_update_category_with_image(): void
+    public function test_update_product_with_image(): void
     {
         $newData = [
             'name' => fake()->name(),

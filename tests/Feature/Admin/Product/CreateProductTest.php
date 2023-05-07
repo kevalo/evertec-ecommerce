@@ -36,7 +36,7 @@ class CreateProductTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_save_category(): void
+    public function test_save_product(): void
     {
         $newProduct = Product::factory()->make()->attributesToArray();
         $newProduct['status'] = GeneralStatus::ACTIVE->value;
