@@ -40,6 +40,7 @@ class UpdateProductTest extends TestCase
     {
         $newData = [
             'name' => fake()->name(),
+            'description' => fake()->sentence(),
             'status' => GeneralStatus::INACTIVE->value,
             'price' => fake()->randomNumber(4),
             'category_id' => Category::first()->id,
@@ -54,6 +55,7 @@ class UpdateProductTest extends TestCase
     {
         $newData = [
             'name' => fake()->name(),
+            'description' => fake()->sentence(),
             'status' => GeneralStatus::INACTIVE->value,
             'price' => fake()->randomNumber(4),
             'category_id' => Category::first()->id,
