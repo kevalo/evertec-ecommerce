@@ -18,7 +18,7 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): array
     {
         return $this->response(Category::latest('id')->paginate(5));
     }

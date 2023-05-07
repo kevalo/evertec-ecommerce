@@ -23,6 +23,7 @@ class UpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'min:3', 'max:255'],
+            'description' => ['required', 'min:3', 'max:255'],
             'image' => ['nullable','image', 'mimes:jpeg,jpg,png,gif,webp', 'max:2048'],
             'price' => ['required', 'numeric', 'min:0'],
             'category_id' => ['required', 'exists:categories,id'],

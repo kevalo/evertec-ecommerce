@@ -13,7 +13,7 @@ class ProductController extends Controller
 {
     use ApiController;
 
-    public function index(Request $request)
+    public function index(Request $request): array
     {
         $filter = $request->get('filter');
         $category = $request->get('category');
