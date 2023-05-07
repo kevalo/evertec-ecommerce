@@ -15,9 +15,10 @@ Check out the [Project definition](https://david-valbuena.notion.site/Reto-af876
 - cp .env.example .env
 - update the .env file with the database credentials and mailing information
 - php artisan migrate --seed
+- php artisan storage:link
 - npm run build
 
 ## Development
 
-- php artisan serve _or create a local vhost in apache/nginx_
+- php artisan serve _or create a local vhost in apache or nginx_
 - npm run dev
