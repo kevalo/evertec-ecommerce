@@ -10,11 +10,6 @@ class ListProductsTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function test_access_list(): void
     {
         $user = User::factory()->create();
