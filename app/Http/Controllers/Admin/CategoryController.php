@@ -35,7 +35,7 @@ class CategoryController extends Controller
         return Inertia::render('Admin/Category/Edit', ['category' => $category]);
     }
 
-    public function update(Category $category, UpdateRequest $request): RedirectResponse
+    public function update(UpdateRequest $request, Category $category): RedirectResponse
     {
         $category->update($request->validated());
         session()->flash('success', __('categories.success_update'));

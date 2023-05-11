@@ -40,7 +40,7 @@ class ProductController extends Controller
         return Inertia::render('Admin/Product/Edit', new EditViewModel($product));
     }
 
-    public function update(Product $product, UpdateRequest $request): RedirectResponse
+    public function update(UpdateRequest $request, Product $product): RedirectResponse
     {
         UpdateProduct::execute(['fields' => $request->validated(), 'product' => $product]);
         session()->flash('success', __('products.success_update'));

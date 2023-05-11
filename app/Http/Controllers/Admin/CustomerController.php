@@ -21,7 +21,7 @@ class CustomerController extends Controller
         return Inertia::render('Admin/Customer/Edit', ['customer' => $user]);
     }
 
-    public function update(User $user, UpdateRequest $request): RedirectResponse
+    public function update(UpdateRequest $request, User $user): RedirectResponse
     {
         $user->update($request->validated());
         session()->flash('success', __('customer.success_update'));
