@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Actions\Admin\Product\StoreProduct;
+use App\Actions\Admin\Product\UpdateProduct;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\AddQuantityRequest;
 use App\Http\Requests\Product\CreateRequest;
@@ -12,7 +13,6 @@ use App\ViewModels\Admin\Product\CreateViewModel;
 use App\ViewModels\Admin\Product\EditViewModel;
 use App\ViewModels\Admin\Product\ListViewModel;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -43,23 +43,10 @@ class ProductController extends Controller
 
     public function update(Product $product, UpdateRequest $request): RedirectResponse
     {
-        $params = $request->validated();
-
-        $params['image'] = $this->setImage($params, $product);
-
-        $product->update($params);
+        UpdateProduct::execute(['fields' => $request->validated(), 'product' => $product]);
         session()->flash('success', __('products.success_update'));
 
         return redirect()->route('products.index');
-    }
-
-    private function setImage(array $requestParams, Product $product): string
-    {
-        if ($requestParams['image'] !== null) {
-            Storage::disk('public')->delete($product->image);
-            return Storage::disk('public')->putFile('products_images', $requestParams['image']);
-        }
-        return $product->image;
     }
 
     public function showAddQuantity(Product $product): Response

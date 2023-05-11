@@ -9,6 +9,10 @@ use Illuminate\Support\Str;
 
 class StoreProduct implements Action
 {
+    /**
+     * @param array $params
+     * @return bool
+     */
     public static function execute(array $params): bool
     {
         $product = new Product();
