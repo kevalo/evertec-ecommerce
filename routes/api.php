@@ -41,8 +41,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/products/{id}', [ProductController::class, 'show'])->name('.show');
         Route::patch('/products/toggle-status', [ProductController::class, 'toggleStatus'])->name('.toggleStatus');
     });
-
-    Route::name('.products')->group(function () {
-        Route::get('/products', [CustomerProductController::class, 'index']);
-    });
 });
+
+Route::get('/products', [CustomerProductController::class, 'index'])->name('.products');
