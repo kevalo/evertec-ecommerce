@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
-
     use ApiController;
 
     /**
@@ -45,7 +44,6 @@ class CategoryController extends Controller
             if ($newStatus === GeneralStatus::INACTIVE->value) {
                 DisableProductsByCategory::execute(['category_id' => $category->id]);
             }
-
         } catch (\Exception $e) {
             $responseData = 'Error al actualizar el usuario';
             Log::error($e->getMessage(), ['context' => 'Updating category status']);
@@ -53,5 +51,4 @@ class CategoryController extends Controller
 
         return $this->response($responseData, $responseStatus);
     }
-
 }

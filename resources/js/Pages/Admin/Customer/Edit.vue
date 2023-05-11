@@ -1,14 +1,13 @@
 <script setup>
+
+import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
+
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import {Head, usePage,  Link, useForm} from '@inertiajs/vue3';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 
-defineProps({
-    title: String,
-    customer: Object
-})
+defineProps({customer: Object});
 
 const customer = usePage().props.customer;
 
@@ -24,25 +23,24 @@ const submit = () => {
 </script>
 
 <template>
-    <Head :title="title"/>
+    <Head :title="$page.props.$t.customers.edit"/>
 
-    <AuthenticatedLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ title }}</h2>
-        </template>
+    <AuthenticatedLayout :title="$page.props.$t.customers.edit">
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
 
-                        <Transition enter-from-class="opacity-0" leave-to-class="opacity-0" class="transition ease-in-out">
-                            <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Actualizado correctamente.</p>
+                        <Transition enter-from-class="opacity-0" leave-to-class="opacity-0"
+                                    class="transition ease-in-out">
+                            <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Actualizado
+                                correctamente.</p>
                         </Transition>
 
                         <form @submit.prevent="submit">
                             <div>
-                                <InputLabel for="name" value="Nombres"/>
+                                <InputLabel for="name" :value="$page.props.$t.fields.names"/>
                                 <TextInput
                                     id="name"
                                     type="text"
@@ -56,7 +54,7 @@ const submit = () => {
                             </div>
 
                             <div class="mt-4">
-                                <InputLabel for="last_name" value="Apellidos"/>
+                                <InputLabel for="last_name" :value="$page.props.$t.fields.last_name"/>
                                 <TextInput
                                     id="last_name"
                                     type="text"
@@ -70,7 +68,7 @@ const submit = () => {
                             </div>
 
                             <div class="mt-4">
-                                <InputLabel for="phone" value="Teléfono"/>
+                                <InputLabel for="phone" :value="$page.props.$t.fields.phone"/>
                                 <TextInput
                                     id="phone"
                                     type="text"
@@ -84,7 +82,7 @@ const submit = () => {
                             </div>
 
                             <div class="mt-4">
-                                <InputLabel for="email" value="Correo electrónico"/>
+                                <InputLabel for="email" :value="$page.props.$t.fields.email"/>
                                 <TextInput
                                     id="email"
                                     type="email"
@@ -101,11 +99,11 @@ const submit = () => {
                                     :href="route('customers')"
                                     class="btn btn-secondary mr-5"
                                 >
-                                    Regresar
+                                    {{ $page.props.$t.labels.back }}
                                 </Link>
 
                                 <button class="btn btn-primary" :disabled="form.processing">
-                                    Actualizar
+                                    {{ $page.props.$t.labels.save }}
                                 </button>
                             </div>
                         </form>

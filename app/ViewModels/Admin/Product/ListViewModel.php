@@ -17,7 +17,6 @@ class ListViewModel extends ViewModel
     public function toArray(): array
     {
         return [
-            'title' => 'Productos',
             'categories' => Category::where('status', GeneralStatus::ACTIVE->value)->get()
         ];
     }

@@ -17,7 +17,6 @@ class CreateViewModel extends ViewModel
     public function toArray(): array
     {
         return [
-            'title' => 'Crear producto',
             'categories' => Category::where('status', GeneralStatus::ACTIVE->value)->get()
         ];
     }

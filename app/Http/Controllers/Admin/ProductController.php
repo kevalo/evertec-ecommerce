@@ -8,7 +8,6 @@ use App\Http\Requests\Product\AddQuantityRequest;
 use App\Http\Requests\Product\CreateRequest;
 use App\Http\Requests\Product\UpdateRequest;
 use App\Models\Product;
-use App\ViewModels\Admin\Product\AddQuantityViewModel;
 use App\ViewModels\Admin\Product\CreateViewModel;
 use App\ViewModels\Admin\Product\EditViewModel;
 use App\ViewModels\Admin\Product\ListViewModel;
@@ -31,13 +30,8 @@ class ProductController extends Controller
 
     public function store(CreateRequest $request): RedirectResponse
     {
-        $params = $request->validated();
-
-        if (StoreProduct::execute($params)) {
-            session()->flash('success', 'Producto creado correctamente!');
-        } else {
-            session()->flash('error', 'Error al crear el producto');
-        }
+        StoreProduct::execute($request->validated());
+        session()->flash('success', __('products.success_create'));
 
         return redirect()->route('products.index');
     }
@@ -53,11 +47,8 @@ class ProductController extends Controller
 
         $params['image'] = $this->setImage($params, $product);
 
-        if ($product->update($params)) {
-            session()->flash('success', 'Producto actualizado correctamente!');
-        } else {
-            session()->flash('error', 'Error al actualizar el producto');
-        }
+        $product->update($params);
+        session()->flash('success', __('products.success_update'));
 
         return redirect()->route('products.index');
     }
@@ -73,7 +64,7 @@ class ProductController extends Controller
 
     public function showAddQuantity(Product $product): Response
     {
-        return Inertia::render('Admin/Product/AddQuantity', new AddQuantityViewModel($product));
+        return Inertia::render('Admin/Product/AddQuantity', ['product' => $product]);
     }
 
     public function addQuantity(Product $product, AddQuantityRequest $request): RedirectResponse
@@ -82,11 +73,8 @@ class ProductController extends Controller
 
         $params['quantity'] += $product->quantity;
 
-        if ($product->update($params)) {
-            session()->flash('success', 'Producto actualizado correctamente!');
-        } else {
-            session()->flash('error', 'Error al actualizar el producto');
-        }
+        $product->update($params);
+        session()->flash('success', __('products.success_update'));
 
         return redirect()->route('products.index');
     }

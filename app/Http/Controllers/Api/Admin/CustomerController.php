@@ -50,5 +50,4 @@ class CustomerController extends Controller
 
         return $this->response('Usuario actualizado', $responseStatus);
     }
-
 }

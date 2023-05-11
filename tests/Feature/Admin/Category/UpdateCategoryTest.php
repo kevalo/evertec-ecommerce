@@ -5,7 +5,6 @@ namespace Tests\Feature\Admin\Category;
 use App\Definitions\GeneralStatus;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class UpdateCategoryTest extends TestCase

@@ -46,7 +46,14 @@ class HandleInertiaRequests extends Middleware
                 'success' => session('success') ?: '',
                 'error' => session('error') ?: '',
             ],
-            'GeneralStatus' => GeneralStatus::toJson()
+            'GeneralStatus' => GeneralStatus::toArray(),
+            '$t' => [
+                'labels' => __('labels'),
+                'fields' => __('fields'),
+                'products' => __('products'),
+                'customers' => __('customers'),
+                'categories' => __('categories'),
+            ]
         ]);
     }
 }

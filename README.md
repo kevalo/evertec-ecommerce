@@ -14,6 +14,7 @@ Check out the [Project definition](https://david-valbuena.notion.site/Reto-af876
 - npm install
 - cp .env.example .env
 - update the .env file with the database credentials and mailing information
+- php artisan key:generate
 - php artisan migrate --seed
 - php artisan storage:link
 - npm run build

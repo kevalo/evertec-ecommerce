@@ -8,10 +8,9 @@ use App\ViewModels\ViewModel;
 
 class EditViewModel extends ViewModel
 {
-     public function toArray(): array
+    public function toArray(): array
     {
         return [
-            'title' => 'Editar producto',
             'product' => $this->model,
             'categories' => Category::where('status', GeneralStatus::ACTIVE->value)->get()
         ];

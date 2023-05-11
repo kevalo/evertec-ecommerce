@@ -32,15 +32,16 @@ class UpdateCustomerTest extends TestCase
         $randomName = $this->faker->name();
 
         $response = $this->actingAs($this->adminUser)->put(
-            '/customers/2', [
+            '/customers/2',
+            [
             'name' => $randomName,
             'last_name' => 'New data',
             'phone' => '315389548'
-        ]);
+        ]
+        );
 
         $response->assertFound()->assertRedirect(route('customers'));
 
         $this->assertEquals($randomName, User::find(2)->name);
     }
-
 }

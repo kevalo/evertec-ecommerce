@@ -44,5 +44,4 @@ class ListProductsTest extends TestCase
         $response = $this->actingAs($this->adminUser)->getJson(route('api.admin.products') . '?filter=and&category=1');
         $response->assertOk();
     }
-
 }

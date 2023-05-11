@@ -7,7 +7,7 @@ enum GeneralStatus: int
     case INACTIVE = 0;
     case ACTIVE = 1;
 
-    public static function toJson(): array
+    public static function toArray(): array
     {
         $cases = self::cases();
         $array = [];

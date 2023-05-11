@@ -7,10 +7,7 @@ import TextInput from '@/Components/TextInput.vue';
 import FileInput from "@/Components/FileInput.vue";
 import Select from "@/Components/Select.vue";
 
-defineProps({
-    title: String,
-    categories: Array
-})
+defineProps({categories: Array})
 
 const categories = usePage().props.categories;
 
@@ -32,12 +29,9 @@ const submit = () => {
 </script>
 
 <template>
-    <Head :title="title"/>
+    <Head :title="$page.props.$t.products.create"/>
 
-    <AuthenticatedLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ title }}</h2>
-        </template>
+    <AuthenticatedLayout :title="$page.props.$t.products.create">
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -46,7 +40,7 @@ const submit = () => {
 
                         <form @submit.prevent="submit" enctype="multipart/form-data">
                             <div>
-                                <InputLabel for="name" value="Nombre"/>
+                                <InputLabel for="name" :value="$page.props.$t.fields.name"/>
                                 <TextInput
                                     id="name"
                                     type="text"
@@ -60,7 +54,7 @@ const submit = () => {
                             </div>
 
                             <div class="mt-3">
-                                <InputLabel for="description" value="Descripción"/>
+                                <InputLabel for="description" :value="$page.props.$t.fields.description"/>
                                 <textarea
                                     id="description"
                                     type="text"
@@ -74,7 +68,7 @@ const submit = () => {
                             </div>
 
                             <div class="mt-3">
-                                <InputLabel for="image" value="Imagen"/>
+                                <InputLabel for="image" :value="$page.props.$t.fields.image"/>
                                 <FileInput
                                     id="image"
                                     class="input mt-1 block w-full"
@@ -87,7 +81,7 @@ const submit = () => {
                             </div>
 
                             <div class="mt-3">
-                                <InputLabel for="price" value="Precio"/>
+                                <InputLabel for="price" :value="$page.props.$t.fields.price"/>
                                 <TextInput
                                     id="price"
                                     type="number"
@@ -102,7 +96,7 @@ const submit = () => {
                             </div>
 
                             <div class="mt-3">
-                                <InputLabel for="quantity" value="Cantidad inicial"/>
+                                <InputLabel for="quantity" :value="$page.props.$t.fields.quantity"/>
                                 <TextInput
                                     id="quantity"
                                     type="number"
@@ -117,7 +111,7 @@ const submit = () => {
                             </div>
 
                             <div class="mt-3">
-                                <InputLabel for="category_id" value="Categoría"/>
+                                <InputLabel for="category_id" :value="$page.props.$t.fields.category"/>
                                 <Select
                                     id="category_id"
                                     class="input mt-1 block w-full select"
@@ -130,7 +124,7 @@ const submit = () => {
                             </div>
 
                             <div class="mt-3">
-                                <InputLabel for="status" value="Estado"/>
+                                <InputLabel for="status" :value="$page.props.$t.fields.status"/>
                                 <input type="checkbox"
                                        name="status" id="status"
                                        v-model="form.status"
@@ -142,11 +136,11 @@ const submit = () => {
                                     :href="route('products.index')"
                                     class="btn btn-secondary mr-5"
                                 >
-                                    Regresar
+                                    {{ $page.props.$t.labels.back }}
                                 </Link>
 
                                 <button class="btn btn-primary" :disabled="form.processing">
-                                    Guardar
+                                    {{ $page.props.$t.labels.save }}
                                 </button>
                             </div>
                         </form>

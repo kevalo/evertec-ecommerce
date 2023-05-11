@@ -21,7 +21,6 @@ use Illuminate\Support\Facades\Route;
 // All the routes in this file have the name prefix api
 
 Route::middleware('auth:sanctum')->group(function () {
-
     Route::get('/user', function (Request $request) {
         return $request->user();
     })->name('.user');
@@ -46,7 +45,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::name('.products')->group(function () {
         Route::get('/products', [CustomerProductController::class, 'index']);
     });
-
 });
-
-

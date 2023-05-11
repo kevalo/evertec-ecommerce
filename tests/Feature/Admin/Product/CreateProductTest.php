@@ -46,5 +46,4 @@ class CreateProductTest extends TestCase
         $response->assertSessionHas('success');
         $response->assertRedirect(route('products.index'));
     }
-
 }

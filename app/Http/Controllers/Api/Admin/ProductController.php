@@ -58,5 +58,4 @@ class ProductController extends Controller
 
         return $this->response('Producto actualizado', $responseStatus);
     }
-
 }
