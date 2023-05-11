@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductQuantityController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\IsAdmin;
@@ -38,8 +39,8 @@ Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {
     Route::resource('categories', CategoryController::class)->except(['destroy']);
 
     Route::resource('products', ProductController::class)->except(['destroy']);
-    Route::get('products/{product}/add', [ProductController::class, 'showAddQuantity'])->name('products.add');
-    Route::patch('products/{product}/add', [ProductController::class, 'addQuantity'])->name('products.add');
+    Route::get('products/{product}/add', [ProductQuantityController::class, 'show'])->name('products.add');
+    Route::patch('products/{product}/add', [ProductQuantityController::class, 'update'])->name('products.add');
 });
 
 require __DIR__.'/auth.php';

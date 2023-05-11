@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Actions\Admin\Product\StoreProduct;
 use App\Actions\Admin\Product\UpdateProduct;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Product\AddQuantityRequest;
 use App\Http\Requests\Product\CreateRequest;
 use App\Http\Requests\Product\UpdateRequest;
 use App\Models\Product;
@@ -44,23 +43,6 @@ class ProductController extends Controller
     public function update(Product $product, UpdateRequest $request): RedirectResponse
     {
         UpdateProduct::execute(['fields' => $request->validated(), 'product' => $product]);
-        session()->flash('success', __('products.success_update'));
-
-        return redirect()->route('products.index');
-    }
-
-    public function showAddQuantity(Product $product): Response
-    {
-        return Inertia::render('Admin/Product/AddQuantity', ['product' => $product]);
-    }
-
-    public function addQuantity(Product $product, AddQuantityRequest $request): RedirectResponse
-    {
-        $params = $request->validated();
-
-        $params['quantity'] += $product->quantity;
-
-        $product->update($params);
         session()->flash('success', __('products.success_update'));
 
         return redirect()->route('products.index');
