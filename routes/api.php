@@ -21,7 +21,6 @@ use Illuminate\Support\Facades\Route;
 // All the routes in this file have the name prefix api
 
 Route::middleware('auth:sanctum')->group(function () {
-
     Route::get('/user', function (Request $request) {
         return $request->user();
     })->name('.user');
@@ -42,11 +41,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/products/{id}', [ProductController::class, 'show'])->name('.show');
         Route::patch('/products/toggle-status', [ProductController::class, 'toggleStatus'])->name('.toggleStatus');
     });
-
-    Route::name('.products')->group(function () {
-        Route::get('/products', [CustomerProductController::class, 'index']);
-    });
-
 });
 
-
+Route::get('/products', [CustomerProductController::class, 'index'])->name('.products');

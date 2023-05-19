@@ -1,20 +1,18 @@
 <script setup>
+
+import { Head, Link, usePage } from '@inertiajs/vue3';
+import { ref } from 'vue'
+
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Pagination from '@/Components/Pagination.vue'
-import { Head, Link, usePage } from '@inertiajs/vue3';
-import {ref} from 'vue'
 import Select from "@/Components/Select.vue";
 
-const props = defineProps({
-    title: String,
-    categories: Array
-});
+const props = defineProps({categories: Array});
 
 const generalStatus = usePage().props.GeneralStatus;
 
 const searchTerm = ref('');
 const category = ref('');
-
 const products = ref([]);
 
 const toggleStatus = (e) => {
@@ -24,11 +22,8 @@ const toggleStatus = (e) => {
 }
 
 const searchProducts = () => {
-    axios.get(`${route('api.admin.products')}/?filter=${searchTerm.value}&category=${category.value}`).then((response) => {
-        products.value = response.data.data;
-    }).catch((error) => {
-        console.log(error);
-    });
+    let searchUrl = `${route('api.admin.products')}/?filter=${searchTerm.value}&category=${category.value}`;
+    loadProducts(searchUrl)
 }
 
 const loadProducts = (url = null) => {
@@ -44,12 +39,9 @@ loadProducts();
 </script>
 
 <template>
-    <Head :title="title"/>
+    <Head :title="$page.props.$t.products.title"/>
 
-    <AuthenticatedLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ title }}</h2>
-        </template>
+    <AuthenticatedLayout :title="$page.props.$t.products.title">
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -63,10 +55,11 @@ loadProducts();
                                        class="input  input-bordered input-primary "
                                        placeholder="ingresa un nombre">
 
-                                <Select class="input ml-2 block w-2/4 select" v-model="category" :options="categories" :text="'categoría'" />
+                                <Select class="input ml-2 block w-2/4 select" v-model="category" :options="categories"
+                                        :text="'categoría'"/>
 
                                 <button type="submit" class="btn btn-primary ml-3 my-0">
-                                    Buscar
+                                    {{ $page.props.$t.labels.search }}
                                 </button>
                             </form>
 
@@ -74,22 +67,22 @@ loadProducts();
                                 :href="route('products.create')"
                                 class="btn btn-primary w-20 ml-auto"
                             >
-                                Crear
+                                {{ $page.props.$t.labels.create }}
                             </Link>
 
                         </div>
 
                         <div v-if="products && products.data?.length > 0" class="mt-5">
                             <table class="table table-compact w-full border-2 text-center">
-                                <caption>Listado de productos</caption>
+                                <caption>{{ $page.props.$t.products.list }}</caption>
                                 <thead class="border-b-2">
                                 <tr>
-                                    <th>Nombre</th>
-                                    <th>Categoría</th>
-                                    <th>Precio</th>
-                                    <th>Cantidad</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
+                                    <th>{{ $page.props.$t.fields.name }}</th>
+                                    <th>{{ $page.props.$t.fields.category }}</th>
+                                    <th>{{ $page.props.$t.fields.price }}</th>
+                                    <th>{{ $page.props.$t.fields.quantity }}</th>
+                                    <th>{{ $page.props.$t.fields.status }}</th>
+                                    <th>{{ $page.props.$t.labels.actions }}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -109,13 +102,13 @@ loadProducts();
                                     <td>
                                         <a class="btn btn-outline btn-primary"
                                            :href="route('products.show', product.id)"
-                                           title="Editar usuario"
+                                           :title="$page.props.$t.products.edit"
                                         >
                                             <i class="fa fa-edit"></i>
                                         </a>
                                         <a class="btn btn-outline ml-1"
                                            :href="route('products.add', product.id)"
-                                           title="Agregar unidades"
+                                           :title="$page.props.$t.products.add_quantity_title"
                                         >
                                             <i class="fa fa-plus-minus"></i>
                                         </a>
@@ -123,7 +116,8 @@ loadProducts();
                                 </tr>
                                 </tbody>
                             </table>
-                            <Pagination class="mt-6" :links="products.links" :filter="`&filter=${searchTerm}&category=${category}`"
+                            <Pagination class="mt-6" :links="products.links"
+                                        :filter="`&filter=${searchTerm}&category=${category}`"
                                         :click="loadProducts"/>
                         </div>
                         <div v-else class="text-center pt-5">

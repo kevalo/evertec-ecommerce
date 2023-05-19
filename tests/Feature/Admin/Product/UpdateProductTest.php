@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Admin\Product;
 
-use App\Definitions\GeneralStatus;
-use App\Models\Category;
-use App\Models\User;
+use App\Domain\Categories\Models\Category;
+use App\Domain\Users\Models\User;
+use App\Support\Definitions\GeneralStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
@@ -42,7 +42,7 @@ class UpdateProductTest extends TestCase
             'name' => fake()->name(),
             'description' => fake()->sentence(),
             'status' => GeneralStatus::INACTIVE->value,
-            'price' => fake()->randomNumber(4),
+            'price' => fake()->numberBetween(1000, 10000),
             'category_id' => Category::first()->id,
             'image' => null
         ];
@@ -57,7 +57,7 @@ class UpdateProductTest extends TestCase
             'name' => fake()->name(),
             'description' => fake()->sentence(),
             'status' => GeneralStatus::INACTIVE->value,
-            'price' => fake()->randomNumber(4),
+            'price' => fake()->numberBetween(1000, 10000),
             'category_id' => Category::first()->id,
             'image' => UploadedFile::fake()->image('product_image.png', 640, 480)
         ];

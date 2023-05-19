@@ -1,15 +1,14 @@
 <?php
 
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\CustomerController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Middleware\IsAdmin;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\Web\Admin\CategoryController;
+use App\Http\Controllers\Web\Admin\CustomerController;
+use App\Http\Controllers\Web\Admin\DashboardController;
+use App\Http\Controllers\Web\Admin\ProductController;
+use App\Http\Controllers\Web\Admin\ProductQuantityController;
+use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\Web\ProfileController;
+use App\Support\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +21,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', [HomeController::class, 'index'])->middleware(['auth', 'verified'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -31,7 +30,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {
-
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/customers', [CustomerController::class, 'index'])->name('customers');
@@ -41,8 +39,8 @@ Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {
     Route::resource('categories', CategoryController::class)->except(['destroy']);
 
     Route::resource('products', ProductController::class)->except(['destroy']);
-    Route::get('products/{product}/add', [ProductController::class, 'showAddQuantity'])->name('products.add');
-    Route::patch('products/{product}/add', [ProductController::class, 'addQuantity'])->name('products.add');
+    Route::get('products/{product}/add', [ProductQuantityController::class, 'show'])->name('products.add');
+    Route::patch('products/{product}/add', [ProductQuantityController::class, 'update'])->name('products.add');
 });
 
 require __DIR__.'/auth.php';

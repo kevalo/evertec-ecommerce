@@ -11,9 +11,9 @@ defineProps({
         </figure>
         <div class="card-body">
             <h2 class="card-title">{{ product.name }}</h2>
-            <p>{{product.description.slice(0, 150)}}...</p>
+            <p>{{product.description.slice(0, 144)}}...</p>
             <p>${{ product.price.toLocaleString('es-CO') }}</p>
-            <div class="badge badge-outline">{{ product.category }}</div>
+            <p class="badge badge-outline block h-fit">{{ product.category }}</p>
         </div>
     </div>
 </template>

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Admin\Product;
 
-use App\Models\User;
+use App\Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -44,5 +44,4 @@ class ListProductsTest extends TestCase
         $response = $this->actingAs($this->adminUser)->getJson(route('api.admin.products') . '?filter=and&category=1');
         $response->assertOk();
     }
-
 }

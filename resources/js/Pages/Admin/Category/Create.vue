@@ -1,13 +1,10 @@
 <script setup>
+import { Head, Link, useForm } from '@inertiajs/vue3';
+
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import {Head, Link, useForm} from '@inertiajs/vue3';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
-
-defineProps({
-    title: String
-})
 
 const form = useForm({
     name: '',
@@ -20,12 +17,9 @@ const submit = () => {
 </script>
 
 <template>
-    <Head :title="title"/>
+    <Head :title="$page.props.$t.categories.create"/>
 
-    <AuthenticatedLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ title }}</h2>
-        </template>
+    <AuthenticatedLayout :title="$page.props.$t.categories.create">
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -34,7 +28,7 @@ const submit = () => {
 
                         <form @submit.prevent="submit">
                             <div>
-                                <InputLabel for="name" value="Nombre"/>
+                                <InputLabel for="name" :value="$page.props.$t.fields.name"/>
                                 <TextInput
                                     id="name"
                                     type="text"
@@ -48,11 +42,11 @@ const submit = () => {
                             </div>
 
                             <div class="mt-3">
-                                <InputLabel for="status" value="Estado"/>
+                                <InputLabel for="status" :value="$page.props.$t.fields.status"/>
                                 <input type="checkbox"
                                        name="status" id="status"
                                        v-model="form.status"
-                                       class="toggle toggle-success" />
+                                       class="toggle toggle-success"/>
                             </div>
 
                             <div class="flex items-center justify-end mt-4">
@@ -60,11 +54,11 @@ const submit = () => {
                                     :href="route('categories.index')"
                                     class="btn btn-secondary mr-5"
                                 >
-                                    Regresar
+                                    {{ $page.props.$t.labels.back }}
                                 </Link>
 
                                 <button class="btn btn-primary" :disabled="form.processing">
-                                    Guardar
+                                    {{ $page.props.$t.labels.save }}
                                 </button>
                             </div>
                         </form>

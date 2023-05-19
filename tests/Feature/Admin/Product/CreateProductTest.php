@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Admin\Product;
 
-use App\Definitions\GeneralStatus;
-use App\Models\Product;
-use App\Models\User;
+use App\Domain\Products\Models\Product;
+use App\Domain\Users\Models\User;
+use App\Support\Definitions\GeneralStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
@@ -46,5 +46,4 @@ class CreateProductTest extends TestCase
         $response->assertSessionHas('success');
         $response->assertRedirect(route('products.index'));
     }
-
 }

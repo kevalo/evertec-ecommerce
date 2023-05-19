@@ -2,17 +2,20 @@
 
 namespace Database\Factories;
 
-use App\Definitions\GeneralStatus;
-use App\Models\Category;
+use App\Domain\Categories\Models\Category;
+use App\Domain\Products\Models\Product;
+use App\Support\Definitions\GeneralStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
+ * @extends Factory<Product>
  */
 class ProductFactory extends Factory
 {
+    protected $model = Product::class;
+
     /**
      * Define the model's default state.
      *
@@ -32,8 +35,8 @@ class ProductFactory extends Factory
                 'products_images',
                 UploadedFile::fake()->image('image.png', 640, 480)
             ),
-            'price' => fake()->randomNumber(4),
-            'quantity' => fake()->randomNumber(2),
+            'price' => fake()->numberBetween(1000, 1000000),
+            'quantity' => fake()->numberBetween(1, 100),
             'status' => GeneralStatus::ACTIVE->value,
             'category_id' => fake()->randomElement(Category::all())['id']
         ];

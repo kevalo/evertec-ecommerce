@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
-use App\Definitions\GeneralStatus;
+use App\Domain\Products\Models\Product;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Product\ToggleStatusRequest;
-use App\Models\Product;
-use App\Traits\ApiController;
+use App\Http\Requests\Api\Product\ToggleStatusRequest;
+use App\Http\Resources\Api\StandardResource;
+use App\Support\Definitions\GeneralStatus;
+use App\Support\Exceptions\UnsupportedStatus;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
-    use ApiController;
-
-    public function index(Request $request): array
+    public function index(Request $request): JsonResponse
     {
         $filter = $request->get('filter');
         $category = $request->get('category');
@@ -35,28 +36,30 @@ class ProductController extends Controller
             ->join('categories', 'products.category_id', '=', 'categories.id')
             ->latest('products.id')->paginate(5);
 
-        return $this->response($products);
+        return response()->json(new StandardResource($products));
     }
 
-    /**
-     * @throws \Exception
-     */
-    public function toggleStatus(ToggleStatusRequest $request): array
+
+    public function toggleStatus(ToggleStatusRequest $request): JsonResponse
     {
         $params = $request->validated();
-
         $product = Product::find($params['id']);
 
-        $newStatus = match ($product->status) {
-            GeneralStatus::ACTIVE => GeneralStatus::INACTIVE->value,
-            GeneralStatus::INACTIVE => GeneralStatus::ACTIVE->value,
-            default => throw new \Exception('Estado del producto no soportado')
-        };
+        try {
+            $newStatus = match ($product->status) {
+                GeneralStatus::ACTIVE => GeneralStatus::INACTIVE->value,
+                GeneralStatus::INACTIVE => GeneralStatus::ACTIVE->value,
+                default => throw new UnsupportedStatus(__('products.error_status_update'))
+            };
 
-        $product->status = $newStatus;
-        $responseStatus = $product->save();
+            $product->status = $newStatus;
+            $product->save();
+            $responseData = __('products.success_update');
+        } catch (UnsupportedStatus $e) {
+            $responseData = $e->getMessage();
+            Log::error($e->getMessage(), ['context' => 'Updating customer status', 'value' => $product->status]);
+        }
 
-        return $this->response('Producto actualizado', $responseStatus);
+        return response()->json(new StandardResource([$responseData]));
     }
-
 }

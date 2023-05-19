@@ -2,7 +2,8 @@
 
 namespace Admin\Category;
 
-use App\Models\User;
+use App\Domain\Categories\Models\Category;
+use App\Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -21,8 +22,16 @@ class ToggleCategoryStatusTest extends TestCase
 
     public function test_toggle_status(): void
     {
-        $response = $this->actingAs($this->adminUser)->patch(route('api.categories.toggleStatus'), ['id' => 1]);
-        $response->assertOk()->assertJson(['status' => true]);
+        $category = Category::find(1);
+        $oldStatus = $category->status;
+
+        $response = $this->actingAs($this->adminUser)->patch(
+            route('api.categories.toggleStatus'),
+            ['id' => $category->id]
+        );
+        $response->assertOk()->assertJson(['data' => [__('categories.success_update')]]);
+
+        $this->assertNotEquals($oldStatus, Category::find(1)->status);
     }
 
     public function test_toggle_status_fake_category(): void
@@ -35,6 +44,6 @@ class ToggleCategoryStatusTest extends TestCase
     {
         DB::table('categories')->where('id', 1)->update(['status' => 3]);
         $response = $this->actingAs($this->adminUser)->patch(route('api.categories.toggleStatus'), ['id' => 1]);
-        $response->assertOk();
+        $response->assertOk()->assertJson(['data' => [__('categories.error_status_update')]]);
     }
 }

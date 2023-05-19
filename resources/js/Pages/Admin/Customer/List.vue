@@ -1,12 +1,9 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import Pagination from '@/Components/Pagination.vue'
 import { Head } from '@inertiajs/vue3';
 import { ref } from 'vue'
 
-const props = defineProps({
-    title: String
-});
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import Pagination from '@/Components/Pagination.vue'
 
 const searchTerm = ref('');
 const customers = ref([]);
@@ -18,11 +15,7 @@ const toggleStatus = (e) => {
 }
 
 const searchCustomers = () => {
-    axios.get(`${route('api.customers')}/?filter=${searchTerm.value}`).then((response) => {
-        customers.value = response.data.data;
-    }).catch((error) => {
-        console.log(error);
-    });
+    loadCustomers(`${route('api.customers')}/?filter=${searchTerm.value}`);
 }
 
 const loadCustomers = (url = null) => {
@@ -38,12 +31,9 @@ loadCustomers();
 </script>
 
 <template>
-    <Head :title="title"/>
+    <Head :title="$page.props.$t.customers.title"/>
 
-    <AuthenticatedLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ title }}</h2>
-        </template>
+    <AuthenticatedLayout :title="$page.props.$t.customers.title">
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -52,24 +42,24 @@ loadCustomers();
 
                         <form @submit.prevent="searchCustomers" class="flex">
                             <input type="text" id="searchTerm" v-model="searchTerm"
-                                   class="input  w-1/4 input-bordered input-primary "
+                                   class="input  w-2/4 input-bordered input-primary "
                                    placeholder="ingresa un correo o un nombre">
                             <button type="submit" class="btn btn-primary ml-3 my-0">
-                                Buscar
+                                {{ $page.props.$t.labels.search }}
                             </button>
                         </form>
 
                         <div v-if="customers && customers.data?.length > 0" class="mt-5">
                             <table class="table table-compact w-full border-2 text-center">
-                                <caption>Listado de clientes</caption>
+                                <caption>{{ $page.props.$t.customers.list }}</caption>
                                 <thead class="border-b-2">
                                 <tr>
-                                    <th>Correo electrónico</th>
-                                    <th>Nombres</th>
-                                    <th>Apellidos</th>
-                                    <th>Teléfono</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
+                                    <th>{{ $page.props.$t.fields.email }}</th>
+                                    <th>{{ $page.props.$t.fields.names }}</th>
+                                    <th>{{ $page.props.$t.fields.last_name }}</th>
+                                    <th>{{ $page.props.$t.fields.phone }}</th>
+                                    <th>{{ $page.props.$t.fields.status }}</th>
+                                    <th>{{ $page.props.$t.labels.actions }}</th>
                                 </tr>
                                 </thead>
                                 <tbody>

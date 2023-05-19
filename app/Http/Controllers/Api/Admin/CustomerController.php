@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
-use App\Definitions\Roles;
-use App\Definitions\UserStatus;
+use App\Domain\Users\Models\User;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Customer\ToogleStatusRequest;
-use App\Models\User;
-use App\Traits\ApiController;
+use App\Http\Requests\Api\Customer\ToogleStatusRequest;
+use App\Http\Resources\Api\StandardResource;
+use App\Support\Definitions\Roles;
+use App\Support\Definitions\UserStatus;
+use App\Support\Exceptions\UnsupportedStatus;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CustomerController extends Controller
 {
-    use ApiController;
-
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): array
+    public function index(Request $request): JsonResponse
     {
         $filtered = $request->has('filter');
         $filter = $request->get('filter');
@@ -30,25 +31,32 @@ class CustomerController extends Controller
                 ->orWhere('email', 'like', '%' . $filter . '%');
         })->latest('id')->paginate(5);
 
-        return $this->response($customersList);
+        return response()->json(new StandardResource($customersList));
     }
 
-    public function toggleStatus(ToogleStatusRequest $request): array
+
+    public function toggleStatus(ToogleStatusRequest $request): JsonResponse
     {
         $params = $request->validated();
-
         $user = User::find($params['id']);
 
-        $newStatus = match ($user->status) {
-            UserStatus::ACTIVE => UserStatus::INACTIVE->value,
-            UserStatus::INACTIVE => UserStatus::ACTIVE->value,
-            default => throw new \Exception('Estado de usuario no soportado')
-        };
+        try {
+            $newStatus = match ($user->status) {
+                UserStatus::ACTIVE => UserStatus::INACTIVE->value,
+                UserStatus::INACTIVE => UserStatus::ACTIVE->value,
+                UserStatus::PENDING => UserStatus::ACTIVE,
+                default => throw new UnsupportedStatus(__('customers.error_status_update'))
+            };
 
-        $user->status = $newStatus;
-        $responseStatus = $user->save();
+            $user->status = $newStatus;
+            $user->save();
 
-        return $this->response('Usuario actualizado', $responseStatus);
+            $responseData = __('customers.success_update');
+        } catch (UnsupportedStatus $e) {
+            $responseData = $e->getMessage();
+            Log::error($e->getMessage(), ['context' => 'Updating customer status', 'value' => $user->status]);
+        }
+
+        return response()->json(new StandardResource([$responseData]));
     }
-
 }
