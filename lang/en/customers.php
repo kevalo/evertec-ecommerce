@@ -5,4 +5,5 @@ return [
     'list' => 'Customers list',
     'edit' => 'Edit customer',
     'success_update' => 'Customer updated successfully!',
+    'error_status_update' => 'Could not update customer',
 ];

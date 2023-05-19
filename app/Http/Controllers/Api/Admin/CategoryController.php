@@ -29,26 +29,26 @@ class CategoryController extends Controller
     {
         $params = $request->validated();
 
-        try {
-            $category = Category::find($params['id']);
+        $category = Category::find($params['id']);
 
+        try {
             $newStatus = match ($category->status) {
                 GeneralStatus::ACTIVE => GeneralStatus::INACTIVE->value,
                 GeneralStatus::INACTIVE => GeneralStatus::ACTIVE->value,
-                default => throw new UnsupportedStatus('Estado de la categoría no soportado: ' . $category->status)
+                default => throw new UnsupportedStatus(__('categories.error_status_update'))
             };
 
             $category->status = $newStatus;
             $category->save();
 
-            $responseData = 'Categoría actualizada';
+            $responseData =__('categories.success_update');
 
             if ($newStatus === GeneralStatus::INACTIVE->value) {
                 DisableProductsByCategory::execute(['category_id' => $category->id]);
             }
         } catch (UnsupportedStatus $e) {
-            $responseData = 'Error al actualizarla categoría';
-            Log::error($e->getMessage(), ['context' => 'Updating category status']);
+            $responseData = $e->getMessage();
+            Log::error($e->getMessage(), ['context' => 'Updating category status', 'value' => $category->status]);
         }
 
         return response()->json(new ApiResource([$responseData]));

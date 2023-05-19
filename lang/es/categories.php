@@ -6,5 +6,6 @@ return [
     'create' => 'Crear categoría',
     'edit' => 'Editar categoría',
     'success_create' => '¡Categoría creada exitosamente!',
-    'success_update' => '¡Categoría actualizada exitosamente!'
+    'success_update' => '¡Categoría actualizada exitosamente!',
+    'error_status_update' => 'No se pudo actualizar la categoría',
 ];

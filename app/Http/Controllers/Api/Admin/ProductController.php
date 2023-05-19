@@ -46,24 +46,23 @@ class ProductController extends Controller
     public function toggleStatus(ToggleStatusRequest $request): JsonResponse
     {
         $params = $request->validated();
+        $product = Product::find($params['id']);
 
         try {
-            $product = Product::find($params['id']);
-
             $newStatus = match ($product->status) {
                 GeneralStatus::ACTIVE => GeneralStatus::INACTIVE->value,
                 GeneralStatus::INACTIVE => GeneralStatus::ACTIVE->value,
-                default => throw new UnsupportedStatus('Estado del producto no soportado: ' . $product->status)
+                default => throw new UnsupportedStatus(__('products.error_status_update'))
             };
 
             $product->status = $newStatus;
             $product->save();
-            $responseData = 'Producto actualizado';
+            $responseData = __('products.success_update');
         } catch (UnsupportedStatus $e) {
-            $responseData = 'Error al actualizar el producto';
-            Log::error($e->getMessage(), ['context' => 'Updating customer status']);
+            $responseData = $e->getMessage();
+            Log::error($e->getMessage(), ['context' => 'Updating customer status', 'value' => $product->status]);
         }
 
-        return response()->json(new ApiResource($responseData));
+        return response()->json(new ApiResource([$responseData]));
     }
 }

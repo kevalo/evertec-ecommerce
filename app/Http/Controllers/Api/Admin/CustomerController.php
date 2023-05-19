@@ -41,23 +41,23 @@ class CustomerController extends Controller
     public function toggleStatus(ToogleStatusRequest $request): JsonResponse
     {
         $params = $request->validated();
+        $user = User::find($params['id']);
 
         try {
-            $user = User::find($params['id']);
-
             $newStatus = match ($user->status) {
                 UserStatus::ACTIVE => UserStatus::INACTIVE->value,
                 UserStatus::INACTIVE => UserStatus::ACTIVE->value,
-                default => throw new UnsupportedStatus('Estado de usuario no soportado: ' . $user->status)
+                UserStatus::PENDING => UserStatus::ACTIVE,
+                default => throw new UnsupportedStatus(__('customers.error_status_update'))
             };
 
             $user->status = $newStatus;
             $user->save();
 
-            $responseData = 'Usuario actualizada';
+            $responseData = __('customers.success_update');
         } catch (UnsupportedStatus $e) {
-            $responseData = 'Error al actualizar el usuario';
-            Log::error($e->getMessage(), ['context' => 'Updating customer status']);
+            $responseData = $e->getMessage();
+            Log::error($e->getMessage(), ['context' => 'Updating customer status', 'value' => $user->status]);
         }
 
         return response()->json(new ApiResource([$responseData]));

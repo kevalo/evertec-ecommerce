@@ -7,5 +7,6 @@ return [
     'edit' => 'Editar producto',
     'add_quantity_title' => 'Agregar cantidad',
     'success_create' => '¡Producto creado exitosamente!',
-    'success_update' => '¡Producto actualizado exitosamente!'
+    'success_update' => '¡Producto actualizado exitosamente!',
+    'error_status_update' => 'No se pudo actualizar el producto',
 ];
