@@ -9,7 +9,7 @@ class AddQuantityViewModel extends ViewModel
     public function toArray(): array
     {
         return [
-            'product' => $this->model
+            'product' => $this->model()
         ];
     }
 }

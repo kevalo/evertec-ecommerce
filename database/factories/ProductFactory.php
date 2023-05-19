@@ -32,8 +32,8 @@ class ProductFactory extends Factory
                 'products_images',
                 UploadedFile::fake()->image('image.png', 640, 480)
             ),
-            'price' => fake()->randomNumber(4),
-            'quantity' => fake()->randomNumber(2),
+            'price' => fake()->numberBetween(1000, 1000000),
+            'quantity' => fake()->numberBetween(1, 100),
             'status' => GeneralStatus::ACTIVE->value,
             'category_id' => fake()->randomElement(Category::all())['id']
         ];
