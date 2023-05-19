@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Actions\Admin\Product\DisableProductsByCategory;
 use App\Definitions\GeneralStatus;
+use App\Exceptions\UnsupportedStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\ToggleStatusRequest;
+use App\Http\Resources\ApiResource;
 use App\Models\Category;
 use App\Traits\ApiController;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
@@ -17,16 +20,14 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): array
+    public function index(): JsonResponse
     {
-        return $this->response(Category::latest('id')->paginate(5));
+        return response()->json(new ApiResource(Category::latest('id')->paginate(5)));
     }
 
-    public function toggleStatus(ToggleStatusRequest $request): array
+    public function toggleStatus(ToggleStatusRequest $request): JsonResponse
     {
         $params = $request->validated();
-
-        $responseStatus = false;
 
         try {
             $category = Category::find($params['id']);
@@ -34,21 +35,22 @@ class CategoryController extends Controller
             $newStatus = match ($category->status) {
                 GeneralStatus::ACTIVE => GeneralStatus::INACTIVE->value,
                 GeneralStatus::INACTIVE => GeneralStatus::ACTIVE->value,
-                default => throw new \Exception('Estado de la categoría no soportado')
+                default => throw new UnsupportedStatus('Estado de la categoría no soportado: ' . $category->status)
             };
 
             $category->status = $newStatus;
-            $responseStatus = $category->save();
+            $category->save();
+
             $responseData = 'Categoría actualizada';
 
             if ($newStatus === GeneralStatus::INACTIVE->value) {
                 DisableProductsByCategory::execute(['category_id' => $category->id]);
             }
-        } catch (\Exception $e) {
-            $responseData = 'Error al actualizar el usuario';
+        } catch (UnsupportedStatus $e) {
+            $responseData = 'Error al actualizarla categoría';
             Log::error($e->getMessage(), ['context' => 'Updating category status']);
         }
 
-        return $this->response($responseData, $responseStatus);
+        return response()->json(new ApiResource([$responseData]));
     }
 }

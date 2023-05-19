@@ -4,11 +4,15 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Definitions\Roles;
 use App\Definitions\UserStatus;
+use App\Exceptions\UnsupportedStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Customer\ToogleStatusRequest;
+use App\Http\Resources\ApiResource;
 use App\Models\User;
 use App\Traits\ApiController;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CustomerController extends Controller
 {
@@ -17,7 +21,7 @@ class CustomerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): array
+    public function index(Request $request): JsonResponse
     {
         $filtered = $request->has('filter');
         $filter = $request->get('filter');
@@ -30,24 +34,32 @@ class CustomerController extends Controller
                 ->orWhere('email', 'like', '%' . $filter . '%');
         })->latest('id')->paginate(5);
 
-        return $this->response($customersList);
+        return response()->json(new ApiResource($customersList));
     }
 
-    public function toggleStatus(ToogleStatusRequest $request): array
+
+    public function toggleStatus(ToogleStatusRequest $request): JsonResponse
     {
         $params = $request->validated();
 
-        $user = User::find($params['id']);
+        try {
+            $user = User::find($params['id']);
 
-        $newStatus = match ($user->status) {
-            UserStatus::ACTIVE => UserStatus::INACTIVE->value,
-            UserStatus::INACTIVE => UserStatus::ACTIVE->value,
-            default => throw new \Exception('Estado de usuario no soportado')
-        };
+            $newStatus = match ($user->status) {
+                UserStatus::ACTIVE => UserStatus::INACTIVE->value,
+                UserStatus::INACTIVE => UserStatus::ACTIVE->value,
+                default => throw new UnsupportedStatus('Estado de usuario no soportado: ' . $user->status)
+            };
 
-        $user->status = $newStatus;
-        $responseStatus = $user->save();
+            $user->status = $newStatus;
+            $user->save();
 
-        return $this->response('Usuario actualizado', $responseStatus);
+            $responseData = 'Usuario actualizada';
+        } catch (UnsupportedStatus $e) {
+            $responseData = 'Error al actualizar el usuario';
+            Log::error($e->getMessage(), ['context' => 'Updating customer status']);
+        }
+
+        return response()->json(new ApiResource([$responseData]));
     }
 }

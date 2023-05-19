@@ -15,11 +15,7 @@ const toggleStatus = (e) => {
 }
 
 const searchCustomers = () => {
-    axios.get(`${route('api.customers')}/?filter=${searchTerm.value}`).then((response) => {
-        customers.value = response.data.data;
-    }).catch((error) => {
-        console.log(error);
-    });
+    loadCustomers(`${route('api.customers')}/?filter=${searchTerm.value}`);
 }
 
 const loadCustomers = (url = null) => {
