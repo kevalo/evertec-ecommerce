@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Definitions\GeneralStatus;
+use App\Domain\Products\Models\Product;
 use App\Http\Controllers\Controller;
-use App\Models\Product;
-use App\Traits\ApiController;
+use App\Http\Resources\Api\StandardResource;
+use App\Support\Definitions\GeneralStatus;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    use ApiController;
-
     public function index(Request $request): JsonResponse
     {
         $filter = $request->get('filter');
@@ -36,6 +34,6 @@ class ProductController extends Controller
             ->join('categories', 'products.category_id', '=', 'categories.id')
             ->latest('products.id')->paginate(4);
 
-        return response()->json($this->response($customersList));
+        return response()->json(new StandardResource($customersList));
     }
 }

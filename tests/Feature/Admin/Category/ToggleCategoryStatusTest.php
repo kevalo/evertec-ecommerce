@@ -2,8 +2,8 @@
 
 namespace Admin\Category;
 
-use App\Models\Category;
-use App\Models\User;
+use App\Domain\Categories\Models\Category;
+use App\Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;

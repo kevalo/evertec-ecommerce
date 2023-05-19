@@ -2,16 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Definitions\Roles;
-use App\Definitions\UserStatus;
+use App\Domain\Users\Models\User;
+use App\Support\Definitions\Roles;
+use App\Support\Definitions\UserStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @extends Factory<User::class>
  */
 class UserFactory extends Factory
 {
+    protected $model = User::class;
     /**
      * Define the model's default state.
      *

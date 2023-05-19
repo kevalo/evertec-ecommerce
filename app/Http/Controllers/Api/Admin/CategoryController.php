@@ -2,27 +2,24 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
-use App\Actions\Admin\Product\DisableProductsByCategory;
-use App\Definitions\GeneralStatus;
-use App\Exceptions\UnsupportedStatus;
+use App\Domain\Categories\Models\Category;
+use App\Domain\Products\Actions\DisableProductsByCategory;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Category\ToggleStatusRequest;
-use App\Http\Resources\ApiResource;
-use App\Models\Category;
-use App\Traits\ApiController;
+use App\Http\Requests\Api\Category\ToggleStatusRequest;
+use App\Http\Resources\Api\StandardResource;
+use App\Support\Definitions\GeneralStatus;
+use App\Support\Exceptions\UnsupportedStatus;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
-    use ApiController;
-
     /**
      * Display a listing of the resource.
      */
     public function index(): JsonResponse
     {
-        return response()->json(new ApiResource(Category::latest('id')->paginate(5)));
+        return response()->json(new StandardResource(Category::latest('id')->paginate(5)));
     }
 
     public function toggleStatus(ToggleStatusRequest $request): JsonResponse
@@ -51,6 +48,6 @@ class CategoryController extends Controller
             Log::error($e->getMessage(), ['context' => 'Updating category status', 'value' => $category->status]);
         }
 
-        return response()->json(new ApiResource([$responseData]));
+        return response()->json(new StandardResource([$responseData]));
     }
 }

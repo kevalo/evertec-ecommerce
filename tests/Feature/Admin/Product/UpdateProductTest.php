@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Admin\Product;
 
-use App\Definitions\GeneralStatus;
-use App\Models\Category;
-use App\Models\User;
+use App\Domain\Categories\Models\Category;
+use App\Domain\Users\Models\User;
+use App\Support\Definitions\GeneralStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;

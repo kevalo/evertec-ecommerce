@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
-use App\Definitions\Roles;
-use App\Definitions\UserStatus;
-use App\Exceptions\UnsupportedStatus;
+use App\Domain\Users\Models\User;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Customer\ToogleStatusRequest;
-use App\Http\Resources\ApiResource;
-use App\Models\User;
-use App\Traits\ApiController;
+use App\Http\Requests\Api\Customer\ToogleStatusRequest;
+use App\Http\Resources\Api\StandardResource;
+use App\Support\Definitions\Roles;
+use App\Support\Definitions\UserStatus;
+use App\Support\Exceptions\UnsupportedStatus;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class CustomerController extends Controller
 {
-    use ApiController;
-
     /**
      * Display a listing of the resource.
      */
@@ -34,7 +31,7 @@ class CustomerController extends Controller
                 ->orWhere('email', 'like', '%' . $filter . '%');
         })->latest('id')->paginate(5);
 
-        return response()->json(new ApiResource($customersList));
+        return response()->json(new StandardResource($customersList));
     }
 
 
@@ -60,6 +57,6 @@ class CustomerController extends Controller
             Log::error($e->getMessage(), ['context' => 'Updating customer status', 'value' => $user->status]);
         }
 
-        return response()->json(new ApiResource([$responseData]));
+        return response()->json(new StandardResource([$responseData]));
     }
 }

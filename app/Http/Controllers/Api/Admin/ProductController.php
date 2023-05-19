@@ -2,21 +2,18 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
-use App\Definitions\GeneralStatus;
-use App\Exceptions\UnsupportedStatus;
+use App\Domain\Products\Models\Product;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Product\ToggleStatusRequest;
-use App\Http\Resources\ApiResource;
-use App\Models\Product;
-use App\Traits\ApiController;
+use App\Http\Requests\Api\Product\ToggleStatusRequest;
+use App\Http\Resources\Api\StandardResource;
+use App\Support\Definitions\GeneralStatus;
+use App\Support\Exceptions\UnsupportedStatus;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
-    use ApiController;
-
     public function index(Request $request): JsonResponse
     {
         $filter = $request->get('filter');
@@ -39,7 +36,7 @@ class ProductController extends Controller
             ->join('categories', 'products.category_id', '=', 'categories.id')
             ->latest('products.id')->paginate(5);
 
-        return response()->json(new ApiResource($products));
+        return response()->json(new StandardResource($products));
     }
 
 
@@ -63,6 +60,6 @@ class ProductController extends Controller
             Log::error($e->getMessage(), ['context' => 'Updating customer status', 'value' => $product->status]);
         }
 
-        return response()->json(new ApiResource([$responseData]));
+        return response()->json(new StandardResource([$responseData]));
     }
 }

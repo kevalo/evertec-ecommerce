@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
-use App\Definitions\UserStatus;
+use App\Support\Definitions\UserStatus;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Admin\Customer;
 
-use App\Models\User;
+use App\Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;

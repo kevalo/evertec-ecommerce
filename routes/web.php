@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\CustomerController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Admin\ProductQuantityController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Middleware\IsAdmin;
+use App\Http\Controllers\Web\Admin\CategoryController;
+use App\Http\Controllers\Web\Admin\CustomerController;
+use App\Http\Controllers\Web\Admin\DashboardController;
+use App\Http\Controllers\Web\Admin\ProductController;
+use App\Http\Controllers\Web\Admin\ProductQuantityController;
+use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\Web\ProfileController;
+use App\Support\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
 
 /*
