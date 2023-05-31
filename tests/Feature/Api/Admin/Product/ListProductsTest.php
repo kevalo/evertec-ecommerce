@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Api\Product;
+namespace Api\Admin\Product;
 
 use App\Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -10,29 +10,31 @@ class ListProductsTest extends TestCase
 {
     use RefreshDatabase;
 
-    private User $user;
+    private User $adminUser;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->user = User::factory()->create();
+        $this->adminUser = User::factory()->admin()->create();
     }
 
     public function test_access_list(): void
     {
-        $response = $this->actingAs($this->user)->get(route('api.products') .'?filter=and&category=1');
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('api.admin.products') .'?filter=and&category=1');
         $response->assertOk();
     }
 
     public function test_pagination(): void
     {
-        $response = $this->actingAs($this->user)->getJson(route('api.products') . '?page=2');
+        $response = $this->actingAs($this->adminUser)->getJson(route('api.admin.products') . '?page=2');
         $response->assertOk();
     }
 
     public function test_search(): void
     {
-        $response = $this->actingAs($this->user)->getJson(route('api.products') . '?filter=and&category=1');
+        $response = $this->actingAs($this->adminUser)->getJson(route('api.admin.products') . '?filter=and&category=1');
         $response->assertOk();
     }
 }

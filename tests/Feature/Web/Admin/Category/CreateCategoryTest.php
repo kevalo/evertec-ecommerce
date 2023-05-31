@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Feature\Admin\Category;
+namespace Tests\Feature\Web\Admin\Category;
 
 use App\Domain\Users\Models\User;
 use App\Support\Definitions\GeneralStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class UpdateCategoryTest extends TestCase
+class CreateCategoryTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -23,24 +23,24 @@ class UpdateCategoryTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->get(route('categories.show', 1));
+        $response = $this->actingAs($user)->get(route('categories.create'));
 
         $response->assertFound()->assertRedirect(route('home'));
     }
 
     public function test_admin_access_form(): void
     {
-        $response = $this->actingAs($this->adminUser)->get(route('categories.show', 1));
+        $response = $this->actingAs($this->adminUser)->get(route('categories.create'));
         $response->assertOk();
     }
 
-    public function test_update_category(): void
+    public function test_save_category(): void
     {
-        $newData = [
+        $newCategory = [
             'name' => fake()->name(),
             'status' => GeneralStatus::ACTIVE->value
         ];
-        $response = $this->actingAs($this->adminUser)->put(route('categories.update', 1), $newData);
+        $response = $this->actingAs($this->adminUser)->post(route('categories.store'), $newCategory);
         $response->assertSessionHas('success');
         $response->assertRedirect(route('categories.index'));
     }

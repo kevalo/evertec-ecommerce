@@ -1,6 +1,6 @@
 <?php
 
-namespace Admin\Category;
+namespace Api\Admin\Category;
 
 use App\Domain\Categories\Models\Category;
 use App\Domain\Users\Models\User;
