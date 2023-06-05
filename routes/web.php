@@ -6,6 +6,7 @@ use App\Http\Controllers\Web\Admin\DashboardController;
 use App\Http\Controllers\Web\Admin\ProductController;
 use App\Http\Controllers\Web\Admin\ProductQuantityController;
 use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\Web\ProductController as HomeProductController;
 use App\Http\Controllers\Web\ProfileController;
 use App\Support\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('/products/detail/{slug}', [HomeProductController::class, 'show'])->name('product-detail');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

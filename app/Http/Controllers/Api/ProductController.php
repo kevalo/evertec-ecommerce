@@ -19,6 +19,7 @@ class ProductController extends Controller
         $customersList = Product::select(
             'products.name',
             'description',
+            'slug',
             'image',
             'price',
             'categories.name as category'
