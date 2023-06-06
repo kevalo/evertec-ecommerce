@@ -16,7 +16,7 @@ class ProductController extends Controller
         $filter = $request->get('filter');
         $category = $request->get('category');
 
-        $customersList = Product::select(
+        $products = Product::select(
             'products.name',
             'description',
             'slug',
@@ -27,7 +27,7 @@ class ProductController extends Controller
             ->where('products.status', GeneralStatus::ACTIVE->value)
             ->when($filter, static function ($q) use ($filter) {
                 $q->where('products.name', 'like', '%' . $filter . '%')
-                ->orWhere('products.description', 'like', '%' . $filter . '%');
+                    ->orWhere('products.description', 'like', '%' . $filter . '%');
             })
             ->when($category, static function ($q) use ($category) {
                 $q->where('category_id', $category);
@@ -35,6 +35,16 @@ class ProductController extends Controller
             ->join('categories', 'products.category_id', '=', 'categories.id')
             ->latest('products.id')->paginate(8);
 
-        return response()->json(new StandardResource($customersList));
+        return response()->json(new StandardResource($products));
+    }
+
+    public function getCartProducts(Request $request): JsonResponse
+    {
+        $ids = $request->post('ids');
+
+
+        $products = Product::select('id', 'name', 'image', 'price')->whereIn('id', $ids)->get();
+
+        return response()->json(new StandardResource($products));
     }
 }

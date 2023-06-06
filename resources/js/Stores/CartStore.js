@@ -10,10 +10,8 @@ export const useCartStore = defineStore('cart', () => {
     }
 
     const amount = computed(() => {
-        console.log(products.value);
         let n = 0;
         for (const item of Object.values(products.value)) {
-            console.log(item);
             n += item;
         }
 
@@ -21,9 +19,16 @@ export const useCartStore = defineStore('cart', () => {
     });
 
     function add(id, amount) {
-        console.log(products);
-        products.value[id] = amount;
+        if (products.value.hasOwnProperty(id)) {
+            products.value[id] += amount;
+        } else {
+            products.value[id] = amount;
+        }
     }
 
-    return {products, amount, add}
+    function deleteProduct(id) {
+        Reflect.deleteProperty(products.value, id);
+    }
+
+    return {products, amount, add, deleteProduct}
 });

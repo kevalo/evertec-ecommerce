@@ -1,6 +1,10 @@
 <script setup>
 import DropdownLink from "@/Components/DropdownLink.vue";
 import Dropdown from "@/Components/Dropdown.vue";
+
+defineProps({
+    canRegister: Boolean
+});
 </script>
 
 <template>

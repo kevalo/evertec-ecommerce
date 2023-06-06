@@ -8,6 +8,9 @@ module.exports = {
         './resources/views/**/*.blade.php',
         './resources/js/**/*.vue',
     ],
+    daisyui: {
+        themes: ["corporate"],
+    },
     theme: {
         extend: {
             fontFamily: {
