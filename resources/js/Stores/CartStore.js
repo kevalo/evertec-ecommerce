@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 export const useCartStore = defineStore('cart', () => {
 
@@ -9,10 +9,21 @@ export const useCartStore = defineStore('cart', () => {
         products.value = JSON.parse(current).products;
     }
 
+    const amount = computed(() => {
+        console.log(products.value);
+        let n = 0;
+        for (const item of Object.values(products.value)) {
+            console.log(item);
+            n += item;
+        }
+
+        return n;
+    });
+
     function add(id, amount) {
         console.log(products);
         products.value[id] = amount;
     }
 
-    return {products, add}
+    return {products, amount, add}
 });

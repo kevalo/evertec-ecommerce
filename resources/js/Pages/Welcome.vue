@@ -6,6 +6,7 @@ import ProductCard from "@/Components/Products/ProductCard.vue";
 import SearchProducts from "@/Components/Products/SearchProducts.vue";
 import PageLogo from "@/Components/PageLogo.vue";
 import UserMenu from "@/Components/UserMenu.vue";
+import CartIcon from "@/Components/CartIcon.vue";
 
 defineProps({
     canLogin: Boolean,
@@ -41,14 +42,18 @@ loadProducts();
     <Head title="Bienvenido"/>
 
     <div>
-        <div class="flex p-4 border-b-2 justify-between">
+        <div class="flex p-4 border-b-2 justify-between items-center">
             <PageLogo/>
             <SearchProducts @search="searchProducts" :categories="categories"/>
-            <UserMenu/>
+            <div class="flex justify-between items-center">
+                <CartIcon/>
+                <UserMenu/>
+            </div>
         </div>
         <h2 class="w-full text-center p-5">PRODUCTOS</h2>
 
-        <div class="container mx-auto grid grid-cols-4 gap-6" v-if="products && products.data?.length > 0">
+        <div class="container px-3 mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+             v-if="products && products.data?.length > 0">
             <div v-for="product in products.data">
                 <ProductCard :product="product"/>
             </div>

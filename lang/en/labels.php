@@ -5,5 +5,7 @@ return [
     'create' => 'Create',
     'actions' => 'actions',
     'back' => 'Back',
-    'save' => 'Save'
+    'save' => 'Save',
+    'add_cart' => 'Add to cart',
+    'added_cart' => 'Added to cart!'
 ];

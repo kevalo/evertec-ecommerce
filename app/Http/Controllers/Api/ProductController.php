@@ -33,7 +33,7 @@ class ProductController extends Controller
                 $q->where('category_id', $category);
             })
             ->join('categories', 'products.category_id', '=', 'categories.id')
-            ->latest('products.id')->paginate(4);
+            ->latest('products.id')->paginate(8);
 
         return response()->json(new StandardResource($customersList));
     }
