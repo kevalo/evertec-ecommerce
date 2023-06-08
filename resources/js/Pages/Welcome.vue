@@ -50,7 +50,10 @@ loadProducts();
                 <UserMenu/>
             </div>
         </div>
-        <h2 class="w-full text-center p-5">PRODUCTOS</h2>
+
+        <div class="prose  mx-auto">
+            <h2 class="w-full text-center p-5 uppercase">{{ $page.props.$t.products.title }}</h2>
+        </div>
 
         <div class="container px-3 mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
              v-if="products && products.data?.length > 0">

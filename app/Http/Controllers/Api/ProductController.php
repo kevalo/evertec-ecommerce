@@ -42,8 +42,7 @@ class ProductController extends Controller
     {
         $ids = $request->post('ids');
 
-
-        $products = Product::select('id', 'name', 'image', 'price')->whereIn('id', $ids)->get();
+        $products = Product::select('id', 'name', 'slug', 'image', 'price')->whereIn('id', $ids)->get();
 
         return response()->json(new StandardResource($products));
     }

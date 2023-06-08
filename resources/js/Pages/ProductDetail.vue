@@ -31,7 +31,7 @@ const addToCart = () => {
 </script>
 
 <template>
-    <Head title="Bienvenido"/>
+    <Head :title="product.name"/>
 
     <div>
         <div class="flex p-4 border-b-2 justify-between items-center">
@@ -51,7 +51,8 @@ const addToCart = () => {
 
         <div class="mb-3">
             <figure style="object-fit: contain;">
-                <img :src="`/storage/${product.image}`" class="max-w-full mx-auto" :alt="product.name"
+                <img :src="`/storage/${product.image}`" class="max-w-full mx-auto drop-shadow-md rounded"
+                     :alt="product.name"
                      style="max-height: 720px;"/>
             </figure>
         </div>
@@ -63,7 +64,7 @@ const addToCart = () => {
         </div>
 
         <div class="pt-8">
-            <span>{{ $page.props.$t.labels.add_cart }}</span>
+            <span>{{ $page.props.$t.cart.add }}</span>
             <div class="flex">
 
                 <input type="number" class="input input-bordered w-20" min="1" v-model="amount">
@@ -76,7 +77,7 @@ const addToCart = () => {
 
     <div class="toast toast-middle toast-end " v-if="showAlert">
         <div class="alert alert-success">
-            <span class="badge" id="amount">{{ amount }}</span><span>{{ $page.props.$t.labels.added_cart }}</span>
+            <span class="badge" id="amount">{{ amount }}</span><span>{{ $page.props.$t.cart.added }}</span>
         </div>
     </div>
 

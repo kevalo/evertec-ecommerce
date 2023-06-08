@@ -45,6 +45,7 @@ class HandleInertiaRequests extends Middleware
                 'products' => __('products'),
                 'customers' => __('customers'),
                 'categories' => __('categories'),
+                'cart' => __('cart'),
             ]
         ]);
     }

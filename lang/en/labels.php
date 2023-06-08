@@ -6,6 +6,6 @@ return [
     'actions' => 'actions',
     'back' => 'Back',
     'save' => 'Save',
-    'add_cart' => 'Add to cart',
-    'added_cart' => 'Added to cart!'
+    'subtotal' => 'Subtotal',
+    'total' => 'Total'
 ];
