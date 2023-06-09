@@ -34,7 +34,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+    Route::resource('orders', OrderController::class)->only('show');
 });
 
 Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {
@@ -51,4 +51,4 @@ Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {
     Route::patch('products/{product}/add', [ProductQuantityController::class, 'update'])->name('products.add');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

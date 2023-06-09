@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Admin\CustomerController;
 use App\Http\Controllers\Api\Admin\ProductController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController as UserApiProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/products/list', [ProductController::class, 'index']);
         Route::get('/products/{id}', [ProductController::class, 'show'])->name('.show');
         Route::patch('/products/toggle-status', [ProductController::class, 'toggleStatus'])->name('.toggleStatus');
+    });
+
+    Route::name('.orders')->group(function () {
+        Route::post('/orders', [OrderController::class, 'store'])->name('.store');
     });
 });
 

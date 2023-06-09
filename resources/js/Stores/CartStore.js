@@ -30,5 +30,9 @@ export const useCartStore = defineStore('cart', () => {
         Reflect.deleteProperty(products.value, id);
     }
 
-    return {products, amount, add, deleteProduct}
+    function clear() {
+        products.value = {};
+    }
+
+    return {products, amount, add, deleteProduct, clear}
 });

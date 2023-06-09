@@ -14,5 +14,6 @@ return [
     'status' => 'Status',
     'image' => 'Image',
     'phone' => 'Phone',
-    'email' => 'Email'
+    'email' => 'Email',
+    'code' => 'Code'
 ];

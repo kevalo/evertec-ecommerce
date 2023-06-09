@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Web\Order;
+namespace Api\Order;
 
 use App\Domain\Users\Models\User;
 use App\Support\Definitions\OrderStatus;
@@ -13,38 +13,40 @@ class CreateOrderTest extends TestCase
 
     public function test_guest_can_not_create_order(): void
     {
-        $this->post(route('orders.store'))
+        $this->post(route('api.orders.store'))
             ->assertFound()->assertRedirect(route('login'));
     }
 
     public function test_admin_can_not_create_order(): void
     {
         $user = User::factory()->admin()->create();
-        $this->actingAs($user)->post(route('orders.store'))
+        $this->actingAs($user)->post(route('api.orders.store'))
             ->assertForbidden();
     }
 
     public function test_customer_can_create_order(): void
     {
         $user = User::factory()->create();
-        $this->actingAs($user)->post(
-            route('orders.store'),
+        $resp = $this->actingAs($user)->post(
+            route('api.orders.store'),
             [
                 'products' => [
                     1 => ['id' => 1, 'amount' => 1],
                     2 => ['id' => 2, 'amount' => 3]
                 ]
             ]
-        )->assertSessionDoesntHaveErrors()
-            ->assertFound()
-            ->assertRedirect(route('home'));
+        );
+
+        $order = $user->orders->first();
+
+        $resp->assertSessionDoesntHaveErrors()
+            ->assertOk()
+            ->assertJson(['route' => route('orders.show', $order->id), 'clear_cart' => true]);
 
         $this->assertDatabaseHas('orders', [
             'user_id' => $user->id,
             'status' => OrderStatus::CREATED->value
         ]);
-
-        $order = $user->orders->first();
 
         $this->assertDatabaseHas('order_products', ['product_id' => 1, 'order_id' => $order->id, 'quantity' => 1])
             ->assertDatabaseHas('order_products', ['product_id' => 2, 'order_id' => $order->id, 'quantity' => 3]);

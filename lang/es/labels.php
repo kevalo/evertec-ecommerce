@@ -7,5 +7,7 @@ return [
     'back' => 'Atrás',
     'save' => 'Guardar',
     'subtotal' => 'Subtotal',
-    'total' => 'Total'
+    'total' => 'Total',
+    'yes' => 'Si',
+    'no' => 'No'
 ];

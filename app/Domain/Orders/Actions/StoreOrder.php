@@ -13,9 +13,9 @@ class StoreOrder implements Action
 {
     /**
      * @param array $params
-     * @return bool
+     * @return bool|int
      */
-    public static function execute(array $params): bool
+    public static function execute(array $params): bool|int
     {
         $ids = array_column($params, 'id');
         $products = Product::select('id', 'quantity', 'price', 'status')->whereIn('id', $ids)->get();
@@ -37,7 +37,7 @@ class StoreOrder implements Action
 
         if ($order->save()) {
             self::syncProducts($order, $products, $params);
-            return true;
+            return $order->id;
         }
 
         return false;

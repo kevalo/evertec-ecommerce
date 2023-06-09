@@ -55,6 +55,28 @@ let total = computed(() => {
     return n;
 });
 
+const createOrder = () => {
+
+    const ids = Object.keys(store.products);
+    let products = {};
+    for (const id of ids) {
+        products[id] = {id: id, amount: store.products[id]};
+    }
+
+    axios.post(route('api.orders.store'), {products})
+        .then((e) => {
+
+            if (e.data.clear_cart) {
+                store.clear();
+            }
+
+            if (e.data.route) {
+                window.location.href = e.data.route;
+            }
+        })
+        .catch((e) => console.log(e));
+}
+
 </script>
 
 <template>
@@ -74,60 +96,80 @@ let total = computed(() => {
         <h2 class="w-full text-center p-5 uppercase">{{ $page.props.$t.cart.title }}</h2>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 px-4 ">
+    <template v-if="store.amount > 0">
+        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 px-4 ">
 
-        <div v-for="product in products"
-             class="card card-side bg-base-100 drop-shadow-md  mx-auto my-1 w-full sm:w-3/4">
-            <figure style="object-fit: contain;">
-                <img :src="`/storage/${product.image}`" class="drop-shadow-md mx-auto" :alt="product.name"
-                     style="width: 200px;"/>
-            </figure>
-            <div class="card-body">
-                <h2 class="card-title"><a :href="route('product-detail', product.slug)">{{ product.name }}</a></h2>
-                <h3>{{ $page.props.$t.products.unit_price }}: ${{ product.price.toLocaleString('es-CO') }}</h3>
-                <div class="flex items-center ">
-                    <button class="btn" @click="decrease(product.id)"><i class="fa fa-minus"></i></button>
-                    <input type="text" :value="store.products[product.id]" min="1" class="w-20 input input-bordered">
-                    <button class="btn" @click="increase(product.id)"><i class="fa fa fa-plus"></i></button>
-                </div>
-                <h3>{{ $page.props.$t.labels.subtotal }}:
-                    ${{ (product.price * store.products[product.id]).toLocaleString('es-CO') }}</h3>
-                <div class="card-actions justify-end">
-                    <button class="btn btn-outline btn-error" @click="showModal(product.id)">
-                        <i class="fa fa-trash"></i>
-                    </button>
+            <div v-for="product in products"
+                 class="card card-side bg-base-100 drop-shadow-md  mx-auto my-1 w-full sm:w-3/4">
+                <figure style="object-fit: contain;">
+                    <img :src="`/storage/${product.image}`" class="drop-shadow-md mx-auto" :alt="product.name"
+                         style="width: 200px;"/>
+                </figure>
+                <div class="card-body">
+                    <h2 class="card-title"><a :href="route('product-detail', product.slug)">{{ product.name }}</a></h2>
+                    <h3>{{ $page.props.$t.products.unit_price }}: ${{ product.price.toLocaleString('es-CO') }}</h3>
+                    <div class="flex items-center ">
+                        <button class="btn" @click="decrease(product.id)"><i class="fa fa-minus"></i></button>
+                        <input type="text" :value="store.products[product.id]" min="1"
+                               class="w-20 input input-bordered">
+                        <button class="btn" @click="increase(product.id)"><i class="fa fa fa-plus"></i></button>
+                    </div>
+                    <h3>{{ $page.props.$t.labels.subtotal }}:
+                        ${{ (product.price * store.products[product.id]).toLocaleString('es-CO') }}</h3>
+                    <div class="card-actions justify-end">
+                        <button class="btn btn-outline btn-error" @click="showModal(product.id)">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
+
         </div>
 
-    </div>
+        <div class="prose mx-auto mt-16">
+            <h2 class="text-center">{{ $page.props.$t.labels.total }}: ${{ total.toLocaleString('es-CO') }}</h2>
+        </div>
 
-    <div class="prose mx-auto mt-16">
-        <h2 class="text-center">{{ $page.props.$t.labels.total }}: ${{ total.toLocaleString('es-CO') }}</h2>
-    </div>
+        <div class="pt-4">
+            <div class="alert alert-warning w-full sm:w-full md:w-2/4 xl:w-1/4 mx-auto" v-if="!$page.props.auth.user">
+                {{ $page.props.$t.auth.do_login }}: <a :href="route('login')" class="underline text-primary">
+                {{ $page.props.$t.auth.login }}
+            </a>
+            </div>
+            <button v-else type="submit" class="btn btn-primary block mx-auto" @click="createOrder">
+                {{ $page.props.$t.cart.buy }}
+            </button>
+        </div>
 
-    <div class="pt-4">
-        <button class="btn btn-primary block mx-auto">{{ $page.props.$t.cart.buy }}</button>
-    </div>
-
-    <dialog id="removeProductModal" class="modal modal-bottom sm:modal-middle">
-        <div class="modal-box">
-            <form method="dialog">
-                <button for="removeProductModal" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕
-                </button>
-            </form>
-            <h3 class="font-bold text-lg">{{ $page.props.$t.cart.remove_product }}</h3>
-            <p class="py-4">{{ $page.props.$t.cart.remove_product_desc }}</p>
-            <div class="modal-action">
-                <button class="btn btn-outline btn-primary" @click="removeProduct">Si</button>
+        <dialog id="removeProductModal" class="modal modal-bottom sm:modal-middle">
+            <div class="modal-box">
                 <form method="dialog">
-                    <button class="btn">No</button>
+                    <button for="removeProductModal" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕
+                    </button>
                 </form>
+                <h3 class="font-bold text-lg">{{ $page.props.$t.cart.remove_product }}</h3>
+                <p class="py-4">{{ $page.props.$t.cart.remove_product_desc }}</p>
+                <div class="modal-action">
+                    <button class="btn btn-outline btn-primary" @click="removeProduct">{{
+                            $page.props.$t.labels.yes
+                        }}
+                    </button>
+                    <form method="dialog">
+                        <button class="btn">{{ $page.props.$t.labels.no }}</button>
+                    </form>
+                </div>
+
             </div>
 
-        </div>
+        </dialog>
 
-    </dialog>
+    </template>
+
+    <template v-else>
+        <div class="alert alert-info w-full md:w-2/4 xl:w-1/4 mx-auto ">
+            {{ $page.props.$t.cart.empty }}
+        </div>
+    </template>
 
 
 </template>
