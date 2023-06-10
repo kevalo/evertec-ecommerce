@@ -9,5 +9,6 @@ return [
     'subtotal' => 'Subtotal',
     'total' => 'Total',
     'yes' => 'Si',
-    'no' => 'No'
+    'no' => 'No',
+    'stock_error' => 'La cantidad seleccionada supera las existencias'
 ];

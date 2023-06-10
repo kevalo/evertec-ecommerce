@@ -34,11 +34,28 @@ const removeProduct = () => {
     removeProductModal.close();
 }
 
-const increase = (productId) => {
-    store.add(productId, 1);
+const checkStock = async (productId, amount) => {
+    let totalAmount = amount;
+    if (store.products.hasOwnProperty(productId)) {
+        totalAmount += store.products[productId];
+    }
+
+    const r = await axios.post(route('api.products.checkStock'), {
+        'id': productId,
+        amount: totalAmount
+    });
+
+    return r.data.data.stock;
 }
 
-const decrease = (productId) => {
+const increase = async (productId) => {
+    const add = 1;
+    if (await checkStock(productId, add)) {
+        store.add(productId, add);
+    }
+}
+
+const decrease = async (productId) => {
     if (store.products[productId] > 1) {
         store.add(productId, -1);
     }
@@ -111,7 +128,7 @@ const createOrder = () => {
                     <div class="flex items-center ">
                         <button class="btn" @click="decrease(product.id)"><i class="fa fa-minus"></i></button>
                         <input type="text" :value="store.products[product.id]" min="1"
-                               class="w-20 input input-bordered">
+                               class="w-20 input input-bordered" readonly>
                         <button class="btn" @click="increase(product.id)"><i class="fa fa fa-plus"></i></button>
                     </div>
                     <h3>{{ $page.props.$t.labels.subtotal }}:

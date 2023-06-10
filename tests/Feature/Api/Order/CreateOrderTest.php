@@ -41,7 +41,7 @@ class CreateOrderTest extends TestCase
 
         $resp->assertSessionDoesntHaveErrors()
             ->assertOk()
-            ->assertJson(['route' => route('orders.show', $order->id), 'clear_cart' => true]);
+            ->assertJson(['data' => ['route' => route('orders.show', $order->id), 'clear_cart' => true]]);
 
         $this->assertDatabaseHas('orders', [
             'user_id' => $user->id,

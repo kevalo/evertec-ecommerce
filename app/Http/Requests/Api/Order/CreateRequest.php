@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Web\Order;
+namespace App\Http\Requests\Api\Order;
 
 use App\Support\Definitions\Roles;
 use Illuminate\Foundation\Http\FormRequest;

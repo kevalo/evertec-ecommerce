@@ -9,5 +9,6 @@ return [
     'subtotal' => 'Subtotal',
     'total' => 'Total',
     'yes' => 'Yes',
-    'no' => 'No'
+    'no' => 'No',
+    'stock_error' => 'Amount not in stock'
 ];
