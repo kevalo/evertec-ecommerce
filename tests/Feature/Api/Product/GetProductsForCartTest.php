@@ -28,11 +28,33 @@ class GetProductsForCartTest extends TestCase
         $this->actingAs($this->user)
             ->post(route('api.getCartProducts'), ['ids' => [$p1->id, $p2->id, $p3->id]])
             ->assertOk()
-            ->assertSimilarJson(['data' => [
-                ['id' => $p1->id, 'name' => $p1->name, 'slug' => $p1->slug, 'image' => $p1->image, 'price' => $p1->price],
-                ['id' => $p2->id, 'name' => $p2->name, 'slug' => $p2->slug, 'image' => $p2->image, 'price' => $p2->price],
-                ['id' => $p3->id, 'name' => $p3->name, 'slug' => $p3->slug, 'image' => $p3->image, 'price' => $p3->price]
-            ]
+            ->assertSimilarJson([
+                'data' => [
+                    [
+                        'id' => $p1->id,
+                        'name' => $p1->name,
+                        'slug' => $p1->slug,
+                        'image' => $p1->image,
+                        'price' => $p1->price,
+                        'quantity' => $p1->quantity
+                    ],
+                    [
+                        'id' => $p2->id,
+                        'name' => $p2->name,
+                        'slug' => $p2->slug,
+                        'image' => $p2->image,
+                        'price' => $p2->price,
+                        'quantity' => $p2->quantity
+                    ],
+                    [
+                        'id' => $p3->id,
+                        'name' => $p3->name,
+                        'slug' => $p3->slug,
+                        'image' => $p3->image,
+                        'price' => $p3->price,
+                        'quantity' => $p3->quantity
+                    ]
+                ]
             ]);
     }
 }

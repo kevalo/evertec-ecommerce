@@ -15,9 +15,16 @@ class OrderController extends Controller
         $orderId = StoreOrder::execute($request->validated()['products']);
         if ($orderId) {
             return response()
-                ->json(new StandardResource(['route' => route('orders.show', $orderId), 'clear_cart' => true]));
+                ->json(new StandardResource([
+                    'route' => route('orders.show', $orderId),
+                    'clear_cart' => true,
+                    'set_max_amounts' => false
+                ]));
         }
 
-        return response()->json(new StandardResource(['route' => false, 'clear_cart' => false]));
+        return response()->json(new StandardResource([
+            'route' => false,
+            'clear_cart' => false,
+            'set_max_amounts' => true]));
     }
 }

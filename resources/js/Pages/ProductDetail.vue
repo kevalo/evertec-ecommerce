@@ -76,8 +76,10 @@ const addToCart = () => {
             </figure>
         </div>
 
-        <div class="prose">
-            <span class="badge badge-outline block h-fit">{{ category.name }}</span>
+        <span class="badge badge-outline block h-fit">{{ category.name }}</span>
+
+        <div class="prose mt-3">
+
             <p>{{ product.description }}</p>
             <h3>${{ product.price.toLocaleString('es-CO') }}</h3>
         </div>
@@ -88,13 +90,14 @@ const addToCart = () => {
 
                 <input type="number" class="input input-bordered w-20" min="1" v-model="amount">
                 <button class="btn btn-outline ml-1" @click="addToCart">
-                    <i class="fa fa-cart-plus"></i>&nbsp;
+                    <i class="fa fa-cart-plus"></i>
                 </button>
             </div>
             <div v-if="showStockError" class="alert alert-warning w-2/4 mt-2">
                 {{ $page.props.$t.labels.stock_error }}
             </div>
         </div>
+        <small>{{ $page.props.$t.labels.stock }}: {{ product.quantity }}</small>
     </div>
 
     <div class="toast toast-middle toast-end " v-if="showAlert">

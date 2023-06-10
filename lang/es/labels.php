@@ -10,5 +10,6 @@ return [
     'total' => 'Total',
     'yes' => 'Si',
     'no' => 'No',
-    'stock_error' => 'La cantidad seleccionada supera las existencias'
+    'stock_error' => 'La cantidad seleccionada supera las existencias',
+    'stock' => 'Existencias'
 ];

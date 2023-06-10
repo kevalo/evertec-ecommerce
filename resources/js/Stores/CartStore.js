@@ -18,6 +18,10 @@ export const useCartStore = defineStore('cart', () => {
         return n;
     });
 
+    function set(id, amount) {
+        products.value[id] = amount;
+    }
+
     function add(id, amount) {
         if (products.value.hasOwnProperty(id)) {
             products.value[id] += amount;
@@ -34,5 +38,5 @@ export const useCartStore = defineStore('cart', () => {
         products.value = {};
     }
 
-    return {products, amount, add, deleteProduct, clear}
+    return {products, amount, set, add, deleteProduct, clear}
 });

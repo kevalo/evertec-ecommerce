@@ -10,5 +10,6 @@ return [
     'total' => 'Total',
     'yes' => 'Yes',
     'no' => 'No',
-    'stock_error' => 'Amount not in stock'
+    'stock_error' => 'Amount not in stock',
+    'stock' => 'Stock'
 ];

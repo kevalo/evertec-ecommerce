@@ -1,28 +1,36 @@
 <script setup>
 import { computed, ref } from "vue";
 import { Head } from "@inertiajs/vue3";
+import { useCartStore } from "@/Stores/CartStore";
+
 import PageLogo from "@/Components/PageLogo.vue";
 import UserMenu from "@/Components/UserMenu.vue";
 import CartIcon from "@/Components/CartIcon.vue";
-import { useCartStore } from "@/Stores/CartStore";
-
-defineProps({
-    canLogin: Boolean,
-    canRegister: Boolean
-});
 
 const store = useCartStore();
 
 const products = ref([]);
-const loadProducts = () => {
-    axios.post(route('api.getCartProducts'), {ids: Object.keys(store.products)})
+const productToDelete = ref(null);
+const total = computed(() => {
+    let n = 0;
+    for (const index in products.value) {
+        const product = products.value[index];
+        if (product) {
+            n += product.price * store.products[product.id];
+        }
+    }
+    return n;
+});
+const showStockError = ref(false);
+
+const loadProducts = async () => {
+    await axios.post(route('api.getCartProducts'), {ids: Object.keys(store.products)})
         .then((response) => {
             products.value = response.data.data;
         });
 }
 loadProducts();
 
-const productToDelete = ref(null);
 const showModal = (productId) => {
     removeProductModal.showModal();
     productToDelete.value = productId;
@@ -61,34 +69,31 @@ const decrease = async (productId) => {
     }
 }
 
-let total = computed(() => {
-    let n = 0;
-    for (const index in products.value) {
-        const product = products.value[index];
-        if (product) {
-            n += product.price * store.products[product.id];
-        }
-    }
-    return n;
-});
-
 const createOrder = () => {
 
     const ids = Object.keys(store.products);
-    let products = {};
+    let productsToSave = {};
     for (const id of ids) {
-        products[id] = {id: id, amount: store.products[id]};
+        productsToSave[id] = {id: id, amount: store.products[id]};
     }
 
-    axios.post(route('api.orders.store'), {products})
-        .then((e) => {
-
-            if (e.data.clear_cart) {
+    axios.post(route('api.orders.store'), {products: productsToSave})
+        .then(async (e) => {
+            const resp = e.data;
+            if (resp.data.clear_cart) {
                 store.clear();
             }
 
-            if (e.data.route) {
-                window.location.href = e.data.route;
+            if (resp.data.set_max_amounts) {
+
+                showStockError.value = true;
+                setTimeout(() => showStockError.value = false, 5000);
+
+                for (const product of products.value) {
+                    store.set(product.id, product.quantity);
+                }
+            } else if (resp.data.route) {
+                window.location.href = resp.data.route;
             }
         })
         .catch((e) => console.log(e));
@@ -111,6 +116,10 @@ const createOrder = () => {
 
     <div class="prose w-full mx-auto mb-6">
         <h2 class="w-full text-center p-5 uppercase">{{ $page.props.$t.cart.title }}</h2>
+    </div>
+
+    <div v-if="showStockError" class="alert alert-info w-full md:w-2/4 xl:w-1/4 mx-auto">
+        {{ $page.props.$t.cart.stock_reset }}
     </div>
 
     <template v-if="store.amount > 0">
