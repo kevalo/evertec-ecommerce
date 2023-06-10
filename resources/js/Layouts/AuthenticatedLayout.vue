@@ -50,16 +50,22 @@ const closeFlashErrorMessage = () => {
                                 </NavLink>
 
                                 <NavLink :href="route('customers')" :active="route().current('customers')">
-                                    Clientes
+                                    {{ $page.props.$t.customers.title }}
                                 </NavLink>
 
                                 <NavLink :href="route('categories.index')"
                                          :active="route().current('categories.index')">
-                                    Categorías
+                                    {{ $page.props.$t.categories.title }}
                                 </NavLink>
 
                                 <NavLink :href="route('products.index')" :active="route().current('products.index')">
-                                    Productos
+                                    {{ $page.props.$t.products.title }}
+                                </NavLink>
+                            </div>
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex"
+                                 v-else-if="$page.props.auth.user.role_id !== $page.props.auth.admin">
+                                <NavLink :href="route('orders.index')" :active="route().current('dashboard')">
+                                    {{ $page.props.$t.orders.plural_title }}
                                 </NavLink>
                             </div>
                         </div>
@@ -94,6 +100,10 @@ const closeFlashErrorMessage = () => {
 
                                     <template #content>
                                         <DropdownLink :href="route('profile.edit')"> Perfil</DropdownLink>
+                                        <DropdownLink :href="route('orders.index')"
+                                                      v-if="$page.props.auth.user.role_id !== $page.props.auth.admin">
+                                            {{ $page.props.$t.orders.plural_title }}
+                                        </DropdownLink>
                                         <DropdownLink :href="route('logout')" method="post" as="button">
                                             Cerrar sesión
                                         </DropdownLink>

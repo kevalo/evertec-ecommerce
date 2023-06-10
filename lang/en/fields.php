@@ -15,5 +15,6 @@ return [
     'image' => 'Image',
     'phone' => 'Phone',
     'email' => 'Email',
-    'code' => 'Code'
+    'code' => 'Code',
+    'created_at' => 'Created at'
 ];

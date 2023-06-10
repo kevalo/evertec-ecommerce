@@ -5,6 +5,8 @@ namespace App\Domain\Orders\Models;
 use App\Domain\Products\Models\Product;
 use App\Domain\Users\Models\User;
 use App\Support\Definitions\OrderStatus;
+use Database\Factories\OrderFactory;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,6 +22,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Order extends Model
 {
     use HasFactory;
+
+    protected static function newFactory(): Factory
+    {
+        return OrderFactory::new();
+    }
 
     public function user(): BelongsTo
     {

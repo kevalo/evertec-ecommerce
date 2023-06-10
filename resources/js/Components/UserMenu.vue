@@ -41,6 +41,10 @@ defineProps({
                                   v-if="$page.props.auth.user.role_id === $page.props.auth.admin"> Dashboard
                     </DropdownLink>
                     <DropdownLink :href="route('profile.edit')"> Perfil</DropdownLink>
+                    <DropdownLink :href="route('orders.index')"
+                                  v-if="$page.props.auth.user.role_id !== $page.props.auth.admin">
+                        {{ $page.props.$t.orders.plural_title }}
+                    </DropdownLink>
                     <DropdownLink :href="route('logout')" method="post" as="button">
                         Cerrar sesión
                     </DropdownLink>

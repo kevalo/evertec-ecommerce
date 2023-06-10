@@ -78,7 +78,7 @@ loadCategories();
                             <Pagination class="mt-6" :links="categories.links" :click="loadCategories"/>
                         </div>
                         <div v-else class="text-center">
-                            No se encontraron categorías
+                            {{ $page.props.$t.categories.no_records }}
                         </div>
 
                     </div>

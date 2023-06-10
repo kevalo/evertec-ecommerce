@@ -15,5 +15,6 @@ return [
     'image' => 'Imagen',
     'phone' => 'Teléfono',
     'email' => 'Correo electrónico',
-    'code' => 'Código'
+    'code' => 'Código',
+    'created_at' => 'Fecha de creación'
 ];

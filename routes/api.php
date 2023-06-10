@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Admin\CustomerController;
+use App\Http\Controllers\Api\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Api\Admin\ProductController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController as UserApiProductController;
@@ -45,6 +46,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::name('.orders')->group(function () {
         Route::post('/orders', [OrderController::class, 'store'])->name('.store');
+        Route::get('/orders/list', [AdminOrderController::class, 'index'])->name('.index');
     });
 });
 
