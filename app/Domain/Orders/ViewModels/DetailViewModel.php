@@ -2,6 +2,7 @@
 
 namespace App\Domain\Orders\ViewModels;
 
+use App\Support\Definitions\OrderStatus;
 use App\Support\ViewModels\ViewModel;
 
 class DetailViewModel extends ViewModel
@@ -10,7 +11,8 @@ class DetailViewModel extends ViewModel
     {
         return [
             'order' => $this->model,
-            'products' =>$this->model->products
+            'products' =>$this->model->products,
+            'status' => OrderStatus::toArray()
         ];
     }
 }

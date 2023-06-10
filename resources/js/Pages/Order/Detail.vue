@@ -5,9 +5,9 @@ import UserMenu from "@/Components/UserMenu.vue";
 import CartIcon from "@/Components/CartIcon.vue";
 
 defineProps({
-    canLogin: Boolean,
-    canRegister: Boolean,
-    order: Object
+    order: Object,
+    products: Object,
+    status: Object
 });
 
 </script>
@@ -47,6 +47,11 @@ defineProps({
 
     </div>
 
+    <div class="alert alert-info w-full md:w-2/4 xl:w-1/4 mx-auto mt-8"
+         v-if="order.status === $page.props.status.created">
+        {{ $page.props.$t.orders.time_limit_message }}
+    </div>
+
     <div class="prose mx-auto mt-16">
         <h2 class="text-center">{{ $page.props.$t.labels.total }}: ${{ order.total_price.toLocaleString('es-CO') }}</h2>
     </div>
@@ -57,7 +62,8 @@ defineProps({
             {{ $page.props.$t.auth.login }}
         </a>
         </div>
-        <button v-else type="submit" class="btn btn-primary block mx-auto">
+        <button v-else-if="order.status === $page.props.status.created" type="submit"
+                class="btn btn-primary block mx-auto">
             {{ $page.props.$t.cart.go_pay }}
         </button>
     </div>

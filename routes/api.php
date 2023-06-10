@@ -46,10 +46,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::name('.orders')->group(function () {
         Route::post('/orders', [OrderController::class, 'store'])->name('.store');
     });
-
-    Route::post('/products/check-stock', [UserApiProductController::class, 'checkStock'])
-        ->name('.products.checkStock');
 });
 
 Route::get('/products', [UserApiProductController::class, 'index'])->name('.products');
 Route::post('/products/cart', [UserApiProductController::class, 'getProductsForCart'])->name('.getCartProducts');
+
+Route::post('/products/check-stock', [UserApiProductController::class, 'checkStock'])
+    ->name('.products.checkStock');

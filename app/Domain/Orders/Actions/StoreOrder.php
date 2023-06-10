@@ -39,14 +39,14 @@ class StoreOrder implements Action
         $order->user_id = Auth::id();
 
         if ($order->save()) {
-            self::syncProducts($order, $products, $params);
+            self::syncOrderProducts($order, $products, $params);
             return $order->id;
         }
 
         return false;
     }
 
-    private static function syncProducts(Order $order, Collection $products, array $params): void
+    private static function syncOrderProducts(Order $order, Collection $products, array $params): void
     {
         $productsData = [];
         foreach ($products as $product) {
@@ -59,6 +59,9 @@ class StoreOrder implements Action
                 'quantity' => $quantity,
                 'total' => $quantity * $product->price
             ];
+
+            $product->quantity -= $quantity;
+            $product->save();
         }
         $order->products()->sync($productsData);
     }
