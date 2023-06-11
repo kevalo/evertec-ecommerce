@@ -2,56 +2,52 @@
 
 namespace App\Http\Controllers\Api\Admin;
 
-use App\Actions\Admin\Product\DisableProductsByCategory;
-use App\Definitions\GeneralStatus;
+use App\Domain\Categories\Models\Category;
+use App\Domain\Products\Actions\DisableProductsByCategory;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Category\ToggleStatusRequest;
-use App\Models\Category;
-use App\Traits\ApiController;
+use App\Http\Requests\Api\Category\ToggleStatusRequest;
+use App\Http\Resources\Api\StandardResource;
+use App\Support\Definitions\GeneralStatus;
+use App\Support\Exceptions\UnsupportedStatus;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
-
-    use ApiController;
-
     /**
      * Display a listing of the resource.
      */
-    public function index(): array
+    public function index(): JsonResponse
     {
-        return $this->response(Category::latest('id')->paginate(5));
+        return response()->json(new StandardResource(Category::latest('id')->paginate(5)));
     }
 
-    public function toggleStatus(ToggleStatusRequest $request): array
+    public function toggleStatus(ToggleStatusRequest $request): JsonResponse
     {
         $params = $request->validated();
 
-        $responseStatus = false;
+        $category = Category::find($params['id']);
 
         try {
-            $category = Category::find($params['id']);
-
             $newStatus = match ($category->status) {
                 GeneralStatus::ACTIVE => GeneralStatus::INACTIVE->value,
                 GeneralStatus::INACTIVE => GeneralStatus::ACTIVE->value,
-                default => throw new \Exception('Estado de la categoría no soportado')
+                default => throw new UnsupportedStatus(__('categories.error_status_update'))
             };
 
             $category->status = $newStatus;
-            $responseStatus = $category->save();
-            $responseData = 'Categoría actualizada';
+            $category->save();
+
+            $responseData =__('categories.success_update');
 
             if ($newStatus === GeneralStatus::INACTIVE->value) {
                 DisableProductsByCategory::execute(['category_id' => $category->id]);
             }
-
-        } catch (\Exception $e) {
-            $responseData = 'Error al actualizar el usuario';
-            Log::error($e->getMessage(), ['context' => 'Updating category status']);
+        } catch (UnsupportedStatus $e) {
+            $responseData = $e->getMessage();
+            Log::error($e->getMessage(), ['context' => 'Updating category status', 'value' => $category->status]);
         }
 
-        return $this->response($responseData, $responseStatus);
+        return response()->json(new StandardResource([$responseData]));
     }
-
 }

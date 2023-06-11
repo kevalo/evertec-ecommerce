@@ -1,10 +1,12 @@
 <script setup>
 import { ref } from "vue";
-import { Head, Link } from '@inertiajs/vue3';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+import { Head } from '@inertiajs/vue3';
 import Pagination from "@/Components/Pagination.vue";
 import ProductCard from "@/Components/Products/ProductCard.vue";
 import SearchProducts from "@/Components/Products/SearchProducts.vue";
+import PageLogo from "@/Components/PageLogo.vue";
+import UserMenu from "@/Components/UserMenu.vue";
+import CartIcon from "@/Components/CartIcon.vue";
 
 defineProps({
     canLogin: Boolean,
@@ -22,11 +24,7 @@ const searchProducts = (text, cat) => {
     searchTerm.value = text;
     category.value = cat;
 
-    axios.get(`${route('api.products')}/?filter=${text}&category=${category.value}`).then((response) => {
-        products.value = response.data.data;
-    }).catch((error) => {
-        console.log(error);
-    });
+    loadProducts(`${route('api.products')}/?filter=${text}&category=${category.value}`);
 }
 
 const loadProducts = (url = null) => {
@@ -44,55 +42,23 @@ loadProducts();
     <Head title="Bienvenido"/>
 
     <div>
-        <div v-if="canLogin" class="flex p-4 border-b-2 justify-between">
-            <div class="flex items-center">
-                <ApplicationLogo class="block h-9 w-auto fill-current text-gray-800"/>
-                <h1 class="ml-4">EVERTEC - ecommerce</h1>
+        <div class="flex p-4 border-b-2 justify-between items-center">
+            <PageLogo/>
+            <SearchProducts @search="searchProducts" :categories="categories"/>
+            <div class="flex justify-between items-center">
+                <CartIcon/>
+                <UserMenu/>
             </div>
-
-           <SearchProducts @search="searchProducts" :categories="categories" />
-
-            <template v-if="$page.props.auth.user">
-                <div class="flex items-center">
-                    <Link v-if="$page.props.auth.user.role_id === 1"
-                          :href="route('dashboard')"
-                          class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-black focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
-                    >Dashboard
-                    </Link>
-                    <Link
-                        class=" mx-3 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-black focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
-                        :href="route('profile.edit')">
-                        Perfil
-                    </Link>
-
-                    <Link
-                        class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-black focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
-                        :href="route('logout')" method="post" as="button">
-                        Cerrar sesión
-                    </Link>
-                </div>
-            </template>
-
-            <template v-else>
-                <Link
-                    :href="route('login')"
-                    class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-black focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
-                >Iniciar sesión
-                </Link>
-
-                <Link
-                    v-if="canRegister"
-                    :href="route('register')"
-                    class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-black focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
-                >Registrarme
-                </Link>
-            </template>
         </div>
-        <h2 class="w-full text-center p-5">PRODUCTOS</h2>
 
-        <div class="container mx-auto grid grid-cols-4 gap-6" v-if="products && products.data?.length > 0">
+        <div class="prose  mx-auto">
+            <h2 class="w-full text-center p-5 uppercase">{{ $page.props.$t.products.title }}</h2>
+        </div>
+
+        <div class="container px-3 mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+             v-if="products && products.data?.length > 0">
             <div v-for="product in products.data">
-               <ProductCard :product="product" />
+                <ProductCard :product="product"/>
             </div>
         </div>
         <div v-else class="mx-auto ">

@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Definitions\Roles;
-use App\Definitions\UserStatus;
+use App\Support\Definitions\Roles;
+use App\Support\Definitions\UserStatus;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;

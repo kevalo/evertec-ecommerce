@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Definitions\Roles;
-use App\Definitions\UserStatus;
+use App\Domain\Users\Models\User;
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Providers\RouteServiceProvider;
+use App\Support\Definitions\Roles;
+use App\Support\Definitions\UserStatus;
+use App\Support\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

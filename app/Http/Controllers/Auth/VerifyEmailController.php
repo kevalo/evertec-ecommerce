@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Definitions\UserStatus;
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
+use App\Support\Definitions\UserStatus;
+use App\Support\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\RedirectResponse;

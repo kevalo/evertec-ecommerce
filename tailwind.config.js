@@ -8,6 +8,9 @@ module.exports = {
         './resources/views/**/*.blade.php',
         './resources/js/**/*.vue',
     ],
+    daisyui: {
+        themes: ["corporate"],
+    },
     theme: {
         extend: {
             fontFamily: {
@@ -16,6 +19,7 @@ module.exports = {
         },
     },
     plugins: [
+        require("@tailwindcss/typography"),
         require("daisyui")
     ],
 };
