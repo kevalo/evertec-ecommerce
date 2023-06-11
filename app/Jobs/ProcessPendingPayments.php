@@ -22,9 +22,6 @@ class ProcessPendingPayments implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    /**
-     * Execute the job.
-     */
     public function handle(PaymentFactory $paymentFactory): void
     {
         DB::transaction(static function () use ($paymentFactory) {
@@ -41,16 +38,20 @@ class ProcessPendingPayments implements ShouldQueue
                         PaymentStatus::APPROVED_PARTIAL->value,
                         PaymentStatus::PARTIAL_EXPIRED->value,
                     ])
-                    ->where('order_id', $order->id)->first();
+                    ->where('order_id', $order->id)
+                    ->orderBy('id', 'desc')
+                    ->first();
 
-                Log::debug("PAYMENT: ".$payment->id."----Estado actual:".$payment->status);
+                if ($payment) {
+                    Log::debug("PAYMENT: " . $payment->id . "----Estado actual:" . $payment->status);
 
-                $processor = $paymentFactory->initializePayment($payment->payment_type);
-                $status = $processor->getPaymentStatus((string)$payment->request_id);
-                UpdatePaymentStatus::execute(['id' => $payment->id, 'status' => $status]);
+                    $processor = $paymentFactory->initializePayment($payment->payment_type);
+                    $status = $processor->getPaymentStatus((string)$payment->request_id);
+                    UpdatePaymentStatus::execute(['id' => $payment->id, 'status' => $status]);
 
-                if ($status === PaymentStatus::APPROVED->value) {
-                    UpdateOrderStatus::execute(['id' => $order->id, 'status' => OrderStatus::COMPLETED->value]);
+                    if ($status === PaymentStatus::APPROVED->value) {
+                        UpdateOrderStatus::execute(['id' => $order->id, 'status' => OrderStatus::COMPLETED->value]);
+                    }
                 }
             }
         });

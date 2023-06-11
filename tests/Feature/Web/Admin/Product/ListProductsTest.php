@@ -4,6 +4,7 @@ namespace Tests\Feature\Web\Admin\Product;
 
 use App\Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
 class ListProductsTest extends TestCase
@@ -30,6 +31,7 @@ class ListProductsTest extends TestCase
     public function test_admin_can_access_list(): void
     {
         $response = $this->actingAs($this->adminUser)->get(route('products.index'));
-        $response->assertOk()->assertSee('Productos');
+        $response->assertOk()->assertSee('Productos')
+        ->assertInertia(fn (AssertableInertia $page) => $page->component('Admin/Product/List'));
     }
 }

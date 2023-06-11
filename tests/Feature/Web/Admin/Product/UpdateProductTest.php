@@ -7,6 +7,7 @@ use App\Domain\Users\Models\User;
 use App\Support\Definitions\GeneralStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
 class UpdateProductTest extends TestCase
@@ -33,7 +34,9 @@ class UpdateProductTest extends TestCase
     public function test_admin_access_form(): void
     {
         $response = $this->actingAs($this->adminUser)->get(route('products.show', 1));
-        $response->assertOk();
+        $response->assertOk()->assertInertia(
+            fn (AssertableInertia $page) => $page->component('Admin/Product/Edit')->has('product')
+        );
     }
 
     public function test_update_product_without_image(): void
@@ -49,6 +52,7 @@ class UpdateProductTest extends TestCase
         $response = $this->actingAs($this->adminUser)->put(route('products.update', 1), $newData);
         $response->assertSessionHas('success');
         $response->assertRedirect(route('products.index'));
+        $this->assertDatabaseHas('products', ['id' => 1, 'name' => $newData['name']]);
     }
 
     public function test_update_product_with_image(): void
@@ -64,5 +68,6 @@ class UpdateProductTest extends TestCase
         $response = $this->actingAs($this->adminUser)->put(route('products.update', 1), $newData);
         $response->assertSessionHas('success');
         $response->assertRedirect(route('products.index'));
+        $this->assertDatabaseHas('products', ['id' => 1, 'name' => $newData['name']]);
     }
 }

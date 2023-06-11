@@ -5,6 +5,7 @@ namespace Tests\Feature\Web\Admin\Category;
 use App\Domain\Users\Models\User;
 use App\Support\Definitions\GeneralStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
 class UpdateCategoryTest extends TestCase
@@ -31,7 +32,11 @@ class UpdateCategoryTest extends TestCase
     public function test_admin_access_form(): void
     {
         $response = $this->actingAs($this->adminUser)->get(route('categories.show', 1));
-        $response->assertOk();
+        $response
+            ->assertOk()
+            ->assertInertia(
+                fn (AssertableInertia $page) => $page->component('Admin/Category/Edit')->has('category')
+            );
     }
 
     public function test_update_category(): void
@@ -43,5 +48,6 @@ class UpdateCategoryTest extends TestCase
         $response = $this->actingAs($this->adminUser)->put(route('categories.update', 1), $newData);
         $response->assertSessionHas('success');
         $response->assertRedirect(route('categories.index'));
+        $this->assertDatabaseHas('categories', ['name' => $newData['name']]);
     }
 }
