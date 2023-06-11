@@ -22,7 +22,7 @@ class PaymentController extends Controller
         PaymentFactory $paymentFactory
     ): Application|RedirectResponse|ApplicationB {
         if (!ValidateOrderStatus::execute($request->validated())) {
-            redirect()->route('orders.index');
+            return redirect()->route('orders.index');
         }
 
         $processor = $paymentFactory->initializePayment($request->get('payment_type'));

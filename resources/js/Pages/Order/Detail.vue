@@ -31,6 +31,8 @@ const token = document.getElementById('_token').value;
 
     <div class="prose w-full mx-auto mb-6">
         <h2 class="w-full text-center p-5 uppercase">{{ $page.props.$t.orders.title }} #{{ order.code }}</h2>
+        <h3 class="w-full text-center p-5 uppercase">{{ $page.props.$t.fields.status }}:
+            {{ $page.props.$t.orders.status[order.status] }}</h3>
     </div>
 
     <div class="grid grid-cols-1 gap-4 px-4 drop-shadow-md">

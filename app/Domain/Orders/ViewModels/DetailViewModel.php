@@ -2,7 +2,7 @@
 
 namespace App\Domain\Orders\ViewModels;
 
-use App\Domain\Orders\Models\Payment;
+use App\Domain\Payments\Models\Payment;
 use App\Support\Definitions\OrderStatus;
 use App\Support\Definitions\PaymentStatus;
 use App\Support\ViewModels\ViewModel;

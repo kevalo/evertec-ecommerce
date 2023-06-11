@@ -2,7 +2,7 @@
 
 namespace App\Domain\Payments\Actions;
 
-use App\Domain\Orders\Models\Payment;
+use App\Domain\Payments\Models\Payment;
 use App\Support\Actions\Action;
 use App\Support\Definitions\PaymentStatus;
 use Illuminate\Database\Eloquent\Model;
@@ -27,6 +27,7 @@ class GetOrderPayments implements Action
                 PaymentStatus::REJECTED->value,
                 PaymentStatus::FAILED->value
             ])
+            ->orderBy('id', 'desc')
             ->first();
 
         return $payment ?: false;

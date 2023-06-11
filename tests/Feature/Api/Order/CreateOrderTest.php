@@ -38,6 +38,7 @@ class CreateOrderTest extends TestCase
         );
 
         $order = $user->orders->first();
+        $this->assertEquals($order->user->id, $user->id);
 
         $resp->assertSessionDoesntHaveErrors()
             ->assertOk()

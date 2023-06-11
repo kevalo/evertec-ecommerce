@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Http;
 
 class PlaceToPayPayment extends PaymentInterface
 {
-    private $fields;
+    private array $fields;
 
     public function setUpAuth(): array
     {

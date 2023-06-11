@@ -43,7 +43,7 @@ class ProcessPendingPayments implements ShouldQueue
                     ])
                     ->where('order_id', $order->id)->first();
 
-                Log::debug("PAYMENT: ".$payment->id."----Estado:".$payment->status);
+                Log::debug("PAYMENT: ".$payment->id."----Estado actual:".$payment->status);
 
                 $processor = $paymentFactory->initializePayment($payment->payment_type);
                 $status = $processor->getPaymentStatus((string)$payment->request_id);

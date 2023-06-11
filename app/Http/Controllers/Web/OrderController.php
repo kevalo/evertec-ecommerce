@@ -36,6 +36,7 @@ class OrderController extends Controller
 
             if ($status === PaymentStatus::APPROVED->value) {
                 UpdateOrderStatus::execute(['id' => $order->id, 'status' => OrderStatus::COMPLETED->value]);
+                $order->refresh();
             }
         }
 

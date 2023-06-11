@@ -2,7 +2,7 @@
 
 namespace App\Domain\Payments\Actions;
 
-use App\Domain\Orders\Models\Payment;
+use App\Domain\Payments\Models\Payment;
 use App\Support\Actions\Action;
 
 class UpdatePaymentStatus implements Action

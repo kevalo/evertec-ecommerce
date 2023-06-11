@@ -2,6 +2,7 @@
 
 namespace App\Domain\Orders\Models;
 
+use App\Domain\Payments\Models\Payment;
 use App\Domain\Products\Models\Product;
 use App\Domain\Users\Models\User;
 use App\Support\Definitions\OrderStatus;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property string $code
@@ -38,5 +40,10 @@ class Order extends Model
         return $this->belongsToMany(Product::class, 'order_products', 'order_id', 'product_id')
             ->select('products.id', 'name', 'image', 'slug')
             ->withPivot(['price', 'quantity', 'total']);
+    }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class, 'order_id', 'id');
     }
 }

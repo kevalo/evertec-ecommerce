@@ -6,7 +6,7 @@ use App\Http\Requests\Web\Payment\CreatePaymentRequest;
 
 abstract class PaymentInterface
 {
-    private $fields;
+    private array $fields;
 
     abstract public function pay(): bool|array;
     abstract public function getPaymentStatus(string $requestId): string;
