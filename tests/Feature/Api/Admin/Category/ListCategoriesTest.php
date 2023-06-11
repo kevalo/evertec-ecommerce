@@ -20,13 +20,12 @@ class ListCategoriesTest extends TestCase
 
     public function test_pagination(): void
     {
-        $response = $this->actingAs($this->adminUser)->getJson(route('api.categories') . '?page=2');
-        $response->assertOk();
-    }
+        $response = $this->actingAs($this->adminUser)->getJson(route('api.categories') . '?page=1');
+        $response->assertOk()->assertJson(["data" => ["current_page" => 1 ]]);
+        $this->assertEquals(10, $response->json()["data"]["data"][0]['id']);
 
-    public function test_search(): void
-    {
-        $response = $this->actingAs($this->adminUser)->getJson(route('api.categories') . '?filter=and');
-        $response->assertOk();
+        $response = $this->actingAs($this->adminUser)->getJson(route('api.categories') . '?page=2');
+        $response->assertOk()->assertJson(["data" => ["current_page" => 2 ]]);
+        $this->assertEquals(5, $response->json()["data"]["data"][0]['id']);
     }
 }

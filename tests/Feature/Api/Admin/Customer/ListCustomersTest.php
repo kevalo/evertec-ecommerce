@@ -20,15 +20,20 @@ class ListCustomersTest extends TestCase
 
     public function test_pagination(): void
     {
-        $response = $this->actingAs($this->adminUser)->getJson(route('api.customers') . '?page=2');
+        $response = $this->actingAs($this->adminUser)->getJson(route('api.customers') . '?page=1');
+        $response->assertOk()->assertJson(["data" => ["current_page" => 1 ]]);
+        $this->assertEquals(400, $response->json()["data"]["data"][0]['id']);
 
-        $response->assertOk();
+        $response = $this->actingAs($this->adminUser)->getJson(route('api.customers') . '?page=2');
+        $response->assertOk()->assertJson(["data" => ["current_page" => 2 ]]);
+        $this->assertEquals(395, $response->json()["data"]["data"][0]['id']);
     }
 
     public function test_search(): void
     {
-        $response = $this->actingAs($this->adminUser)->getJson(route('api.customers') . '?filter=and');
-
-        $response->assertOk();
+        $user = User::factory()->create(['name' => 'Kevin Hernan']);
+        $response = $this->actingAs($this->adminUser)->getJson(route('api.customers') . '?filter=Kevin Hernan');
+        $response->assertOk()->assertJson(['data' => ['current_page' => 1]]);
+        $this->assertEquals($response->json()['data']['data'][0]['name'], $user->name);
     }
 }

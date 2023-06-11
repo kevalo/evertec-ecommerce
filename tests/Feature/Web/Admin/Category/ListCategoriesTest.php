@@ -4,6 +4,7 @@ namespace Tests\Feature\Web\Admin\Category;
 
 use App\Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Testing\AssertableInertia;
 use Tests\TestCase;
 
 class ListCategoriesTest extends TestCase
@@ -30,6 +31,8 @@ class ListCategoriesTest extends TestCase
     public function test_admin_access_list(): void
     {
         $response = $this->actingAs($this->adminUser)->get(route('categories.index'));
-        $response->assertOk();
+        $response
+            ->assertOk()
+            ->assertInertia(fn (AssertableInertia $page) => $page->component('Admin/Category/List'));
     }
 }

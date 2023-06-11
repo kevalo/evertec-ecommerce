@@ -2,6 +2,7 @@
 
 namespace Api\Admin\Product;
 
+use App\Domain\Products\Models\Product;
 use App\Domain\Users\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -28,13 +29,20 @@ class ListProductsTest extends TestCase
 
     public function test_pagination(): void
     {
+        $response = $this->actingAs($this->adminUser)->getJson(route('api.admin.products') . '?page=1');
+        $response->assertOk()->assertJson(["data" => ["current_page" => 1 ]]);
+        $this->assertEquals(10, $response->json()["data"]["data"][0]['id']);
+
         $response = $this->actingAs($this->adminUser)->getJson(route('api.admin.products') . '?page=2');
-        $response->assertOk();
+        $response->assertOk()->assertJson(["data" => ["current_page" => 2 ]]);
+        $this->assertEquals(5, $response->json()["data"]["data"][0]['id']);
     }
 
     public function test_search(): void
     {
-        $response = $this->actingAs($this->adminUser)->getJson(route('api.admin.products') . '?filter=and&category=1');
-        $response->assertOk();
+        $product = Product::factory()->create(['name' => 'Producto X']);
+        $response = $this->actingAs($this->adminUser)->getJson(route('api.admin.products') . '?filter=Producto X');
+        $response->assertOk()->assertJson(["data" => ["current_page" => 1 ]]);
+        $this->assertEquals($response->json()["data"]["data"][0]['id'], $product->id);
     }
 }
