@@ -17,9 +17,7 @@ class HandleInertiaRequests extends Middleware
      */
     protected $rootView = 'app';
 
-    /**
-     * Define the props that are shared by default.
-     *
+    /*
      * @return array<string, mixed>
      */
     public function share(Request $request): array

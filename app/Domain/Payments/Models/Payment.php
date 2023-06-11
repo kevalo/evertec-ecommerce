@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $request_id
  * @property string $process_url
  * @property string $payment_type
- * @property PaymentStatus $status
+ * @property PaymentStatus|string $status
  * @property int $order_id
  */
 class Payment extends Model

@@ -13,13 +13,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Ramsey\Collection\Collection;
 
 /**
  * @property string $code
- * @property OrderStatus|null $status
+ * @property OrderStatus|null|string $status
  * @property float $total_price
  * @property string $delivery_address
  * @property int $user_id
+ * @property Collection<Product> $products
  */
 class Order extends Model
 {

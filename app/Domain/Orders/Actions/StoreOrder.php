@@ -28,7 +28,7 @@ class StoreOrder implements Action
 
         $total = 0;
         foreach ($products as $product) {
-            $total += $product->price;
+            $total += $product->price * $params[$product->id]['amount'];
         }
 
         $order = new Order();

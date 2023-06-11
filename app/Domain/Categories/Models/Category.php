@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property string $name
- * @property \App\Support\Definitions\GeneralStatus|null $status
+ * @property GeneralStatus|null $status
  */
 class Category extends Model
 {

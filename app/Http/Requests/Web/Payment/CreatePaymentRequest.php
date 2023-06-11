@@ -5,6 +5,7 @@ namespace App\Http\Requests\Web\Payment;
 use App\Support\Definitions\PaymentMethods;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\In;
 
 class CreatePaymentRequest extends FormRequest
 {
@@ -14,7 +15,7 @@ class CreatePaymentRequest extends FormRequest
     }
 
     /**
-     * @return array<string, string>
+     * @return array<string, array<int|In|string>>
      */
     public function rules(): array
     {
