@@ -15,6 +15,7 @@ return new class () extends Migration {
             $table->integer('request_id');
             $table->string('process_url', 255);
             $table->string('status', 45);
+            $table->string('payment_type', 255);
             $table->foreignId('order_id')->constrained();
             $table->timestamps();
         });

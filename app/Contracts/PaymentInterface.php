@@ -4,7 +4,12 @@ namespace App\Contracts;
 
 use App\Http\Requests\Web\Payment\CreatePaymentRequest;
 
-interface PaymentInterface
+abstract class PaymentInterface
 {
-    public function pay(CreatePaymentRequest $request): bool|array;
+    private $fields;
+
+    abstract public function pay(): bool|array;
+    abstract public function getPaymentStatus(string $requestId): string;
+
+    abstract public function setUpPayment(CreatePaymentRequest $request): static;
 }

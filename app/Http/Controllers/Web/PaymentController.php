@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Domain\Orders\Models\Payment;
+use App\Domain\Orders\Actions\ValidateOrderStatus;
+use App\Domain\Payments\Actions\StorePayment;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\Payment\CreatePaymentRequest;
-use App\Support\Definitions\PaymentStatus;
 use App\Support\Services\PaymentFactory;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -21,18 +21,16 @@ class PaymentController extends Controller
         CreatePaymentRequest $request,
         PaymentFactory $paymentFactory
     ): Application|RedirectResponse|ApplicationB {
-        //TODO: Validar estado de la orden antes de pagar
+        if (!ValidateOrderStatus::execute($request->validated())) {
+            redirect()->route('orders.index');
+        }
 
-        session()->put('payment_type', $request->validated('payment_type'));
         $processor = $paymentFactory->initializePayment($request->get('payment_type'));
-        $data = $processor->pay($request);
+        $data = $processor->setUpPayment($request)->pay();
+        $data['order_id'] = $request->validated('order_id');
+        $data['payment_type'] = $request->validated('payment_type');
+        StorePayment::execute($data);
 
-        $p = new Payment();
-        $p->request_id = $data['requestId'];
-        $p->process_url = $data['processUrl'];
-        $p->status = PaymentStatus::CREATED->value;
-        $p->order_id = $request->validated('order_id');
-        $p->save();
-        return redirect($p->process_url);
+        return redirect($data['processUrl']);
     }
 }

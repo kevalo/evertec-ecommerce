@@ -7,7 +7,9 @@ import CartIcon from "@/Components/CartIcon.vue";
 defineProps({
     order: Object,
     products: Object,
-    status: Object
+    status: Object,
+    newPayment: Boolean,
+    currentPaymentUrl: String | Boolean
 });
 
 const token = document.getElementById('_token').value;
@@ -64,7 +66,7 @@ const token = document.getElementById('_token').value;
             {{ $page.props.$t.auth.login }}
         </a>
         </div>
-        <form :action="route('payment.create')" method="post" v-else-if="order.status === $page.props.status.created">
+        <form :action="route('payment.create')" method="post" v-else-if="newPayment">
             <input type="hidden" name="_token" :value="token">
             <input type="hidden" name="order_id" :value="order.id">
             <input type="hidden" name="payment_type" value="place_to_pay">
@@ -73,6 +75,10 @@ const token = document.getElementById('_token').value;
                 {{ $page.props.$t.cart.go_pay }}
             </button>
         </form>
+        <div v-else-if="currentPaymentUrl !== false" class="flex">
+            <a :href="currentPaymentUrl" class="btn btn-primary  mx-auto">{{ $page.props.$t.cart.go_pay }}</a>
+        </div>
+
     </div>
 
 </template>
