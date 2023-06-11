@@ -13,7 +13,7 @@ Check out the [Project definition](https://david-valbuena.notion.site/Reto-af876
 - composer install
 - npm install
 - cp .env.example .env
-- update the .env file with the DB_ and MAIL_ variables
+- update the .env file with the DB_, MAIL_ and PLACE_TO_PAY_ variables
 - php artisan key:generate
 - php artisan migrate --seed
 - php artisan storage:link

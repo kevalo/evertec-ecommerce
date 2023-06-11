@@ -9,6 +9,7 @@ use DateInterval;
 use DateTime;
 use Exception;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class PlaceToPayPayment extends PaymentInterface
 {
@@ -40,11 +41,13 @@ class PlaceToPayPayment extends PaymentInterface
      */
     public function pay(): bool|array
     {
-        $response = Http::post(config('services.placetopay.baseUrl') . '/session', $this->fields);
+        $url = config('services.placetopay.baseUrl') . '/session';
+        $response = Http::post($url, $this->fields);
         $jsonResponse = $response->json();
         if ($jsonResponse['status']['status'] === 'OK') {
             return $jsonResponse;
         }
+        Log::error("Bad response from: $url, response: " . print_r($jsonResponse, true));
         return false;
     }
 
