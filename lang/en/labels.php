@@ -5,5 +5,11 @@ return [
     'create' => 'Create',
     'actions' => 'actions',
     'back' => 'Back',
-    'save' => 'Save'
+    'save' => 'Save',
+    'subtotal' => 'Subtotal',
+    'total' => 'Total',
+    'yes' => 'Yes',
+    'no' => 'No',
+    'stock_error' => 'Amount not in stock',
+    'stock' => 'Stock'
 ];

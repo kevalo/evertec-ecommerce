@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Admin\CustomerController;
+use App\Http\Controllers\Api\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Api\Admin\ProductController;
-use App\Http\Controllers\Api\ProductController as CustomerProductController;
+use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\ProductController as UserApiProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -41,6 +43,15 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/products/{id}', [ProductController::class, 'show'])->name('.show');
         Route::patch('/products/toggle-status', [ProductController::class, 'toggleStatus'])->name('.toggleStatus');
     });
+
+    Route::name('.orders')->group(function () {
+        Route::post('/orders', [OrderController::class, 'store'])->name('.store');
+        Route::get('/orders/list', [AdminOrderController::class, 'index'])->name('.index');
+    });
 });
 
-Route::get('/products', [CustomerProductController::class, 'index'])->name('.products');
+Route::get('/products', [UserApiProductController::class, 'index'])->name('.products');
+Route::post('/products/cart', [UserApiProductController::class, 'getProductsForCart'])->name('.getCartProducts');
+
+Route::post('/products/check-stock', [UserApiProductController::class, 'checkStock'])
+    ->name('.products.checkStock');

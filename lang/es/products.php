@@ -9,4 +9,5 @@ return [
     'success_create' => '¡Producto creado exitosamente!',
     'success_update' => '¡Producto actualizado exitosamente!',
     'error_status_update' => 'No se pudo actualizar el producto',
+    'unit_price' => 'Precio unitario'
 ];

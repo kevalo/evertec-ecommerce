@@ -14,5 +14,7 @@ return [
     'status' => 'Status',
     'image' => 'Image',
     'phone' => 'Phone',
-    'email' => 'Email'
+    'email' => 'Email',
+    'code' => 'Code',
+    'created_at' => 'Created at'
 ];

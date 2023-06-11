@@ -1,12 +1,12 @@
 <script setup>
 import { ref } from "vue";
 import { Head } from '@inertiajs/vue3';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Pagination from "@/Components/Pagination.vue";
 import ProductCard from "@/Components/Products/ProductCard.vue";
 import SearchProducts from "@/Components/Products/SearchProducts.vue";
-import DropdownLink from "@/Components/DropdownLink.vue";
-import Dropdown from "@/Components/Dropdown.vue";
+import PageLogo from "@/Components/PageLogo.vue";
+import UserMenu from "@/Components/UserMenu.vue";
+import CartIcon from "@/Components/CartIcon.vue";
 
 defineProps({
     canLogin: Boolean,
@@ -24,11 +24,7 @@ const searchProducts = (text, cat) => {
     searchTerm.value = text;
     category.value = cat;
 
-    axios.get(`${route('api.products')}/?filter=${text}&category=${category.value}`).then((response) => {
-        products.value = response.data.data;
-    }).catch((error) => {
-        console.log(error);
-    });
+    loadProducts(`${route('api.products')}/?filter=${text}&category=${category.value}`);
 }
 
 const loadProducts = (url = null) => {
@@ -46,92 +42,21 @@ loadProducts();
     <Head title="Bienvenido"/>
 
     <div>
-        <div v-if="canLogin" class="flex p-4 border-b-2 justify-between">
-            <div class="flex items-center">
-                <ApplicationLogo class="block h-9 w-auto fill-current text-gray-800"/>
-                <h1 class="ml-4 sm:hidden lg:flex">EVERTEC - ecommerce</h1>
-            </div>
-
+        <div class="flex p-4 border-b-2 justify-between items-center">
+            <PageLogo/>
             <SearchProducts @search="searchProducts" :categories="categories"/>
-
-            <div class="hidden sm:flex sm:items-center sm:ml-6" v-if="$page.props.auth.user">
-                <!-- Settings Dropdown -->
-                <div class="ml-3 relative">
-                    <Dropdown align="right" width="48">
-                        <template #trigger>
-                                <span class="inline-flex rounded-md">
-                                    <button
-                                        type="button"
-                                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
-                                    >
-                                        {{ $page.props.auth.user.name }}
-
-                                        <svg
-                                            class="ml-2 -mr-0.5 h-4 w-4"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20"
-                                            fill="currentColor"
-                                        >
-                                            <path
-                                                fill-rule="evenodd"
-                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                clip-rule="evenodd"
-                                            />
-                                        </svg>
-                                    </button>
-                                </span>
-                        </template>
-
-                        <template #content>
-                            <DropdownLink :href="route('dashboard')"
-                                          v-if="$page.props.auth.user.role_id === $page.props.auth.admin"> Dashboard
-                            </DropdownLink>
-                            <DropdownLink :href="route('profile.edit')"> Perfil</DropdownLink>
-                            <DropdownLink :href="route('logout')" method="post" as="button">
-                                Cerrar sesión
-                            </DropdownLink>
-                        </template>
-                    </Dropdown>
-                </div>
+            <div class="flex justify-between items-center">
+                <CartIcon/>
+                <UserMenu/>
             </div>
-
-            <template v-else>
-                <div class="ml-3 relative">
-                    <Dropdown align="right" width="48">
-                        <template #trigger>
-                                <span class="inline-flex rounded-md">
-                                    <button
-                                        type="button"
-                                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
-                                    >
-                                       <i class="fa fa-user"></i>
-                                        <svg
-                                            class="ml-2 -mr-0.5 h-4 w-4"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20"
-                                            fill="currentColor"
-                                        >
-                                            <path
-                                                fill-rule="evenodd"
-                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                clip-rule="evenodd"
-                                            />
-                                        </svg>
-                                    </button>
-                                </span>
-                        </template>
-
-                        <template #content>
-                            <DropdownLink :href="route('login')"> Iniciar sesión</DropdownLink>
-                            <DropdownLink v-if="canRegister" :href="route('register')"> Registrarme</DropdownLink>
-                        </template>
-                    </Dropdown>
-                </div>
-            </template>
         </div>
-        <h2 class="w-full text-center p-5">PRODUCTOS</h2>
 
-        <div class="container mx-auto grid grid-cols-4 gap-6" v-if="products && products.data?.length > 0">
+        <div class="prose  mx-auto">
+            <h2 class="w-full text-center p-5 uppercase">{{ $page.props.$t.products.title }}</h2>
+        </div>
+
+        <div class="container px-3 mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+             v-if="products && products.data?.length > 0">
             <div v-for="product in products.data">
                 <ProductCard :product="product"/>
             </div>

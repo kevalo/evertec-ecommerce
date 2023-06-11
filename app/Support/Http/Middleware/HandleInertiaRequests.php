@@ -17,9 +17,7 @@ class HandleInertiaRequests extends Middleware
      */
     protected $rootView = 'app';
 
-    /**
-     * Define the props that are shared by default.
-     *
+    /*
      * @return array<string, mixed>
      */
     public function share(Request $request): array
@@ -45,6 +43,9 @@ class HandleInertiaRequests extends Middleware
                 'products' => __('products'),
                 'customers' => __('customers'),
                 'categories' => __('categories'),
+                'cart' => __('cart'),
+                'orders' => __('orders'),
+                'auth' => __('auth')
             ]
         ]);
     }

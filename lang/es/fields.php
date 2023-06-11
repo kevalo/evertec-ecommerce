@@ -14,5 +14,7 @@ return [
     'status' => 'Estado',
     'image' => 'Imagen',
     'phone' => 'Teléfono',
-    'email' => 'Correo electrónico'
+    'email' => 'Correo electrónico',
+    'code' => 'Código',
+    'created_at' => 'Fecha de creación'
 ];

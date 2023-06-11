@@ -13,13 +13,14 @@ Check out the [Project definition](https://david-valbuena.notion.site/Reto-af876
 - composer install
 - npm install
 - cp .env.example .env
-- update the .env file with the database credentials and mailing information
+- update the .env file with the DB_, MAIL_ and PLACE_TO_PAY_ variables
 - php artisan key:generate
 - php artisan migrate --seed
 - php artisan storage:link
 - npm run build
+- add to the server crontab: ```* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1```
 
 ## Development
 
-- php artisan serve _or create a local vhost in apache or nginx_
+- php artisan serve _or create a vhost in apache or nginx_
 - npm run dev
