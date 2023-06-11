@@ -9,6 +9,7 @@ use App\Http\Controllers\Web\Admin\ProductQuantityController;
 use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\OrderController;
+use App\Http\Controllers\Web\PaymentController;
 use App\Http\Controllers\Web\ProductController as HomeProductController;
 use App\Http\Controllers\Web\ProfileController;
 use App\Support\Http\Middleware\IsAdmin;
@@ -37,6 +38,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::get('/orders-list', [AdminOrderController::class, 'index'])->name('orders.index');
+
+    Route::post('/payment', [PaymentController::class, 'create'])->name('payment.create');
 });
 
 Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {

@@ -10,6 +10,8 @@ defineProps({
     status: Object
 });
 
+const token = document.getElementById('_token').value;
+
 </script>
 
 <template>
@@ -62,10 +64,15 @@ defineProps({
             {{ $page.props.$t.auth.login }}
         </a>
         </div>
-        <button v-else-if="order.status === $page.props.status.created" type="submit"
-                class="btn btn-primary block mx-auto">
-            {{ $page.props.$t.cart.go_pay }}
-        </button>
+        <form :action="route('payment.create')" method="post" v-else-if="order.status === $page.props.status.created">
+            <input type="hidden" name="_token" :value="token">
+            <input type="hidden" name="order_id" :value="order.id">
+            <input type="hidden" name="payment_type" value="place_to_pay">
+            <button type="submit"
+                    class="btn btn-primary block mx-auto">
+                {{ $page.props.$t.cart.go_pay }}
+            </button>
+        </form>
     </div>
 
 </template>
