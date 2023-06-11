@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 class UserFactory extends Factory
 {
     protected $model = User::class;
+
     /**
      * Define the model's default state.
      *
@@ -25,7 +26,7 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'last_name' => fake()->lastName(),
             'phone' => fake()->phoneNumber(),
-            'email' => fake()->unique()->safeEmail(),
+            'email' => Str::random(3) . fake()->unique()->safeEmail(),
             'status' => UserStatus::ACTIVE->value,
             'role_id' => Roles::CUSTOMER->value,
             'email_verified_at' => now(),
