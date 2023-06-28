@@ -12,7 +12,7 @@ class DetailViewModel extends ViewModel
 {
     public function toArray(): array
     {
-        $newPayment = false;
+        $newPayment = true;
         $currentPaymentUrl = false;
 
         /**
@@ -34,8 +34,6 @@ class DetailViewModel extends ViewModel
                 if ($payment->status === PaymentStatus::CREATED->value) {
                     $currentPaymentUrl = $payment->process_url;
                 }
-            } else {
-                $newPayment = true;
             }
         }
 
