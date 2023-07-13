@@ -5,7 +5,7 @@ use App\Http\Controllers\Web\Admin\CustomerController;
 use App\Http\Controllers\Web\Admin\DashboardController;
 use App\Http\Controllers\Web\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Web\Admin\ProductController;
-use App\Http\Controllers\Web\Admin\ProductQuantityController;
+use App\Http\Controllers\Web\Admin\ProductImportController;
 use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\OrderController;
@@ -50,6 +50,9 @@ Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {
     Route::put('/customers/{user}', [CustomerController::class, 'update'])->name('customers.update');
 
     Route::resource('categories', CategoryController::class)->except(['destroy']);
+
+    Route::get('/products/import', [ProductImportController::class, 'index'])->name('products.import');
+    Route::post('/products/import', [ProductImportController::class, 'store'])->name('products.import.process');
 
     Route::resource('products', ProductController::class)->except(['destroy']);
     Route::get('/products/{product}/add', [ProductQuantityController::class, 'show'])->name('products.add');

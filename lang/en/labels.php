@@ -11,5 +11,8 @@ return [
     'yes' => 'Yes',
     'no' => 'No',
     'stock_error' => 'Amount not in stock',
-    'stock' => 'Stock'
+    'stock' => 'Stock',
+    'import' => 'Import',
+    'download' => 'Download',
+    'file_upload' => 'File upload'
 ];
