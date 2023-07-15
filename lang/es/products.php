@@ -13,7 +13,8 @@ return [
     'import' => 'Importar productos',
     'import_alert' => [
         'Si la categoría no existe, se creará.',
-        'La columna estado puede tener los valores activo o inactivo.'
+        'La columna estado puede tener los valores activo o inactivo.',
+        'Recibirás un correo electrónico cuando se termine el proceso de importación.'
     ],
     'import_format_file' => 'Para poder importar los productos debes diligenciar y cargar el siguiente formato',
     'import_started' => 'Se inició el proceso de importación.',
