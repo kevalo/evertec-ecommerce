@@ -5,6 +5,7 @@ use App\Http\Controllers\Web\Admin\CustomerController;
 use App\Http\Controllers\Web\Admin\DashboardController;
 use App\Http\Controllers\Web\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Web\Admin\ProductController;
+use App\Http\Controllers\Web\Admin\ProductExportController;
 use App\Http\Controllers\Web\Admin\ProductImportController;
 use App\Http\Controllers\Web\Admin\ProductQuantityController;
 use App\Http\Controllers\Web\CartController;
@@ -54,6 +55,8 @@ Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {
 
     Route::get('/products/import', [ProductImportController::class, 'index'])->name('products.import');
     Route::post('/products/import', [ProductImportController::class, 'store'])->name('products.import.process');
+
+    Route::get('/products/export', ProductExportController::class)->name('products.export');
 
     Route::resource('products', ProductController::class)->except(['destroy']);
     Route::get('/products/{product}/add', [ProductQuantityController::class, 'show'])->name('products.add');

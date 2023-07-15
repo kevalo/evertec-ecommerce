@@ -20,4 +20,6 @@ return [
     'import_started' => 'Se inició el proceso de importación.',
     'import_successfully' => 'Proceso de importación de productos finalizado con éxito!',
     'import_error' => 'Ocurrió un error al importar productos.',
+    'export_started' => 'Se inició el proceso de exportación, recibirás un correo electrónico con el enlace de descarga cuando termine.',
+    'export_success' => 'Proceso de exportación de productos finalizado con éxito!'
 ];
