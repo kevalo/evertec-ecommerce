@@ -13,6 +13,7 @@ return [
     'stock_error' => 'Amount not in stock',
     'stock' => 'Stock',
     'import' => 'Import',
+    'export' => 'Export',
     'download' => 'Download',
     'file_upload' => 'File upload'
 ];

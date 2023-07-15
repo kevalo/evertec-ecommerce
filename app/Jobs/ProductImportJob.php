@@ -85,7 +85,7 @@ class ProductImportJob implements ShouldQueue
         };
 
         Product::query()->updateOrCreate([
-            'slug' => Str::slug($row[self::HEADERS['nombre']], '-', 'es'),
+            'slug' => Str::slug(trim($row[self::HEADERS['nombre']]), '-', 'es'),
         ], [
             'name' => $row[self::HEADERS['nombre']],
             'price' => $row[self::HEADERS['precio']],
