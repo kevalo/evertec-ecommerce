@@ -12,7 +12,7 @@ return [
     'unit_price' => 'Unit price',
     'import' => 'Import products',
     'import_alert' => [
-        'Imported products will be associated with the General category.',
+        'The category will be created if it does not exists.',
         'The status column can have the values active or inactive.'
     ],
     'import_format_file' => 'In order to import the products you must fill out and upload the following form',

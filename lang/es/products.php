@@ -12,7 +12,7 @@ return [
     'unit_price' => 'Precio unitario',
     'import' => 'Importar productos',
     'import_alert' => [
-        'Los productos importados serán asociados a la categoría General.',
+        'Si la categoría no existe, se creará.',
         'La columna estado puede tener los valores activo o inactivo.'
     ],
     'import_format_file' => 'Para poder importar los productos debes diligenciar y cargar el siguiente formato',

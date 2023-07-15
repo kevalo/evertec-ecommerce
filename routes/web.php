@@ -54,6 +54,7 @@ Route::middleware(['auth', 'verified', IsAdmin::class])->group(function () {
 
     Route::get('/products/import', [ProductImportController::class, 'index'])->name('products.import');
     Route::post('/products/import', [ProductImportController::class, 'store'])->name('products.import.process');
+    +
 
     Route::resource('products', ProductController::class)->except(['destroy']);
     Route::get('/products/{product}/add', [ProductQuantityController::class, 'show'])->name('products.add');
