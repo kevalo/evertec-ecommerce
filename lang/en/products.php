@@ -13,7 +13,8 @@ return [
     'import' => 'Import products',
     'import_alert' => [
         'The category will be created if it does not exists.',
-        'The status column can have the values active or inactive.'
+        'The status column can have the values active or inactive.',
+        'You will receive an email when the import process is completed.'
     ],
     'import_format_file' => 'In order to import the products you must fill out and upload the following form',
     'import_started' => 'Import process has been started.',
