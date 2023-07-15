@@ -24,19 +24,17 @@ class ProductImportJob implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    private int $categoryId;
-
     private const HEADERS = [
         'nombre' => 0,
         'precio' => 1,
         'descripcion' => 2,
         'cantidad' => 3,
         'estado' => 4,
+        'categoria' => 5
     ];
 
     public function __construct(private readonly string $filePath, private readonly User $user)
     {
-        $this->categoryId = $this->getGeneralCategoryId();
     }
 
     public function handle(): void
@@ -45,7 +43,9 @@ class ProductImportJob implements ShouldQueue
             logger()->info("Proceso de importación de productos iniciado");
             $count = 0;
 
-            if (($file = fopen(Storage::path($this->filePath), 'rb')) !== false) {
+            $path = Storage::path($this->filePath);
+
+            if (($file = fopen($path, 'rb')) !== false) {
                 fgetcsv($file);
 
                 while (($row = fgetcsv($file)) !== false) {
@@ -55,6 +55,8 @@ class ProductImportJob implements ShouldQueue
 
                 fclose($file);
             }
+
+            Storage::delete($this->filePath);
 
             logger()->info("Proceso de importación de productos finalizado, se encontraron " . $count . " registros.");
             Mail::to($this->user)
@@ -75,6 +77,7 @@ class ProductImportJob implements ShouldQueue
     private function processRow(array $row): void
     {
         $quantity = (int)$row[self::HEADERS['cantidad']];
+
         $status = match (strtolower(trim($row[self::HEADERS['estado']]))) {
             'activo' => GeneralStatus::ACTIVE->value,
             'inactivo' => GeneralStatus::INACTIVE->value,
@@ -87,15 +90,19 @@ class ProductImportJob implements ShouldQueue
             'name' => $row[self::HEADERS['nombre']],
             'price' => $row[self::HEADERS['precio']],
             'description' => $row[self::HEADERS['descripcion']],
-            'image' => '',
             'quantity' => $quantity > 0 ? $quantity : 1,
             'status' => $status,
-            'category_id' => $this->categoryId
+            'category_id' => $this->getCategoryId($row[self::HEADERS['categoria']])
         ]);
     }
 
-    private function getGeneralCategoryId(): int
+    private function getCategoryId(string $categoryName): int
     {
-        return Category::query()->firstOrCreate(['name' => 'General'], ['name' => 'General'])->id;
+        $category = Category::query()->firstOrCreate(
+            ['name' => $categoryName],
+            ['name' => $categoryName, 'status' => GeneralStatus::ACTIVE->value]
+        );
+
+        return $category->id;
     }
 }
