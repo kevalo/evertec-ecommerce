@@ -70,40 +70,55 @@ const addToCart = () => {
 
         <div class="mb-3">
             <figure style="object-fit: contain;">
-                <img :src="`/storage/${product.image}`" class="max-w-full mx-auto drop-shadow-md rounded"
+                <img v-if="product.image" :src="`/storage/${product.image}`"
+                     class="max-w-full mx-auto drop-shadow-md rounded"
+                     :alt="product.name"
+                     style="max-height: 720px;"/>
+                <img v-else :src="`https://placehold.co/600x400?text=${product.name}`"
+                     class="max-w-full mx-auto drop-shadow-md rounded"
                      :alt="product.name"
                      style="max-height: 720px;"/>
             </figure>
         </div>
 
-        <span class="badge badge-outline block h-fit">{{ category.name }}</span>
+        <div>
+            <span class="badge badge-outline block h-fit">{{ category.name }}</span>
 
-        <div class="prose mt-3">
+            <div class="prose mt-3">
 
-            <p>{{ product.description }}</p>
-            <h3>${{ product.price.toLocaleString('es-CO') }}</h3>
+                <p>{{ product.description }}</p>
+                <h3>${{ product.price.toLocaleString('es-CO') }}</h3>
+            </div>
+
+            <div class="pt-8">
+                <span>{{ $page.props.$t.cart.add }}</span>
+                <div class="flex">
+
+                    <input type="number" class="input input-bordered w-20" min="1" v-model="amount">
+                    <button class="btn btn-outline ml-1" @click="addToCart">
+                        <i class="fa fa-cart-plus"></i>
+                    </button>
+                </div>
+                <div v-if="showStockError" class="alert alert-warning w-2/4 mt-2">
+                    {{ $page.props.$t.labels.stock_error }}
+                </div>
+            </div>
+            <small>{{ $page.props.$t.labels.stock }}: {{ product.quantity }}</small>
+
+            <div class="toast toast-middle toast-end " v-if="showAlert">
+                <div class="alert alert-success">
+                    <span class="badge" id="amount">{{ amount }}</span><span>{{ $page.props.$t.cart.added }}</span>
+                </div>
+            </div>
         </div>
 
-        <div class="pt-8">
-            <span>{{ $page.props.$t.cart.add }}</span>
-            <div class="flex">
 
-                <input type="number" class="input input-bordered w-20" min="1" v-model="amount">
-                <button class="btn btn-outline ml-1" @click="addToCart">
-                    <i class="fa fa-cart-plus"></i>
-                </button>
-            </div>
-            <div v-if="showStockError" class="alert alert-warning w-2/4 mt-2">
-                {{ $page.props.$t.labels.stock_error }}
-            </div>
-        </div>
-        <small>{{ $page.props.$t.labels.stock }}: {{ product.quantity }}</small>
     </div>
 
-    <div class="toast toast-middle toast-end " v-if="showAlert">
-        <div class="alert alert-success">
-            <span class="badge" id="amount">{{ amount }}</span><span>{{ $page.props.$t.cart.added }}</span>
-        </div>
-    </div>
 
 </template>
+<style>
+.prose {
+    max-width: 90% !important;
+}
+</style>

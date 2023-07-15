@@ -13,12 +13,12 @@ onMounted(() => {
     }
 });
 
-defineExpose({ focus: () => input.value.focus() });
+defineExpose({focus: () => input.value.focus()});
 </script>
 
 <template>
     <input
-        class="border-gray-300 focus:border-primary focus:outline-none pt-2 pl-2"
+        class=" p-0 file-input file-input-secondary file-input-sm file-input-bordered w-full max-w-xs"
         @input="$emit('update:modelValue', $event.target.files[0])"
         ref="input"
         type="file"

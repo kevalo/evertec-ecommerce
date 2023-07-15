@@ -75,7 +75,7 @@ const submit = () => {
 
                             <div class="mt-3">
                                 <InputLabel for="image" :value="$page.props.$t.fields.image"/>
-                                <img :src="`/storage/${product.image}`" style="max-width: 100px;"
+                                <img v-if="product.image" :src="`/storage/${product.image}`" style="max-width: 100px;"
                                      alt="Imagen del producto">
                                 <FileInput
                                     id="image"

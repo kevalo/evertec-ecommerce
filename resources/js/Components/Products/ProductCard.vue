@@ -8,7 +8,8 @@ defineProps({
     <a :href="route('product-detail', product.slug)">
         <div class="card card-compact bg-base-100 shadow-lg ">
             <figure style="object-fit: contain; height: 200px">
-                <img :src="`/storage/${product.image}`" :alt="product.name"/>
+                <img v-if="product.image" :src="`/storage/${product.image}`" :alt="product.name"/>
+                <img v-else :src="`https://placehold.co/360x280?text=${product.name}`" :alt="product.name"/>
             </figure>
             <div class="card-body prose">
                 <h2 class="card-title">{{ product.name }}</h2>

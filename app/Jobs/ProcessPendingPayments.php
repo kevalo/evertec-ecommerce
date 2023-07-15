@@ -9,6 +9,7 @@ use App\Support\Definitions\PaymentStatus;
 use App\Support\Services\PaymentFactory;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
@@ -25,33 +26,35 @@ class ProcessPendingPayments implements ShouldQueue
     public function handle(PaymentFactory $paymentFactory): void
     {
         DB::transaction(static function () use ($paymentFactory) {
-            $orders = DB::table('orders')
-                ->where('status', OrderStatus::CREATED->value)
+            $paymentInfo = DB::table('orders')
+                ->select([
+                    'orders.id as order_id',
+                    'payments.id as payment_id',
+                    'payments.status as payment_status',
+                    'payments.request_id',
+                    'payments.payment_type'
+                ])
+                ->join('payments', function (JoinClause $join) {
+                    $join->on('orders.id', '=', 'payments.order_id')
+                        ->whereIn('payments.status', [
+                            PaymentStatus::CREATED->value,
+                            PaymentStatus::PENDING->value,
+                            PaymentStatus::APPROVED_PARTIAL->value,
+                            PaymentStatus::PARTIAL_EXPIRED->value
+                        ]);
+                })
+                ->where('orders.status', OrderStatus::CREATED->value)
                 ->get();
 
-            foreach ($orders as $order) {
-                $payment = DB::table('payments')
-                    ->select('id', 'request_id', 'status', 'payment_type')
-                    ->whereIn('status', [
-                        PaymentStatus::CREATED->value,
-                        PaymentStatus::PENDING->value,
-                        PaymentStatus::APPROVED_PARTIAL->value,
-                        PaymentStatus::PARTIAL_EXPIRED->value,
-                    ])
-                    ->where('order_id', $order->id)
-                    ->orderBy('id', 'desc')
-                    ->first();
+            foreach ($paymentInfo as $info) {
+                Log::debug("PAYMENT: " . $info->payment_id . "----Estado actual:" . $info->payment_status);
 
-                if ($payment) {
-                    Log::debug("PAYMENT: " . $payment->id . "----Estado actual:" . $payment->status);
+                $processor = $paymentFactory->initializePayment($info->payment_type);
+                $status = $processor->getPaymentStatus((string)$info->request_id);
+                UpdatePaymentStatus::execute(['id' => $info->payment_id, 'status' => $status]);
 
-                    $processor = $paymentFactory->initializePayment($payment->payment_type);
-                    $status = $processor->getPaymentStatus((string)$payment->request_id);
-                    UpdatePaymentStatus::execute(['id' => $payment->id, 'status' => $status]);
-
-                    if ($status === PaymentStatus::APPROVED->value) {
-                        UpdateOrderStatus::execute(['id' => $order->id, 'status' => OrderStatus::COMPLETED->value]);
-                    }
+                if ($status === PaymentStatus::APPROVED->value) {
+                    UpdateOrderStatus::execute(['id' => $info->order_id, 'status' => OrderStatus::COMPLETED->value]);
                 }
             }
         });

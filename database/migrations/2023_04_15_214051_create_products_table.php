@@ -15,7 +15,7 @@ return new class () extends Migration {
             $table->string('name');
             $table->text('description');
             $table->string('slug')->unique('index-product-slug');
-            $table->string('image');
+            $table->string('image')->nullable()->default(null);
             $table->double('price');
             $table->integer('quantity');
             $table->boolean('status');

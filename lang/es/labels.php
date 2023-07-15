@@ -11,5 +11,8 @@ return [
     'yes' => 'Si',
     'no' => 'No',
     'stock_error' => 'La cantidad seleccionada supera las existencias',
-    'stock' => 'Existencias'
+    'stock' => 'Existencias',
+    'import' => 'Importar',
+    'download' => 'Descargar',
+    'file_upload' => 'Cargar archivo'
 ];
