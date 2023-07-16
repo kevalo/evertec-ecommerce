@@ -12,7 +12,7 @@ class DetailViewModel extends ViewModel
 {
     public function toArray(): array
     {
-        $newPayment = true;
+        $newPayment = false;
         $currentPaymentUrl = false;
 
         /**
@@ -25,6 +25,7 @@ class DetailViewModel extends ViewModel
                 ->where('order_id', $model->id)
                 ->orderBy('id', 'desc')->first();
 
+            $newPayment = true;
             if ($payment) {
                 $newPayment = match ($payment->status) {
                     PaymentStatus::REJECTED->value, PaymentStatus::FAILED->value => true,

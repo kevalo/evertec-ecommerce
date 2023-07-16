@@ -17,7 +17,7 @@ class UpdateProduct implements Action
         $fields = $params['fields'];
         $product = $params['product'];
 
-        if ($fields['image'] !== null) {
+        if (array_key_exists('image', $fields) && $fields['image'] !== null) {
             if ($product->image) {
                 Storage::disk('public')->delete($product->image);
             }

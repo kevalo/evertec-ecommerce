@@ -18,6 +18,7 @@ const categories = usePage().props.categories;
 const product = usePage().props.product;
 
 const form = useForm({
+    id: product.id,
     name: product.name,
     description: product.description,
     price: product.price,

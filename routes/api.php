@@ -20,7 +20,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// All the routes in this file have the name prefix api
+Route::post('/sanctum/token', [UserApiProductController::class, 'getToken']);
+
+Route::get('/products', [UserApiProductController::class, 'index'])->name('.products');
+Route::post('/products/cart', [UserApiProductController::class, 'getProductsForCart'])->name('.getCartProducts');
+
+Route::post('/products/check-stock', [UserApiProductController::class, 'checkStock'])
+    ->name('.products.checkStock');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
@@ -29,7 +35,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::name('.customers')->group(function () {
         Route::get('/customers', [CustomerController::class, 'index']);
-        Route::get('/customers/{id}', [CustomerController::class, 'show'])->name('.show');
         Route::patch('/customers/toggle-status', [CustomerController::class, 'toggleStatus'])->name('.toggleStatus');
     });
 
@@ -40,18 +45,15 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::name('.admin.products')->group(function () {
         Route::get('/products/list', [ProductController::class, 'index']);
-        Route::get('/products/{id}', [ProductController::class, 'show'])->name('.show');
         Route::patch('/products/toggle-status', [ProductController::class, 'toggleStatus'])->name('.toggleStatus');
     });
+
+    Route::post('/products', [UserApiProductController::class, 'store'])->name('.products.store');
+    Route::get('/products/show', [UserApiProductController::class, 'show'])->name('.products.show');
+    Route::put('/products', [UserApiProductController::class, 'update'])->name('.products.update');
 
     Route::name('.orders')->group(function () {
         Route::post('/orders', [OrderController::class, 'store'])->name('.store');
         Route::get('/orders/list', [AdminOrderController::class, 'index'])->name('.index');
     });
 });
-
-Route::get('/products', [UserApiProductController::class, 'index'])->name('.products');
-Route::post('/products/cart', [UserApiProductController::class, 'getProductsForCart'])->name('.getCartProducts');
-
-Route::post('/products/check-stock', [UserApiProductController::class, 'checkStock'])
-    ->name('.products.checkStock');

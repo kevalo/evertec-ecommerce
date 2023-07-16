@@ -15,16 +15,22 @@ class StoreProduct implements Action
      */
     public static function execute(array $params): bool
     {
-        $product = new Product();
-        $product->name = $params['name'];
-        $product->description = $params['description'];
-        $product->image = Storage::disk('public')->putFile('products_images', $params['image']);
-        $product->slug = Str::slug($params['name'], '-', 'es');
-        $product->price = $params['price'];
-        $product->quantity = $params['quantity'];
-        $product->category_id = $params['category_id'];
-        $product->status = $params['status'];
+        $response = false;
 
-        return $product->save();
+        try {
+            $product = new Product();
+            $product->name = $params['name'];
+            $product->description = $params['description'];
+            $product->image = Storage::disk('public')->putFile('products_images', $params['image']);
+            $product->slug = Str::slug($params['name'], '-', 'es');
+            $product->price = $params['price'];
+            $product->quantity = $params['quantity'];
+            $product->category_id = $params['category_id'];
+            $product->status = $params['status'];
+            $response = $product->save();
+        } catch (\Exception $e) {
+            logger()->error($e->getMessage());
+        }
+        return $response;
     }
 }
