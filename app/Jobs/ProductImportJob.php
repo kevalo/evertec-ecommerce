@@ -81,7 +81,7 @@ class ProductImportJob implements ShouldQueue
         $status = match (strtolower(trim($row[self::HEADERS['estado']]))) {
             'activo' => GeneralStatus::ACTIVE->value,
             'inactivo' => GeneralStatus::INACTIVE->value,
-            default => throw new UnsupportedStatus(__('categories.error_status_update'))
+            default => throw new UnsupportedStatus(__('products.import_error'))
         };
 
         Product::query()->updateOrCreate([

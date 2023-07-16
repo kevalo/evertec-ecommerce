@@ -17,11 +17,12 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id' => ['required', 'exists:products,id'],
             'name' => ['required', 'min:3', 'max:255'],
             'description' => ['required', 'min:3', 'max:500'],
             'image' => ['nullable','image', 'mimes:jpeg,jpg,png,gif,webp', 'max:2048'],
             'price' => ['required', 'numeric', 'min:1000'],
-            'category_id' => ['required', 'exists:categories,id'],
+            'category_id' => ['required', 'exists:categories,id']
         ];
     }
 }

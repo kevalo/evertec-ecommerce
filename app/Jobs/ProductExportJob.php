@@ -54,7 +54,7 @@ class ProductExportJob implements ShouldQueue
                 $status = match ($product->status) {
                     GeneralStatus::ACTIVE => 'activo',
                     GeneralStatus::INACTIVE => 'inactivo',
-                    default => throw new UnsupportedStatus(__('categories.error_status_update'))
+                    default => throw new UnsupportedStatus(__('products.import_error'))
                 };
 
                 fputcsv($file, [
