@@ -97,10 +97,15 @@ class ProductController extends Controller
 
     public function update(UpdateRequest $request, int $id): JsonResponse
     {
+        $product = Product::find($id);
+        if (!$product) {
+            return response()->json(new StandardResource(['status' => false, 'msg' => 'Product not found']));
+        }
+
         $fields = $request->validated();
         $params = [
             'fields' => $fields,
-            'product' => Product::find($id)
+            'product' => $product
         ];
 
         if (UpdateProduct::execute($params)) {
