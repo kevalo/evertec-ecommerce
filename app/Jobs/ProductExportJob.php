@@ -38,7 +38,8 @@ class ProductExportJob implements ShouldQueue
             'descripción',
             'cantidad',
             'estado',
-            'categoría'
+            'categoría',
+            'id'
         ];
 
         $fileName = "export_productos.csv";
@@ -63,7 +64,8 @@ class ProductExportJob implements ShouldQueue
                     $headers[2] => $product->description,
                     $headers[3] => $product->quantity,
                     $headers[4] => $status,
-                    $headers[5] => $product->category->name
+                    $headers[5] => $product->category->name,
+                    $headers[6] => $product->id
                 ]);
             }
         });
