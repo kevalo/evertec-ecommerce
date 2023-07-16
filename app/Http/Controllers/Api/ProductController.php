@@ -9,7 +9,6 @@ use App\Domain\Users\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Product\CheckStockRequest;
 use App\Http\Requests\Api\Product\GetCartProductsRequest;
-use App\Http\Requests\Api\Product\ShowProductRequest;
 use App\Http\Requests\Web\Product\CreateRequest;
 use App\Http\Requests\Web\Product\UpdateRequest;
 use App\Http\Resources\Api\StandardResource;
@@ -67,10 +66,8 @@ class ProductController extends Controller
         return response()->json(new StandardResource($products));
     }
 
-    public function show(ShowProductRequest $request): JsonResponse
+    public function show(int $id): JsonResponse
     {
-        $id = $request->validated('id');
-
         $product = Product::select(
             'products.id',
             'products.name',
@@ -98,11 +95,9 @@ class ProductController extends Controller
         return response()->json(new StandardResource(['status' => false, 'msg' => 'Error']));
     }
 
-    public function update(UpdateRequest $request): JsonResponse
+    public function update(UpdateRequest $request, int $id): JsonResponse
     {
-        $id = $request->validated('id');
         $fields = $request->validated();
-        unset($fields['id']);
         $params = [
             'fields' => $fields,
             'product' => Product::find($id)

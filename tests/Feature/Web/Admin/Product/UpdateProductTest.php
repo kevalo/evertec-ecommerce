@@ -42,7 +42,6 @@ class UpdateProductTest extends TestCase
     public function test_update_product_without_image(): void
     {
         $newData = [
-            'id' => 1,
             'name' => fake()->name(),
             'description' => fake()->sentence(),
             'status' => GeneralStatus::INACTIVE->value,
@@ -59,7 +58,6 @@ class UpdateProductTest extends TestCase
     public function test_update_product_with_image(): void
     {
         $newData = [
-            'id' => 1,
             'name' => fake()->name(),
             'description' => fake()->sentence(),
             'status' => GeneralStatus::INACTIVE->value,

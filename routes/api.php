@@ -49,8 +49,8 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::post('/products', [UserApiProductController::class, 'store'])->name('.products.store');
-    Route::get('/products/show', [UserApiProductController::class, 'show'])->name('.products.show');
-    Route::put('/products', [UserApiProductController::class, 'update'])->name('.products.update');
+    Route::get('/products/{id}', [UserApiProductController::class, 'show'])->name('.products.show');
+    Route::put('/products/{id}', [UserApiProductController::class, 'update'])->name('.products.update');
 
     Route::name('.orders')->group(function () {
         Route::post('/orders', [OrderController::class, 'store'])->name('.store');
