@@ -88,8 +88,8 @@ class ProductImportJob implements ShouldQueue
         Product::query()->updateOrCreate([
             'id' => (
                 array_key_exists(self::HEADERS['id'], $row) &&
-                is_numeric(trim($row[self::HEADERS['id']]))
-            ) ? $row[self::HEADERS['id']] : -1,
+                is_numeric($row[self::HEADERS['id']])
+            ) ? $row[self::HEADERS['id']] : -1
         ], [
             'name' => $row[self::HEADERS['nombre']],
             'slug' => Str::slug(trim($row[self::HEADERS['nombre']]), '-', 'es'),

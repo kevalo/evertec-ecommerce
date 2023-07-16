@@ -61,6 +61,10 @@ const closeFlashErrorMessage = () => {
                                 <NavLink :href="route('products.index')" :active="route().current('products.index')">
                                     {{ $page.props.$t.products.title }}
                                 </NavLink>
+
+                                <NavLink :href="route('orders.index')" :active="route().current('orders.index')">
+                                    {{ $page.props.$t.orders.plural_title }}
+                                </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex"
                                  v-else-if="$page.props.auth.user.role_id !== $page.props.auth.admin">
