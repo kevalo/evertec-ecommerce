@@ -39,7 +39,6 @@ class ProductController extends Controller
         return response()->json(new StandardResource($products));
     }
 
-
     public function toggleStatus(ToggleStatusRequest $request): JsonResponse
     {
         $params = $request->validated();

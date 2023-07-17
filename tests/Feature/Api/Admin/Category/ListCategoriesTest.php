@@ -22,10 +22,11 @@ class ListCategoriesTest extends TestCase
     {
         $response = $this->actingAs($this->adminUser)->getJson(route('api.categories') . '?page=1');
         $response->assertOk()->assertJson(["data" => ["current_page" => 1 ]]);
-        $this->assertEquals(10, $response->json()["data"]["data"][0]['id']);
+
+        $this->assertEquals(11, $response->json()["data"]["data"][0]['id']);
 
         $response = $this->actingAs($this->adminUser)->getJson(route('api.categories') . '?page=2');
         $response->assertOk()->assertJson(["data" => ["current_page" => 2 ]]);
-        $this->assertEquals(5, $response->json()["data"]["data"][0]['id']);
+        $this->assertEquals(6, $response->json()["data"]["data"][0]['id']);
     }
 }

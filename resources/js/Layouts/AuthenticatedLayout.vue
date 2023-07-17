@@ -61,6 +61,10 @@ const closeFlashErrorMessage = () => {
                                 <NavLink :href="route('products.index')" :active="route().current('products.index')">
                                     {{ $page.props.$t.products.title }}
                                 </NavLink>
+
+                                <NavLink :href="route('orders.index')" :active="route().current('orders.index')">
+                                    {{ $page.props.$t.orders.plural_title }}
+                                </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex"
                                  v-else-if="$page.props.auth.user.role_id !== $page.props.auth.admin">
@@ -199,14 +203,12 @@ const closeFlashErrorMessage = () => {
             <main>
                 <div v-if="$page.props.flash.success">
                     <div class="alert alert-success shadow-lg" id="flashSuccessMessage">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6"
-                                 fill="none" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                            <span> {{ $page.props.flash.success }}</span>
-                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6"
+                             fill="none" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span> {{ $page.props.flash.success }}</span>
                         <div class="flex-none">
                             <button class="btn btn-sm btn-ghost" @click="closeFlashSuccessMessage()"><i
                                 class="fa fa-close"></i></button>
@@ -215,14 +217,13 @@ const closeFlashErrorMessage = () => {
                 </div>
                 <div v-if="$page.props.flash.error">
                     <div class="alert alert-error shadow-lg" id="flashErrorMessage">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6"
-                                 fill="none" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                            <span> {{ $page.props.flash.error }}</span>
-                        </div>
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6"
+                             fill="none" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span> {{ $page.props.flash.error }}</span>
                         <div class="flex-none">
                             <button class="btn btn-sm btn-ghost" @click="closeFlashErrorMessage()"><i
                                 class="fa fa-close"></i></button>

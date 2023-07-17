@@ -64,8 +64,22 @@ loadProducts();
                             </form>
 
                             <Link
+                                :href="route('products.export')"
+                                class="btn ml-auto"
+                            >
+                                {{ $page.props.$t.labels.export }}
+                            </Link>
+
+                            <Link
+                                :href="route('products.import')"
+                                class="btn ml-2"
+                            >
+                                {{ $page.props.$t.labels.import }}
+                            </Link>
+
+                            <Link
                                 :href="route('products.create')"
-                                class="btn btn-primary w-20 ml-auto"
+                                class="btn btn-primary ml-2"
                             >
                                 {{ $page.props.$t.labels.create }}
                             </Link>

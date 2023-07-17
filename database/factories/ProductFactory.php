@@ -8,6 +8,7 @@ use App\Support\Definitions\GeneralStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 /**
  * @extends Factory<Product>
@@ -27,10 +28,12 @@ class ProductFactory extends Factory
             Storage::fake('public');
         }
 
+        $name = fake()->domainName();
+
         return [
-            'name' => fake()->domainName(),
+            'name' => $name,
             'description' => fake()->sentence(100),
-            'slug' => fake()->slug(),
+            'slug' => Str::slug($name, '-', 'es'),
             'image' => Storage::disk('public')->put(
                 'products_images',
                 UploadedFile::fake()->image('image.png', 640, 480)

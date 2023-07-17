@@ -25,6 +25,7 @@ class DetailViewModel extends ViewModel
                 ->where('order_id', $model->id)
                 ->orderBy('id', 'desc')->first();
 
+            $newPayment = true;
             if ($payment) {
                 $newPayment = match ($payment->status) {
                     PaymentStatus::REJECTED->value, PaymentStatus::FAILED->value => true,
@@ -34,8 +35,6 @@ class DetailViewModel extends ViewModel
                 if ($payment->status === PaymentStatus::CREATED->value) {
                     $currentPaymentUrl = $payment->process_url;
                 }
-            } else {
-                $newPayment = true;
             }
         }
 

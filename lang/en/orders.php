@@ -9,6 +9,6 @@ return [
         'canceled' => 'Cancelada',
         'completed' => 'Completada'
     ],
-    'list' => 'Lista de ordenes',
-    'no_records' => 'No se encontraron ordenes'
+    'list' => 'Orders list',
+    'no_records' => 'Orders not found'
 ];

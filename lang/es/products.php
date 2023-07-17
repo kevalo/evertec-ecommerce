@@ -9,5 +9,17 @@ return [
     'success_create' => '¡Producto creado exitosamente!',
     'success_update' => '¡Producto actualizado exitosamente!',
     'error_status_update' => 'No se pudo actualizar el producto',
-    'unit_price' => 'Precio unitario'
+    'unit_price' => 'Precio unitario',
+    'import' => 'Importar productos',
+    'import_alert' => [
+        'Si la categoría no existe, se creará.',
+        'La columna estado puede tener los valores activo o inactivo.',
+        'Recibirás un correo electrónico cuando se termine el proceso de importación.'
+    ],
+    'import_format_file' => 'Para poder importar los productos debes diligenciar y cargar el siguiente formato',
+    'import_started' => 'Se inició el proceso de importación.',
+    'import_successfully' => 'Proceso de importación de productos finalizado con éxito!',
+    'import_error' => 'Ocurrió un error al importar productos.',
+    'export_started' => 'Se inició el proceso de exportación, recibirás un correo electrónico con el enlace de descarga cuando termine.',
+    'export_success' => 'Proceso de exportación de productos finalizado con éxito!'
 ];
