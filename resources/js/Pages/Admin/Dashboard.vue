@@ -6,7 +6,6 @@ import { Head } from '@inertiajs/vue3';
 import { ref } from "vue";
 import { jsPDF } from "jspdf";
 
-
 const startDate = ref('');
 const endDate = ref('');
 
@@ -26,12 +25,10 @@ const loadReports = () => {
             bestCustomersChart.value = resp.data.data.best_customers;
             ordersStatusChart.value = resp.data.data.orders_status;
             paymentsStatusChart.value = resp.data.data.payments_status;
-        })
-        .catch((err) => console.log(err));
+        }).catch((err) => console.log(err));
 }
 
 const pdf = () => {
-
     const doc = new jsPDF();
     doc.setFontSize(20);
 
@@ -108,7 +105,6 @@ const pdf = () => {
                             <button class="btn  self-end ml-2" @click="pdf" type="button">
                                 <i class="fa fa-download"></i>
                             </button>
-
                         </form>
                         <hr>
                         <div class="grid grid-cold-1 md:grid-cols-2 mt-4">
