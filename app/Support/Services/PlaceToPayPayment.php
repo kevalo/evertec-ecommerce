@@ -4,7 +4,6 @@ namespace App\Support\Services;
 
 use App\Contracts\PaymentInterface;
 use App\Domain\Orders\Models\Order;
-use App\Http\Requests\Web\Payment\CreatePaymentRequest;
 use DateInterval;
 use DateTime;
 use Exception;
@@ -54,7 +53,7 @@ class PlaceToPayPayment extends PaymentInterface
     /**
      * @throws Exception
      */
-    public function setUpPayment(CreatePaymentRequest $request): static
+    public function setUpPayment(int $orderId): static
     {
         $currentDate = new DateTime();
 
@@ -62,7 +61,7 @@ class PlaceToPayPayment extends PaymentInterface
             ->add(new DateInterval('PT' . config('services.placetopay.timeout') . 'M'))
             ->format('c');
 
-        $order = Order::find($request->validated('order_id'));
+        $order = Order::find($orderId);
 
         $this->fields = [
             "locale" => "es_CO",

@@ -26,7 +26,7 @@ class PaymentController extends Controller
         }
 
         $processor = $paymentFactory->initializePayment($request->get('payment_type'));
-        $data = $processor->setUpPayment($request)->pay();
+        $data = $processor->setUpPayment($request->validated('order_id'))->pay();
         $data['order_id'] = $request->validated('order_id');
         $data['payment_type'] = $request->validated('payment_type');
         StorePayment::execute($data);
