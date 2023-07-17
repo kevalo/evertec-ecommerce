@@ -30,7 +30,8 @@ class ProductImportJob implements ShouldQueue
         'descripcion' => 2,
         'cantidad' => 3,
         'estado' => 4,
-        'categoria' => 5
+        'categoria' => 5,
+        'id' => 6
     ];
 
     public function __construct(private readonly string $filePath, private readonly User $user)
@@ -85,9 +86,13 @@ class ProductImportJob implements ShouldQueue
         };
 
         Product::query()->updateOrCreate([
-            'slug' => Str::slug(trim($row[self::HEADERS['nombre']]), '-', 'es'),
+            'id' => (
+                array_key_exists(self::HEADERS['id'], $row) &&
+                is_numeric($row[self::HEADERS['id']])
+            ) ? $row[self::HEADERS['id']] : -1
         ], [
             'name' => $row[self::HEADERS['nombre']],
+            'slug' => Str::slug(trim($row[self::HEADERS['nombre']]), '-', 'es'),
             'price' => $row[self::HEADERS['precio']],
             'description' => $row[self::HEADERS['descripcion']],
             'quantity' => $quantity > 0 ? $quantity : 1,
